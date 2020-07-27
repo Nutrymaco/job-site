@@ -1,0 +1,40 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer",
+          "filter" : ["my_synonym", "lowercase"]
+        },
+        "autocomplete_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "lowercase",
+          "filter"    : ["asciifolding", "title_ngram"]
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 3,
+          "token_chars": [
+            "letter",
+            "digit",
+            "whitespace"
+          ]
+        }
+      },
+      "filter" : {
+        "my_synonym" : {
+          "type" : "synonym",
+          "synonyms" : ["младший", "junior"]
+        },
+        "title_ngram" : {
+          "type" : "nGram",
+          "min_gram" : 2,
+          "max_gram" : 3
+        }
+      }
+    }
+  }
+}
