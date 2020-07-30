@@ -39,7 +39,6 @@ public class LoadDatabase {
                                    WorkScheduleRepository scheduleRepository,
                                    RestHighLevelClient client) {
         return args -> {
-            System.out.println("cities added to postgres (:");
             Country russia = new Country();
             russia.setName("russia");
 
@@ -56,6 +55,7 @@ public class LoadDatabase {
             cityRepository.save(tyumen);
             cityRepository.save(moscow);
 
+            System.out.println("cities added to postgres (:");
             WorkSchedule workSchedule = new WorkSchedule();
             workSchedule.setName("FULL");
 
@@ -77,8 +77,6 @@ public class LoadDatabase {
             scheduleRepository.save(workSchedule3);
             scheduleRepository.save(workSchedule4);
 
-            System.out.println(loadFromFile("/settings/settings.json"));
-
             CreateIndexRequest request = new CreateIndexRequest("site");
 
             Settings.Builder settingsBuilder =
@@ -87,7 +85,7 @@ public class LoadDatabase {
 
             request.settings(settingsBuilder);
             request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
-            System.out.println(client.indices().create(request, RequestOptions.DEFAULT));
+            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
         };
     }
     protected String loadFromFile(String fileName) throws IllegalStateException {
