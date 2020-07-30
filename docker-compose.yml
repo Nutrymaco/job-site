@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    image: "postgres:9.6.5"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+  elasticsearch:
+    image: "elasticsearch:7.8.0"
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+    - "9200:9200"
+  web:
+    build: .
+    command: /bin/sh -c "java -jar /demo.jar"
+    volumes:
+      - .:/code
+    ports:
+      - "8080:8080"
+    depends_on:
+      - elasticsearch
+      - db
+    restart: on-failure
+    links:
+      - db
+
+volumes:
+  postgres_data:
+  data01:

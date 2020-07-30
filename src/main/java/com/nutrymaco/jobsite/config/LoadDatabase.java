@@ -2,19 +2,42 @@ package com.nutrymaco.jobsite.config;
 
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.Country;
+import com.nutrymaco.jobsite.entity.WorkSchedule;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
+import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
+import org.elasticsearch.client.ElasticsearchClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentParser;
+import org.elasticsearch.common.xcontent.XContentParserUtils;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.index.MappingBuilder;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.nio.file.Path;
 
 @Configuration
 @Slf4j
 public class LoadDatabase {
 
     @Bean
-    CommandLineRunner initDatabase(CityRepository cityRepository, CountryRepository countryRepository) {
+    CommandLineRunner initDatabase(CityRepository cityRepository,
+                                   CountryRepository countryRepository,
+                                   WorkScheduleRepository scheduleRepository,
+                                   RestHighLevelClient client) {
         return args -> {
             System.out.println("cities added to postgres (:");
             Country russia = new Country();
@@ -24,14 +47,61 @@ public class LoadDatabase {
 
             City moscow = new City();
             moscow.setCountry(russia);
-            moscow.setName("moscow");
+            moscow.setName("Москва");
 
             City tyumen = new City();
             tyumen.setCountry(russia);
-            tyumen.setName("tyumen");
+            tyumen.setName("Тюмень");
 
             cityRepository.save(tyumen);
             cityRepository.save(moscow);
+
+            WorkSchedule workSchedule = new WorkSchedule();
+            workSchedule.setName("FULL");
+
+            WorkSchedule workSchedule1 = new WorkSchedule();
+            workSchedule1.setName("PART");
+
+            WorkSchedule workSchedule2 = new WorkSchedule();
+            workSchedule.setName("FLEX");
+
+            WorkSchedule workSchedule3 = new WorkSchedule();
+            workSchedule3.setName("REMOTE");
+
+            WorkSchedule workSchedule4 = new WorkSchedule();
+            workSchedule3.setName("OTHER");
+
+            scheduleRepository.save(workSchedule);
+            scheduleRepository.save(workSchedule1);
+            scheduleRepository.save(workSchedule2);
+            scheduleRepository.save(workSchedule3);
+            scheduleRepository.save(workSchedule4);
+
+            System.out.println(loadFromFile("/settings/settings.json"));
+
+            CreateIndexRequest request = new CreateIndexRequest("site");
+
+            Settings.Builder settingsBuilder =
+                    Settings.builder()
+                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
+
+            request.settings(settingsBuilder);
+            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
+            System.out.println(client.indices().create(request, RequestOptions.DEFAULT));
         };
+    }
+    protected String loadFromFile(String fileName) throws IllegalStateException {
+        StringBuilder buffer = new StringBuilder(2048);
+        try {
+            InputStream is = getClass().getResourceAsStream(fileName);
+            LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
+            while (reader.ready()) {
+                buffer.append(reader.readLine());
+                buffer.append(' ');
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("couldn't load file " + fileName, e);
+        }
+        return buffer.toString();
     }
 }

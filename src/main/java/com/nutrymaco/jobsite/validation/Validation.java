@@ -1,5 +1,8 @@
 package com.nutrymaco.jobsite.validation;
 
+import com.nutrymaco.jobsite.exception.validation.VacancyValidationException;
+import com.nutrymaco.jobsite.exception.validation.ValidationException;
+
 public interface Validation<DTO> {
-    boolean validate(DTO dto);
+    void validate(DTO dto) throws ValidationException;
 }

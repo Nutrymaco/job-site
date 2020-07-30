@@ -17,6 +17,8 @@ public class VacancyDTO {
 
     String description;
 
+    String company;
+
     int experienceFrom;
 
     int experienceTo;
@@ -33,4 +35,5 @@ public class VacancyDTO {
 
     int workScheduleId;
 
+    String url;
 }

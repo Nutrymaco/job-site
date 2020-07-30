@@ -4,6 +4,7 @@ import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.exception.validation.VacancyValidationException;
+import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.repository.VacancyRepository;
@@ -14,9 +15,11 @@ import com.nutrymaco.jobsite.validation.vacancy.VacancyValidation;
 import org.elasticsearch.client.RestHighLevelClient;
 
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -28,8 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.nutrymaco.jobsite.adapter.UrlParamsToElasticQuery.getQueryFromVacancyParams;
-import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Service
 public class VacancyServiceImpl implements VacancyService {
@@ -56,9 +58,13 @@ public class VacancyServiceImpl implements VacancyService {
     RestHighLevelClient client;
 
     @Override
-    public Vacancy save(VacancyDTO vacancyDTO) throws VacancyValidationException {
-        if (!vacancyValidation.validate(vacancyDTO)) {
-            throw new VacancyValidationException();
+    public Vacancy save(VacancyDTO vacancyDTO) throws ValidationException {
+        vacancyValidation.validate(vacancyDTO);
+        if (vacancyDTO.getCity() != null) {
+            vacancyDTO.setCityId(cityRepository.findByName(vacancyDTO.getCity()).getId());
+        }
+        if (vacancyDTO.getWorkSchedule() != null) {
+            vacancyDTO.setWorkScheduleId(scheduleRepository.findByName(vacancyDTO.getWorkSchedule()).getId());
         }
 
         return vacancyRepository.save(fromDTO(vacancyDTO));
@@ -89,9 +95,7 @@ public class VacancyServiceImpl implements VacancyService {
             return vacancies;
         }
 
-        if (!VacancyFilterValidation.validateVacancyFilter(map)) {
-            throw new FilterValidationException();
-        }
+        VacancyFilterValidation.validateVacancyFilter(map);
 
         List<String> cities = map.get("city");
         if (cities != null) {
@@ -118,6 +122,7 @@ public class VacancyServiceImpl implements VacancyService {
     public VacancyDTO toDTO(Vacancy entity) {
         return VacancyDTO.builder()
                 .title(entity.getTitle())
+                .company(entity.getCompany())
                 .description(entity.getDescription())
                 .city(entity.getCity())
                 .cityId(entity.getCityId())
@@ -127,6 +132,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .experienceTo(entity.getExperienceTo())
                 .salaryFrom(entity.getSalaryFrom())
                 .salaryTo(entity.getSalaryTo())
+                .url(entity.getUrl())
                 .build();
     }
 
@@ -134,6 +140,7 @@ public class VacancyServiceImpl implements VacancyService {
     public Vacancy fromDTO(VacancyDTO vacancyDTO) {
         return Vacancy.builder()
                 .title(vacancyDTO.getTitle())
+                .company(vacancyDTO.getCompany())
                 .description(vacancyDTO.getDescription())
                 .city(vacancyDTO.getCity())
                 .cityId(vacancyDTO.getCityId())
@@ -143,14 +150,19 @@ public class VacancyServiceImpl implements VacancyService {
                 .workScheduleId(vacancyDTO.getWorkScheduleId())
                 .salaryFrom(vacancyDTO.getSalaryFrom())
                 .salaryTo(vacancyDTO.getSalaryTo())
+                .url(vacancyDTO.getUrl())
                 .build();
     }
 
     @Override
     public List<String> autocomplete(String text, int count) {
-        return restTemplate.search(new NativeSearchQueryBuilder()
-                                        .withQuery(matchQuery("title", text))
-                                        .build(), Vacancy.class)
+        NativeSearchQuery query = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchPhrasePrefixQuery("title", text))
+                .build();
+
+
+        System.out.println(query.getQuery());
+        return restTemplate.search(query, Vacancy.class)
                 .stream()
                 .map(SearchHit::getContent)
                 .map(Vacancy::getTitle)

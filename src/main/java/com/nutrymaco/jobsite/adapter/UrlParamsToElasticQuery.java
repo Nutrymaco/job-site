@@ -24,7 +24,7 @@ public class UrlParamsToElasticQuery {
         if (text != null) {
             queryBuilder = queryBuilder.withQuery(multiMatchQuery(text.get(0))
                             .field("title").boost(2)
-                            .field("description")
+                            .field("description.search")
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2));
         }

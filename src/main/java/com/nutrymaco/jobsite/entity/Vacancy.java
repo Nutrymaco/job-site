@@ -20,18 +20,16 @@ import javax.persistence.GeneratedValue;
 
 @Getter
 @Builder
-@Document(indexName = "site", indexStoreType = "vacancy")
-@Setting(settingPath = "/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/resources/elastic/vacancy_settings.json")
-//@Mapping(mappingPath = "/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/resources/elastic/vacancy_mappings.json")
+@Document(indexName = "site", createIndex = false)
 public class Vacancy {
 
     @Id
     @GeneratedValue
     String id;
 
-//    @CompletionField(analyzer = "autocomplete_analyzer")
-//            @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     String title;
+
+    String company;
 
     String description;
 
@@ -50,4 +48,6 @@ public class Vacancy {
     String workSchedule;
 
     int workScheduleId;
+
+    String url;
 }
