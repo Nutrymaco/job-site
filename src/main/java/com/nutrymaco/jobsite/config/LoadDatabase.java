@@ -63,13 +63,13 @@ public class LoadDatabase {
             workSchedule1.setName("PART");
 
             WorkSchedule workSchedule2 = new WorkSchedule();
-            workSchedule.setName("FLEX");
+            workSchedule2.setName("FLEX");
 
             WorkSchedule workSchedule3 = new WorkSchedule();
             workSchedule3.setName("REMOTE");
 
             WorkSchedule workSchedule4 = new WorkSchedule();
-            workSchedule3.setName("OTHER");
+            workSchedule4.setName("OTHER");
 
             scheduleRepository.save(workSchedule);
             scheduleRepository.save(workSchedule1);
