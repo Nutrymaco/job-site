@@ -113,6 +113,7 @@ public class VacancyServiceImpl implements VacancyService {
 
         Query query = getQueryFromVacancyParams(map);
 
+        System.out.println(restTemplate.search(query, Vacancy.class));
         return restTemplate.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
@@ -133,6 +134,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .salaryFrom(entity.getSalaryFrom())
                 .salaryTo(entity.getSalaryTo())
                 .url(entity.getUrl())
+                .date(entity.getDate())
                 .build();
     }
 
@@ -151,6 +153,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .salaryFrom(vacancyDTO.getSalaryFrom())
                 .salaryTo(vacancyDTO.getSalaryTo())
                 .url(vacancyDTO.getUrl())
+                .date(vacancyDTO.getDate())
                 .build();
     }
 
@@ -161,7 +164,8 @@ public class VacancyServiceImpl implements VacancyService {
                 .build();
 
 
-        System.out.println(query.getQuery());
+//        System.out.println(query.getQuery());
+//        System.out.println(restTemplate.search(query, Vacancy.class).getSearchHits());
         return restTemplate.search(query, Vacancy.class)
                 .stream()
                 .map(SearchHit::getContent)

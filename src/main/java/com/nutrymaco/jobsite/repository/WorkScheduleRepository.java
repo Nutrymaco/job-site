@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface WorkScheduleRepository extends CrudRepository<WorkSchedule, Integer> {
     WorkSchedule findByName(String name);
+
 }

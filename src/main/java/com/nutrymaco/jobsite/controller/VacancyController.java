@@ -79,7 +79,7 @@ public class VacancyController {
         return EntityModel.of(vacancyFilter.getVacancyFilters());
     }
 
-    @GetMapping("/vacancy/autocomplete")
+    @GetMapping("/autocomplete")
     public EntityModel<Autocomplete> getAutocomplete(@RequestParam String text,
                                                      @RequestParam(defaultValue = "10") int count) {
         Autocomplete a = new Autocomplete();

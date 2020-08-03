@@ -77,15 +77,15 @@ public class LoadDatabase {
             scheduleRepository.save(workSchedule3);
             scheduleRepository.save(workSchedule4);
 
-            CreateIndexRequest request = new CreateIndexRequest("site");
-
-            Settings.Builder settingsBuilder =
-                    Settings.builder()
-                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
-
-            request.settings(settingsBuilder);
-            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
-            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
+//            CreateIndexRequest request = new CreateIndexRequest("site");
+//
+//            Settings.Builder settingsBuilder =
+//                    Settings.builder()
+//                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
+//
+//            request.settings(settingsBuilder);
+//            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
+//            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
         };
     }
     protected String loadFromFile(String fileName) throws IllegalStateException {

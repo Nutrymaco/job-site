@@ -17,6 +17,7 @@
         },
         "description": {
           "type": "text",
+          "analyzer": "low-text",
           "fields": {
             "search": {
               "type": "text",
@@ -37,7 +38,8 @@
           "type": "long"
         },
         "title": {
-          "type": "search_as_you_type"
+          "type": "search_as_you_type",
+          "analyzer": "low-text"
         },
         "url": {
           "type": "text",
@@ -50,6 +52,9 @@
         },
         "workScheduleId": {
           "type": "long"
+        },
+        "date": {
+          "type": "date"
         }
       }
 }

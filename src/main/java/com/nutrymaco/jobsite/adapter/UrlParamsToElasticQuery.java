@@ -55,8 +55,8 @@ public class UrlParamsToElasticQuery {
         }
 
 
-        System.out.println(queryBuilder.withFilter(filterBuilder).build().getQuery());
-        System.out.println(queryBuilder.withFilter(filterBuilder).build().getFilter());
+//        System.out.println(queryBuilder.withFilter(filterBuilder).build().getQuery());
+//        System.out.println(queryBuilder.withFilter(filterBuilder).build().getFilter());
         return queryBuilder
                 .withFilter(filterBuilder)
                 .build();

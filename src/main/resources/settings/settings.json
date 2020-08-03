@@ -1,13 +1,16 @@
 {
   "analysis": {
     "filter": {
-      "autocomplete_filter": {
-        "type": "edge_ngram",
-        "min_gram": "1",
-        "max_gram": "10"
-      }
     },
     "analyzer": {
+      "low-text": {
+        "analyzer": "russian",
+        "tokenizer": "standard",
+        "filter": [
+          "lowercase",
+          "decimal_digit"],
+        "char_filter": ["html_strip"]
+      },
       "autocomplete": {
         "filter": "lowercase",
         "type": "custom",
