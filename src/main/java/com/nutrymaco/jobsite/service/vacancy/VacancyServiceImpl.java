@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
+import com.nutrymaco.jobsite.adapter.AutocompleteDBAdapter;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
@@ -159,18 +160,19 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<String> autocomplete(String text, int count) {
-        NativeSearchQuery query = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchPhrasePrefixQuery("title", text))
-                .build();
-
-
-//        System.out.println(query.getQuery());
-//        System.out.println(restTemplate.search(query, Vacancy.class).getSearchHits());
-        return restTemplate.search(query, Vacancy.class)
-                .stream()
-                .map(SearchHit::getContent)
-                .map(Vacancy::getTitle)
-                .collect(Collectors.toList());
+//        NativeSearchQuery query = new NativeSearchQueryBuilder()
+//                .withQuery(QueryBuilders.matchPhrasePrefixQuery("title", text))
+//                .build();
+//
+//
+////        System.out.println(query.getQuery());
+////        System.out.println(restTemplate.search(query, Vacancy.class).getSearchHits());
+//        return restTemplate.search(query, Vacancy.class)
+//                .stream()
+//                .map(SearchHit::getContent)
+//                .map(Vacancy::getTitle)
+//                .collect(Collectors.toList());
+        return AutocompleteDBAdapter.getWordsByQuery(text);
     }
 
 
