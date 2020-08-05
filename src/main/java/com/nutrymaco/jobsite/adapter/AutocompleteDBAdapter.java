@@ -33,11 +33,12 @@ public class AutocompleteDBAdapter {
             con.setRequestMethod("GET");
 
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
             StringBuilder content = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
+                System.out.println(inputLine);
             }
             in.close();
             int wsIndex = query.lastIndexOf(" ");

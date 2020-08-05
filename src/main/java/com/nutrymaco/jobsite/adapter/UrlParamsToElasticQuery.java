@@ -4,6 +4,8 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.neo4j.repository.query.filter.FilterBuilder;
@@ -14,7 +16,8 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 
 
-// todo : refactor some code in its own method
+// todo : refactor with getFirst
+// todo : surround with try/catch
 public class UrlParamsToElasticQuery {
     static public Query getQueryFromVacancyParams(MultiValueMap<String, String> params) {
         List<String> text = params.get("text");
@@ -54,11 +57,17 @@ public class UrlParamsToElasticQuery {
                                                 "scheduleId", scheduleId);
         }
 
+        Pageable pageable = Pageable.unpaged();
+        String page, size;
+        if ((page = params.getFirst("page")) != null && (size = params.getFirst("size")) != null) {
+            pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
+        }
 
 //        System.out.println(queryBuilder.withFilter(filterBuilder).build().getQuery());
 //        System.out.println(queryBuilder.withFilter(filterBuilder).build().getFilter());
         return queryBuilder
                 .withFilter(filterBuilder)
+                .withPageable(pageable)
                 .build();
     }
 

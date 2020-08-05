@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.GeneratedValue;
+import java.util.Currency;
 import java.util.Date;
 
 
@@ -22,6 +23,8 @@ public class Vacancy {
 
     String company;
 
+    String shortDescription;
+
     String description;
 
     int experienceFrom;
@@ -31,6 +34,8 @@ public class Vacancy {
     int salaryFrom;
 
     int salaryTo;
+
+    Currency currency;
 
     String city;
 
