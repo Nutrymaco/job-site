@@ -1,0 +1,15 @@
+# Created at 2020-08-06T13:09:16.006
+WARNING: An illegal reflective access operation has occurred
+
+# Created at 2020-08-06T13:09:16.006
+WARNING: Illegal reflective access by org.springframework.util.ReflectionUtils (file:/Users/smykovefim/.m2/repository/org/springframework/spring-core/5.2.7.RELEASE/spring-core-5.2.7.RELEASE.jar) to field java.lang.Enum.name
+
+# Created at 2020-08-06T13:09:16.006
+WARNING: Please consider reporting this to the maintainers of org.springframework.util.ReflectionUtils
+
+# Created at 2020-08-06T13:09:16.006
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+
+# Created at 2020-08-06T13:09:16.007
+WARNING: All illegal access operations will be denied in a future release
+

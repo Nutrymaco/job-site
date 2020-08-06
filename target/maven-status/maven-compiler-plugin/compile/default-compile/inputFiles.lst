@@ -1,3 +1,4 @@
+/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/Currency.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/entity/City.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/SelectFilter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/validation/Validation.java
@@ -30,5 +31,6 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/VacancyFilter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/repository/CityRepository.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/FilterType.java
+/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/adapter/AutocompleteDBAdapter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/Filter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/config/ElasticConfig.java
