@@ -103,7 +103,11 @@ public class VacancyServiceImpl implements VacancyService {
             for (String name : schedules) {
                 map.set("scheduleId", scheduleRepository.findByName(name).getId().toString());
             }
+
         }
+
+        String incDescr = map.getFirst("includeDescription");
+        final boolean includeDescription = incDescr == null ? false : Boolean.parseBoolean(incDescr);
 
 
         Query query = getQueryFromVacancyParams(map);
@@ -111,6 +115,11 @@ public class VacancyServiceImpl implements VacancyService {
         System.out.println(restTemplate.search(query, Vacancy.class));
         return restTemplate.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)
+                .peek(v -> {
+                    if (!includeDescription) {
+                        v.setDescription(null);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
@@ -128,6 +137,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .experienceTo(entity.getExperienceTo())
                 .salaryFrom(entity.getSalaryFrom())
                 .salaryTo(entity.getSalaryTo())
+                .currency(entity.getCurrency())
                 .url(entity.getUrl())
                 .date(entity.getDate())
                 .build();
@@ -147,6 +157,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .workScheduleId(vacancyDTO.getWorkScheduleId())
                 .salaryFrom(vacancyDTO.getSalaryFrom())
                 .salaryTo(vacancyDTO.getSalaryTo())
+                .currency(vacancyDTO.getCurrency())
                 .url(vacancyDTO.getUrl())
                 .date(vacancyDTO.getDate())
                 .build();

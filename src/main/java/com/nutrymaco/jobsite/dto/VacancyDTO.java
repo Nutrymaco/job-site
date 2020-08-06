@@ -29,6 +29,8 @@ public class VacancyDTO {
 
     int salaryTo;
 
+    Currency currency;
+
     String city;
 
     int cityId;

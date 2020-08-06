@@ -84,7 +84,6 @@ public class VacancyController {
                                                      @RequestParam(defaultValue = "10") int count) {
         Autocomplete a = new Autocomplete();
         a.setOptions(vacancyService.autocomplete(text, count));
-
         return EntityModel.of(a);
     }
 }

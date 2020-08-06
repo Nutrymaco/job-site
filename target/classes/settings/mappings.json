@@ -38,7 +38,7 @@
           "type": "long"
         },
         "title": {
-          "type": "search_as_you_type",
+          "type": "text",
           "analyzer": "low-text"
         },
         "url": {

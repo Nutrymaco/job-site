@@ -38,7 +38,6 @@ public class AutocompleteDBAdapter {
             StringBuilder content = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
-                System.out.println(inputLine);
             }
             in.close();
             int wsIndex = query.lastIndexOf(" ");
