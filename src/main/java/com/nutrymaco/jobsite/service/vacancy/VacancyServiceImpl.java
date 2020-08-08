@@ -107,7 +107,7 @@ public class VacancyServiceImpl implements VacancyService {
         }
 
         String incDescr = map.getFirst("includeDescription");
-        final boolean includeDescription = incDescr == null ? false : Boolean.parseBoolean(incDescr);
+        final boolean includeDescription = Boolean.parseBoolean(incDescr);
 
 
         Query query = getQueryFromVacancyParams(map);

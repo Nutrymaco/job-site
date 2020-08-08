@@ -16,8 +16,6 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 
 
-// todo : refactor with getFirst
-// todo : surround with try/catch
 public class UrlParamsToElasticQuery {
     static public Query getQueryFromVacancyParams(MultiValueMap<String, String> params) {
         List<String> text = params.get("text");
@@ -32,18 +30,26 @@ public class UrlParamsToElasticQuery {
                             .prefixLength(2));
         }
 
-        List<String> minExp = params.get("expFrom");
-        List<String> maxExp = params.get("expTo");
-        filterBuilder = addRangeQuery(filterBuilder,
-                "experienceFrom", "experienceTo",
-                minExp == null ? 0 : Integer.parseInt(minExp.get(0)),
-                maxExp == null ? Integer.MAX_VALUE : Integer.parseInt(maxExp.get(0)));
+        String minExp = params.getFirst("expFrom");
+        String maxExp = params.getFirst("expTo");
+        try {
+            filterBuilder = addRangeQuery(filterBuilder,
+                    "experienceFrom", "experienceTo",
+                    minExp == null ? 0 : Integer.parseInt(minExp),
+                    maxExp == null ? Integer.MAX_VALUE : Integer.parseInt(maxExp));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("when parsing experience parameters");
+        }
 
-
-        List<String> salary = params.get("salary");
-        filterBuilder = addRangeQuery(filterBuilder,
+        String salary = params.getFirst("salary");
+        try {
+            filterBuilder = addRangeQuery(filterBuilder,
                     "salaryFrom", "salaryTo",
-                salary == null ? 0 : Integer.parseInt(salary.get(0)));
+                    salary == null ? 0 : Integer.parseInt(salary));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("when parsing salary parameter");
+        }
+
 
         List<String> cityId = params.get("cityId");
         if (cityId != null) {
@@ -59,8 +65,12 @@ public class UrlParamsToElasticQuery {
 
         Pageable pageable = Pageable.unpaged();
         String page, size;
-        if ((page = params.getFirst("page")) != null && (size = params.getFirst("size")) != null) {
-            pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
+        try {
+            if ((page = params.getFirst("page")) != null && (size = params.getFirst("size")) != null) {
+                pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
+            }
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("when parsing pageable parameters");
         }
 
 //        System.out.println(queryBuilder.withFilter(filterBuilder).build().getQuery());
