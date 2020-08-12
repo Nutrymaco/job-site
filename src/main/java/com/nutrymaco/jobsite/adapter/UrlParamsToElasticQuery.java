@@ -17,17 +17,20 @@ import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 
 
 public class UrlParamsToElasticQuery {
+    private static final int TITLE_BOOST = 10;
+    private static final int PREFIX_LENGTH = 2;
+
     static public Query getQueryFromVacancyParams(MultiValueMap<String, String> params) {
-        List<String> text = params.get("text");
+        String text = params.getFirst("text");
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
 
         if (text != null) {
-            queryBuilder = queryBuilder.withQuery(multiMatchQuery(text.get(0))
-                            .field("title").boost(2)
+            queryBuilder = queryBuilder.withQuery(multiMatchQuery(text)
+                            .field("title").boost(TITLE_BOOST)
                             .field("description.search")
                             .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2));
+                            .prefixLength(PREFIX_LENGTH));
         }
 
         String minExp = params.getFirst("expFrom");
@@ -80,6 +83,7 @@ public class UrlParamsToElasticQuery {
                 .withPageable(pageable)
                 .build();
     }
+
 
     static BoolQueryBuilder addRangeQuery(BoolQueryBuilder filterBuilder,
                                       String fieldFrom, String fieldTo,

@@ -3,14 +3,19 @@ package com.nutrymaco.jobsite.service.user;
 
 import com.nutrymaco.jobsite.dto.UserDTO;
 import com.nutrymaco.jobsite.entity.User;
+import com.nutrymaco.jobsite.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public User findByUsername(String username) {
-        return null;
+        return userRepository.findByUsername(username);
     }
 
     @Override

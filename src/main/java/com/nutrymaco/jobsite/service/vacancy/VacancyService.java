@@ -2,6 +2,7 @@ package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.entity.Vacancy;
+import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import org.springframework.util.MultiValueMap;
 
@@ -14,7 +15,7 @@ public interface VacancyService {
     void removeById(String id);
     void removeAll();
     Optional<Vacancy> load(String id);
-    List<Vacancy> loadValues(MultiValueMap<String, String> map) throws ValidationException;
+    List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException;
     VacancyDTO toDTO(Vacancy entity);
     Vacancy fromDTO(VacancyDTO dto);
     List<String> autocomplete(String text, int count);

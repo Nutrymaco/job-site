@@ -1,10 +1,14 @@
 package com.nutrymaco.jobsite.config;
 
+import com.nutrymaco.jobsite.entity.App;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.Country;
+import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
+import com.nutrymaco.jobsite.repository.AppRepository;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
+import com.nutrymaco.jobsite.repository.UserRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import org.elasticsearch.client.ElasticsearchClient;
 import org.elasticsearch.client.RequestOptions;
@@ -37,6 +41,7 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(CityRepository cityRepository,
                                    CountryRepository countryRepository,
                                    WorkScheduleRepository scheduleRepository,
+                                   AppRepository appRepository,
                                    RestHighLevelClient client) {
         return args -> {
             Country russia = new Country();
@@ -71,11 +76,17 @@ public class LoadDatabase {
             WorkSchedule workSchedule4 = new WorkSchedule();
             workSchedule4.setName("OTHER");
 
+            App frontend = new App();
+            frontend.setName("frontend");
+            frontend.setPassword("foobar");
+
             scheduleRepository.save(workSchedule);
             scheduleRepository.save(workSchedule1);
             scheduleRepository.save(workSchedule2);
             scheduleRepository.save(workSchedule3);
             scheduleRepository.save(workSchedule4);
+
+            appRepository.save(frontend);
 
 //            CreateIndexRequest request = new CreateIndexRequest("site");
 //
