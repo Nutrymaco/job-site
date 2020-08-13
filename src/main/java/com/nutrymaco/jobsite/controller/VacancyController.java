@@ -44,8 +44,8 @@ public class VacancyController {
     VacancyFilter vacancyFilter;
 
     @GetMapping("/vacancies")
-    public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam MultiValueMap<String, String> map) throws ValidationException {
-        List<Vacancy> vacancies = vacancyService.loadValues(map);
+    public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam MultiValueMap<String, String> filters) throws ValidationException {
+        List<Vacancy> vacancies = vacancyService.getVacanciesByFilters(filters);
         return CollectionModel.of(vacancies.stream()
                                             .map(vacancyAssembler::toModel)
                                             .collect(Collectors.toList()));

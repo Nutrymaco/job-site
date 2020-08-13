@@ -8,6 +8,7 @@ import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class AutosearchServiceImpl implements AutosearchService {
     AutosearchRepository autosearchRepository;
 
     @Override
-    public Optional<Autosearch> findById(int id) {
+    public Optional<Autosearch> getById(int id) {
         return autosearchRepository.findById(id);
     }
 
@@ -46,16 +47,26 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     @Override
     public void updateAutosearchById(int id) {
-        Optional<Autosearch> findedAutosearch = autosearchRepository.findById(id);
-        if (findedAutosearch.isEmpty()) {
+        Optional<Autosearch> foundAutosearch = autosearchRepository.findById(id);
+        if (foundAutosearch.isEmpty()) {
             return;
         }
-        Autosearch autosearch = findedAutosearch.get();
+        Autosearch autosearch = foundAutosearch.get();
+        updateAutosearch(autosearch);
+    }
+
+    @Override
+    public void updateAllAutosearches() {
+        for (Autosearch autosearch : autosearchRepository.findAll()) {
+            updateAutosearch(autosearch);
+        }
+    }
+
+    private void updateAutosearch(Autosearch autosearch) {
         List<String> curVacanciesIdByThisAutosearch = getVacanciesIdByAutosearch(autosearch);
         autosearch.setLastDaySelectedBySearch(curVacanciesIdByThisAutosearch);
         autosearchRepository.save(autosearch);
     }
-
 
     private List<String> getVacanciesIdByAutosearch(Autosearch autosearch) {
         try {

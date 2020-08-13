@@ -80,7 +80,7 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<Vacancy> loadValues(MultiValueMap<String, String> map) throws FilterValidationException {
+    public List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> map) throws FilterValidationException {
         if (map == null){
             List<Vacancy> vacancies = new ArrayList<>((int) vacancyRepository.count());
             for (Vacancy v : vacancyRepository.findAll()) {
