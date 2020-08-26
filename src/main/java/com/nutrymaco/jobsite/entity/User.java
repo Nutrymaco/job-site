@@ -1,16 +1,15 @@
 package com.nutrymaco.jobsite.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -20,10 +19,17 @@ import java.util.List;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User {
     @Id
-    long id;
+    String id;
 
-    String username;
+    String name;
+
+    String surname;
+
+    Issuer issuer;
 
     @Type(type = "jsonb")
     List<String> viewedVacanciesIds;
+
+    @ManyToMany
+    List<Autosearch> autosearches;
 }
