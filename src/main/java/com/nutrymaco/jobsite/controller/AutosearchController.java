@@ -5,6 +5,7 @@ import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.security.JWTAuthenticationManager;
 import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
 import com.nutrymaco.jobsite.service.user.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/v1")
+@Slf4j
 public class AutosearchController {
 
     @Autowired
@@ -31,6 +33,7 @@ public class AutosearchController {
 
     @GetMapping("/users/{userId}/autosearches")
     ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
+        log.info(String.format("request to get autosearches by userid=%s", userId));
         jwtAuthenticationManager.authenticate(request).checkId(userId);
 
         Function<Integer, List<String>> getVacanciesByAutosearchId =

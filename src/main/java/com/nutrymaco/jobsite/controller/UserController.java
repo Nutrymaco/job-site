@@ -26,6 +26,7 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> registryUser(HttpServletRequest request) {
+        log.info(String.format("request to registry user"));
         User user = jwtAuthenticationManager.authenticate(request).getUser();
         User registeredUser = userService.registry(user);
         return ResponseEntity.ok(registeredUser);
@@ -34,7 +35,6 @@ public class UserController {
     @GetMapping("/{id}/secret")
     public String getUserSecret(HttpServletRequest request, @PathVariable String id) {
         log.info(String.format("request to %s/secret", id));
-
         jwtAuthenticationManager.authenticate(request)
                                 .checkId(id);
         return "secret";

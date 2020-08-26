@@ -9,7 +9,9 @@ import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import com.nutrymaco.jobsite.repository.VacancyRepository;
+import com.nutrymaco.jobsite.security.JWTAuthenticationManager;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.hateoas.CollectionModel;
@@ -26,13 +28,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/v1")
+@Slf4j
 public class VacancyController {
+    JWTAuthenticationManager jwtAuthenticationManager = new JWTAuthenticationManager();
 
     @Autowired
     VacancyAssembler vacancyAssembler;
@@ -45,15 +50,17 @@ public class VacancyController {
 
     @GetMapping("/vacancies")
     public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam MultiValueMap<String, String> filters) throws ValidationException {
+        log.info(String.format("request to get vacancies by filters : %s", filters));
         List<Vacancy> vacancies = vacancyService.getVacanciesByFilters(filters);
         return CollectionModel.of(vacancies.stream()
                                             .map(vacancyAssembler::toModel)
                                             .collect(Collectors.toList()));
     }
 
-    @GetMapping("/vacancies/{id}")
-    public EntityModel<Vacancy> oneVacancy(@PathVariable String id) {
-        Vacancy vacancy = vacancyService.load(id)
+    @GetMapping("/vacancies/{vacancyId}")
+    public EntityModel<Vacancy> oneVacancy(@PathVariable String vacancyId) {
+        log.info(String.format("request get vacancies by vacancy_id : %s", vacancyId));
+        Vacancy vacancy = vacancyService.load(vacancyId)
                 .orElseThrow(() -> new RuntimeException("cant find vacancy"));
 
         return vacancyAssembler.toModel(vacancy);
@@ -61,6 +68,7 @@ public class VacancyController {
 
     @PostMapping("/vacancies")
     public ResponseEntity<EntityModel<Vacancy>> createVacancy(@RequestBody VacancyDTO vacancy) throws ValidationException {
+        log.info(String.format("request to add vacancy : %s", vacancy));
         EntityModel<Vacancy> entity = vacancyAssembler.toModel(vacancyService.save(vacancy));
 
         return ResponseEntity
@@ -69,7 +77,9 @@ public class VacancyController {
     }
 
     @DeleteMapping("/vacancies")
-    public ResponseEntity<?> deleteAllVacancies() {
+    public ResponseEntity<?> deleteAllVacancies(HttpServletRequest request) {
+        log.info("request to delete all vacancies");
+        jwtAuthenticationManager.authenticate(request).checkId("108283747568494427027");
         vacancyService.removeAll();
         return ResponseEntity.ok().build();
     }
