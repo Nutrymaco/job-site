@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @Table(name = "autosearch")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Autosearch {

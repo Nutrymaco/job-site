@@ -9,6 +9,7 @@ import com.nutrymaco.jobsite.service.user.UserService;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
@@ -41,15 +42,38 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     @Override
     public boolean exists(Autosearch autosearch) {
-        return autosearchRepository.findByFilters(autosearch.getFilters()).
-                isPresent();
+        return exists(autosearch.getFilters());
     }
 
+    public boolean exists(MultiValueMap<String, String> filters) {
+        return autosearchRepository.findByFilters(filters)
+                .isPresent();
+    }
+
+//    @Override
+//    public void addAutosearch(Autosearch autosearch) {
+//        if (!exists(autosearch)) {
+//            autosearchRepository.save(autosearch);
+//        }
+//    }
+
+
     @Override
-    public void addAutosearch(Autosearch autosearch) {
-        if (!exists(autosearch)) {
-            autosearchRepository.save(autosearch);
+    public void addAutosearch(String userId, MultiValueMap<String, String> filters) throws Exception {
+        Optional<Autosearch> autosearchOptional = autosearchRepository.findByFilters(filters);
+        Autosearch autosearch;
+        User user;
+        if (autosearchOptional.isEmpty()) {
+            autosearch = Autosearch.builder()
+                                    .filters(filters)
+                                    .build();
+        } else {
+            autosearch = autosearchOptional.get();
         }
+        user = userService.getById(userId)
+                .orElseThrow(() -> new Exception(String.format("user with id : %s not found", userId)));
+        autosearch.getUsers().add(user);
+        autosearchRepository.save(autosearch);
     }
 
     @Override
@@ -110,5 +134,7 @@ public class AutosearchServiceImpl implements AutosearchService {
             return List.of();
         }
     }
+
+
 
 }

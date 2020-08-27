@@ -1,7 +1,9 @@
 package com.nutrymaco.jobsite.security;
 
 import com.nutrymaco.jobsite.entity.User;
+import com.nutrymaco.jobsite.service.user.UserService;
 import com.nutrymaco.jobsite.util.jwt.GoogleJWTUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,9 @@ import java.util.Objects;
 
 @Component
 public class JWTAuthenticationManager{
+    @Autowired
+    UserService userService;
+
     String token;
     GoogleJWTUtil googleJWTUtil;
     User user;
@@ -27,6 +32,11 @@ public class JWTAuthenticationManager{
         user.setId(googleJWTUtil.getSub());
         user.setName(googleJWTUtil.getName());
         user.setSurname(googleJWTUtil.getSurname());
+    }
+
+    private void findUser() throws Exception {
+        user = userService.getById(googleJWTUtil.getSub())
+                .orElseThrow(() -> new Exception(String.format("user with id = %s not found", googleJWTUtil.getSub())));
     }
 
     //todo: test this method
