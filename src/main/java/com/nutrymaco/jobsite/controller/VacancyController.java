@@ -6,14 +6,11 @@ import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.filter.Filters;
 import com.nutrymaco.jobsite.dto.filter.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Vacancy;
-import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
-import com.nutrymaco.jobsite.repository.VacancyRepository;
-import com.nutrymaco.jobsite.security.JWTAuthenticationManager;
+import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -37,7 +34,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 @Slf4j
 public class VacancyController {
-    JWTAuthenticationManager jwtAuthenticationManager = new JWTAuthenticationManager();
+    JWTTokenManager jwtTokenManager = new JWTTokenManager();
 
     @Autowired
     VacancyAssembler vacancyAssembler;
@@ -79,7 +76,11 @@ public class VacancyController {
     @DeleteMapping("/vacancies")
     public ResponseEntity<?> deleteAllVacancies(HttpServletRequest request) {
         log.info("request to delete all vacancies");
-        jwtAuthenticationManager.authenticate(request).checkId("108283747568494427027");
+        try {
+            jwtTokenManager.checkToken(request).findUser().checkId("108283747568494427027");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         vacancyService.removeAll();
         return ResponseEntity.ok().build();
     }

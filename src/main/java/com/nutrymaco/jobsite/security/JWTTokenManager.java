@@ -12,19 +12,23 @@ import java.security.GeneralSecurityException;
 import java.util.Objects;
 
 @Component
-public class JWTAuthenticationManager{
+public class JWTTokenManager {
     @Autowired
     UserService userService;
 
     String token;
     GoogleJWTUtil googleJWTUtil;
     User user;
+    String id;
+    String name;
+    String surname;
 
-    public IdChecker authenticate(HttpServletRequest request) {
+
+    public UserManager checkToken(HttpServletRequest request) {
         token = getTokenFromRequest(request);
         checkToken();
-        createUser();
-        return new IdChecker(user);
+        extractInfoFromToken();
+        return new UserManager();
     }
 
     private void createUser() {
@@ -34,12 +38,6 @@ public class JWTAuthenticationManager{
         user.setSurname(googleJWTUtil.getSurname());
     }
 
-    private void findUser() throws Exception {
-        user = userService.getById(googleJWTUtil.getSub())
-                .orElseThrow(() -> new Exception(String.format("user with id = %s not found", googleJWTUtil.getSub())));
-    }
-
-    //todo: test this method
     private String getTokenFromRequest(HttpServletRequest request) {
         return request.getHeader("Authorization").substring(7);
     }
@@ -48,24 +46,22 @@ public class JWTAuthenticationManager{
         try {
             System.out.println("in check");
             googleJWTUtil = new GoogleJWTUtil(token);
-            System.out.println(googleJWTUtil);
         } catch (GeneralSecurityException | IOException e) {
             throw new IllegalStateException(String.format("for token : %s", token));
         }
-
     }
 
-    public static class IdChecker {
-        User user;
-        public IdChecker(User user) {
-            this.user = user;
-        }
+    private void extractInfoFromToken() {
+        id = googleJWTUtil.getSub();
+        name = googleJWTUtil.getName();
+        surname = googleJWTUtil.getSurname();
+    }
 
+    public class IdChecker {
         public IdChecker checkId(String otherId) {
             if (!Objects.equals(user.getId(), otherId)) {
                 throw new IllegalStateException(String.format("id1 = %s, id2 = %s", user, otherId));
             }
-
             return this;
         }
 
@@ -73,4 +69,18 @@ public class JWTAuthenticationManager{
             return user;
         }
     }
+    public class UserManager {
+        public IdChecker findUser() throws Exception {
+            user = userService.getById(id)
+                    .orElseThrow(() -> new Exception(String.format("user with id = %s not found", id)));
+            return new IdChecker();
+        }
+
+        public User generateUser() {
+            createUser();
+            return user;
+        }
+    }
+
 }
+

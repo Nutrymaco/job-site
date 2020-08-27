@@ -1,7 +1,7 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.entity.User;
-import com.nutrymaco.jobsite.security.JWTAuthenticationManager;
+import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class UserController {
     @Autowired
-    JWTAuthenticationManager jwtAuthenticationManager;
+    JWTTokenManager jwtTokenManager;
 
     @Autowired
     UserService userService;
@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<?> registryUser(HttpServletRequest request) {
         log.info(String.format("request to registry user"));
-        User user = jwtAuthenticationManager.authenticate(request).getUser();
+        User user = jwtTokenManager.checkToken(request).generateUser();
         User registeredUser = userService.registry(user);
         return ResponseEntity.ok(registeredUser);
     }
@@ -35,8 +35,13 @@ public class UserController {
     @GetMapping("/{id}/secret")
     public String getUserSecret(HttpServletRequest request, @PathVariable String id) {
         log.info(String.format("request to %s/secret", id));
-        jwtAuthenticationManager.authenticate(request)
-                                .checkId(id);
+        try {
+            jwtTokenManager.checkToken(request)
+                    .findUser()
+                    .checkId(id);
+        } catch (Exception e) {
+            return "not found";
+        }
         return "secret";
     }
 }

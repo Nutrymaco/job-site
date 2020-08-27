@@ -2,7 +2,7 @@ package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.response.AutosearchResponse;
 import com.nutrymaco.jobsite.entity.Autosearch;
-import com.nutrymaco.jobsite.security.JWTAuthenticationManager;
+import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
 import com.nutrymaco.jobsite.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.function.Function;
 public class AutosearchController {
 
     @Autowired
-    JWTAuthenticationManager jwtAuthenticationManager;
+    JWTTokenManager jwtTokenManager;
 
     @Autowired
     AutosearchService autosearchService;
@@ -37,7 +37,13 @@ public class AutosearchController {
     @GetMapping("/users/{userId}/autosearches")
     ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
         log.info(String.format("request to get autosearches by userid=%s", userId));
-        jwtAuthenticationManager.authenticate(request).checkId(userId);
+        try {
+            jwtTokenManager.checkToken(request)
+                            .findUser()
+                            .checkId(userId);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
 
         Function<Integer, List<String>> getVacanciesByAutosearchId =
                 (autosearchId) ->  autosearchService.getNewVacanciesIdListForAutosearchAndForUser(autosearchId, userId);
@@ -59,7 +65,14 @@ public class AutosearchController {
     ResponseEntity<?> createutosearch(HttpServletRequest request,
                                     @RequestBody MultiValueMap<String, String> filters,
                                     @PathVariable String userId) {
-        jwtAuthenticationManager.authenticate(request).checkId(userId);
+        try {
+            jwtTokenManager.checkToken(request)
+                    .findUser()
+                    .checkId(userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(403).build();
+        }
+
         try {
             autosearchService.addAutosearch(userId, filters);
         } catch (Exception e) {
