@@ -4,10 +4,10 @@ import com.nutrymaco.jobsite.assembler.VacancyAssembler;
 import com.nutrymaco.jobsite.dto.Autocomplete;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.filter.Filters;
-import com.nutrymaco.jobsite.dto.filter.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
+import com.nutrymaco.jobsite.service.vacancy.VacancyAdvancedFiltersServiceImpl;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class VacancyController {
     VacancyService vacancyService;
 
     @Autowired
-    VacancyFilter vacancyFilter;
+    VacancyAdvancedFiltersServiceImpl advancedFiltersService;
 
     @GetMapping("/vacancies")
     public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam MultiValueMap<String, String> filters) throws ValidationException {
@@ -87,7 +87,7 @@ public class VacancyController {
 
     @GetMapping("/advanced_filters")
     public EntityModel<Filters> getAdvancedFilters() {
-        return EntityModel.of(vacancyFilter.getVacancyFilters());
+        return EntityModel.of(advancedFiltersService.getFilters());
     }
 
     @GetMapping("/autocomplete")

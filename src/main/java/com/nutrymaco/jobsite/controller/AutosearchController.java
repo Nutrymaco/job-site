@@ -65,18 +65,18 @@ public class AutosearchController {
     ResponseEntity<?> createutosearch(HttpServletRequest request,
                                     @RequestBody MultiValueMap<String, String> filters,
                                     @PathVariable String userId) {
-        try {
-            jwtTokenManager.checkToken(request)
-                    .findUser()
-                    .checkId(userId);
-        } catch (Exception e) {
-            return ResponseEntity.status(403).build();
-        }
-
+//        try {
+//            jwtTokenManager.checkToken(request)
+//                    .findUser()
+//                    .checkId(userId);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(403).build();
+//        }
+        System.out.println(filters);
         try {
             autosearchService.addAutosearch(userId, filters);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("user not found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
         return ResponseEntity.ok().build();
