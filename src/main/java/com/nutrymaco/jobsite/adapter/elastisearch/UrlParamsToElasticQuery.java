@@ -1,4 +1,4 @@
-package com.nutrymaco.jobsite.adapter;
+package com.nutrymaco.jobsite.adapter.elastisearch;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;

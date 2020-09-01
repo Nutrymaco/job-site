@@ -5,9 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,8 +25,8 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
                 .salaryTo(Integer.parseInt(
                         Optional.ofNullable(filters.getFirst("salaryTo")).orElse("2147483647")
                 ))
-                .city(filters.getFirst("city"))
-                .workSchedule(filters.getFirst("workSchedule"))
+                .cities(filters.get("city"))
+                .workSchedules(filters.get("workSchedule"))
                 .build();
 
 
@@ -44,8 +41,8 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
         filters.set("expTo", String.valueOf(filter.getExpTo()));
         filters.set("salaryFrom", String.valueOf(filter.getSalaryFrom()));
         filters.set("salaryTo", String.valueOf(filter.getSalaryTo()));
-        filters.set("city", filter.getCity());
-        filters.set("workSchedule", filter.getWorkSchedule());
+        filters.put("city", filter.getCities());
+        filters.put("workSchedule", filter.getWorkSchedules());
 
         return filters;
     }

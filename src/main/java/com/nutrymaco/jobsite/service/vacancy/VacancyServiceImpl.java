@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.adapter.AutocompleteDBAdapter;
+import com.nutrymaco.jobsite.adapter.elastisearch.ElasticVacancyQuery;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
@@ -9,7 +10,6 @@ import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.repository.VacancyRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
-import com.nutrymaco.jobsite.validation.vacancy.VacancyFilterValidation;
 import com.nutrymaco.jobsite.validation.vacancy.VacancyValidation;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,9 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.nutrymaco.jobsite.adapter.elastisearch.UrlParamsToElasticQuery.getQueryFromVacancyParams;
 
 @Service
 public class VacancyServiceImpl implements VacancyService {
@@ -49,6 +46,9 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Autowired
     RestHighLevelClient client;
+
+    @Autowired
+    VacancyFilterService filterService;
 
     @Override
     public Vacancy save(VacancyDTO vacancyDTO) throws ValidationException {
@@ -78,44 +78,23 @@ public class VacancyServiceImpl implements VacancyService {
         return vacancyRepository.findById(id);
     }
 
+    //todo add validation
     @Override
-    public List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> map) throws FilterValidationException {
-        if (map == null){
-            List<Vacancy> vacancies = new ArrayList<>((int) vacancyRepository.count());
-            for (Vacancy v : vacancyRepository.findAll()) {
-                vacancies.add(v);
-            }
-            return vacancies;
-        }
+    public List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException {
+        Query query = ElasticVacancyQuery.builder()
+                        .setFilter(filterService.fromMultiValueMap(filters))
+                        .setPrefixLength(2)
+                        .setTitleBoost(10)
+                        .build()
+                        .getElasticQuery();
 
-        VacancyFilterValidation.validateVacancyFilter(map);
-
-        List<String> cities = map.get("city");
-        if (cities != null) {
-            for (String name : cities) {
-                map.set("cityId", cityRepository.findByName(name).getId().toString());
-            }
-        }
-
-        List<String> schedules = map.get("schedule");
-        if (schedules != null) {
-            for (String name : schedules) {
-                map.set("scheduleId", scheduleRepository.findByName(name).getId().toString());
-            }
-
-        }
-
-        String incDescr = map.getFirst("includeDescription");
-        final boolean includeDescription = Boolean.parseBoolean(incDescr);
-
-
-        Query query = getQueryFromVacancyParams(map);
-
-        System.out.println(restTemplate.search(query, Vacancy.class));
         return restTemplate.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)
                 .peek(v -> {
-                    if (!includeDescription) {
+                    if (!Boolean.parseBoolean(
+                            Optional.ofNullable(filters.getFirst("includeDescription"))
+                                    .orElse("false"))
+                    ) {
                         v.setDescription(null);
                     }
                 })

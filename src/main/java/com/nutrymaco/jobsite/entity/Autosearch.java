@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.entity;
 
+import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class Autosearch {
     int id;
 
     @Type(type = "jsonb")
-    MultiValueMap<String, String> filters;
+    VacancyFilter filter;
 
     @Type(type = "jsonb")
     List<String> lastDaySelectedBySearch;

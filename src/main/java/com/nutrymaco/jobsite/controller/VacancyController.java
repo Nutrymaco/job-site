@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -46,7 +47,7 @@ public class VacancyController {
     VacancyAdvancedFiltersServiceImpl advancedFiltersService;
 
     @GetMapping("/vacancies")
-    public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam MultiValueMap<String, String> filters) throws ValidationException {
+    public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
         log.info(String.format("request to get vacancies by filters : %s", filters));
         List<Vacancy> vacancies = vacancyService.getVacanciesByFilters(filters);
         return CollectionModel.of(vacancies.stream()

@@ -76,17 +76,12 @@ public class LoadDatabase {
             WorkSchedule workSchedule4 = new WorkSchedule();
             workSchedule4.setName("OTHER");
 
-            App frontend = new App();
-            frontend.setName("frontend");
-            frontend.setPassword("foobar");
-
             scheduleRepository.save(workSchedule);
             scheduleRepository.save(workSchedule1);
             scheduleRepository.save(workSchedule2);
             scheduleRepository.save(workSchedule3);
             scheduleRepository.save(workSchedule4);
 
-            appRepository.save(frontend);
 
 //            CreateIndexRequest request = new CreateIndexRequest("site");
 //

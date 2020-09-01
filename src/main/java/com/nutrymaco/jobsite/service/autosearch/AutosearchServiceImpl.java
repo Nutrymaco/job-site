@@ -1,11 +1,13 @@
 package com.nutrymaco.jobsite.service.autosearch;
 
+import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.repository.AutosearchRepository;
 import com.nutrymaco.jobsite.service.user.UserService;
+import com.nutrymaco.jobsite.service.vacancy.VacancyFilterService;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class AutosearchServiceImpl implements AutosearchService {
     @Autowired
     AutosearchRepository autosearchRepository;
 
+    @Autowired
+    VacancyFilterService filterService;
+
 
     @Override
     public Optional<Autosearch> getAutosearchById(int id) {
@@ -42,11 +47,11 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     @Override
     public boolean exists(Autosearch autosearch) {
-        return exists(autosearch.getFilters());
+        return exists(autosearch.getFilter());
     }
 
-    public boolean exists(MultiValueMap<String, String> filters) {
-        return autosearchRepository.findByFilters(filters)
+    public boolean exists(VacancyFilter filter) {
+        return autosearchRepository.findByFilter(filter)
                 .isPresent();
     }
 
@@ -59,13 +64,13 @@ public class AutosearchServiceImpl implements AutosearchService {
 
 
     @Override
-    public void addAutosearch(String userId, MultiValueMap<String, String> filters) throws Exception {
-        Optional<Autosearch> autosearchOptional = autosearchRepository.findByFilters(filters);
+    public void addAutosearch(String userId, VacancyFilter filter) throws Exception {
+        Optional<Autosearch> autosearchOptional = autosearchRepository.findByFilter(filter);
         Autosearch autosearch;
         User user;
         if (autosearchOptional.isEmpty()) {
             autosearch = Autosearch.builder()
-                                    .filters(filters)
+                                    .filter(filter)
                                     .build();
         } else {
             autosearch = autosearchOptional.get();
@@ -126,7 +131,7 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     private List<String> getVacanciesIdByAutosearch(Autosearch autosearch) {
         try {
-            return vacancyService.getVacanciesByFilters(autosearch.getFilters()).stream()
+            return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.getFilter())).stream()
                     .map(Vacancy::getId)
                     .collect(Collectors.toList());
         } catch (FilterValidationException e) {
