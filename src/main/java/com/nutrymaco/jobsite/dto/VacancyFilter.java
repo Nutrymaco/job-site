@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -18,7 +20,7 @@ public class VacancyFilter {
 
     private final int salaryTo;
 
-    private final String city;
+    private final List<String> cities;
 
-    private final String workSchedule;
+    private final List<String> workSchedules;
 }

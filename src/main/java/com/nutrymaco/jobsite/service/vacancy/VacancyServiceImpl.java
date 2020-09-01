@@ -13,7 +13,6 @@ import com.nutrymaco.jobsite.validation.vacancy.VacancyFilterValidation;
 import com.nutrymaco.jobsite.validation.vacancy.VacancyValidation;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.Query;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.nutrymaco.jobsite.adapter.UrlParamsToElasticQuery.getQueryFromVacancyParams;
+import static com.nutrymaco.jobsite.adapter.elastisearch.UrlParamsToElasticQuery.getQueryFromVacancyParams;
 
 @Service
 public class VacancyServiceImpl implements VacancyService {
