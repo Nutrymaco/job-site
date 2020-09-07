@@ -33,20 +33,14 @@ public class ElasticVacancyQuery {
     }
 
     public Query getElasticQuery() {
-        System.out.println(vacancyFilter);
         addTextFilter();
         addCityFilter();
         addWorkScheduleFilter();
         addExperienceRange();
         addSalaryRange();
 
-//        filterBuilder.should(QueryBuilders.matchQuery("cityId", 1));
-//        filterBuilder.should(QueryBuilders.matchQuery("cityId", 2));
 
         filterBuilder.minimumShouldMatch(COUNT_OF_FILTERS);
-        System.out.printf("new query : %s\nnew filter : %s\n",
-                queryBuilder.withFilter(filterBuilder).build().getQuery(),
-                queryBuilder.withFilter(filterBuilder).build().getFilter());
         return queryBuilder
                 .withFilter(filterBuilder)
                 .withPageable(Pageable.unpaged())
