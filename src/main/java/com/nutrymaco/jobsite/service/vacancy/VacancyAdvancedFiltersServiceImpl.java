@@ -9,12 +9,16 @@ import com.nutrymaco.jobsite.entity.WorkSchedule;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Service
+@Component
 public class VacancyAdvancedFiltersServiceImpl implements VacancyAdvancedFiltersService {
     @Autowired
     CityRepository cityRepository;
@@ -22,18 +26,18 @@ public class VacancyAdvancedFiltersServiceImpl implements VacancyAdvancedFilters
     @Autowired
     WorkScheduleRepository workScheduleRepository;
 
+    @Bean
     public Filters getFilters() {
         System.out.println("init filters");
-        List<String> cities = new ArrayList<>();
-        List<String> schedules = new ArrayList<>();
+        Map<Integer, String> cities = new HashMap<>();
+        Map<Integer, String> schedules = new HashMap<>();
 
         for (City c : cityRepository.findAll()) {
-            cities.add(c.getName());
-            System.out.println(c.getName());
+            cities.put(c.getId(), c.getName());
         }
 
         for (WorkSchedule s : workScheduleRepository.findAll()) {
-            schedules.add(s.getName());
+            schedules.put(s.getId(), s.getName());
         }
 
         Filters filters = new Filters();
