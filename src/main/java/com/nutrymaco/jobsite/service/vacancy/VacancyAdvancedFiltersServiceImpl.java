@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class VacancyAdvancedFiltersServiceImpl implements VacancyAdvancedFiltersService {
     @Autowired
     CityRepository cityRepository;
@@ -26,7 +26,6 @@ public class VacancyAdvancedFiltersServiceImpl implements VacancyAdvancedFilters
     @Autowired
     WorkScheduleRepository workScheduleRepository;
 
-    @Bean
     public Filters getFilters() {
         System.out.println("init filters");
         Map<Integer, String> cities = new HashMap<>();
