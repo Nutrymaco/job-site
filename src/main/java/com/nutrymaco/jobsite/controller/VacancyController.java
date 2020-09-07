@@ -43,8 +43,6 @@ public class VacancyController {
     @Autowired
     VacancyService vacancyService;
 
-    @Autowired
-    VacancyAdvancedFiltersServiceImpl advancedFiltersService;
 
     @GetMapping("/vacancies")
     public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
@@ -84,18 +82,5 @@ public class VacancyController {
         }
         vacancyService.removeAll();
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/advanced_filters")
-    public EntityModel<Filters> getAdvancedFilters() {
-        return EntityModel.of(advancedFiltersService.getFilters());
-    }
-
-    @GetMapping("/autocomplete")
-    public EntityModel<Autocomplete> getAutocomplete(@RequestParam String text,
-                                                     @RequestParam(defaultValue = "10") int count) {
-        Autocomplete a = new Autocomplete();
-        a.setOptions(vacancyService.autocomplete(text, count));
-        return EntityModel.of(a);
     }
 }

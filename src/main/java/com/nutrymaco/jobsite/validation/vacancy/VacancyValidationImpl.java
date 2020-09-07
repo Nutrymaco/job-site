@@ -29,7 +29,7 @@ public class VacancyValidationImpl implements VacancyValidation {
             throw new VacancyValidationException(String.format("schedule %s not found", entity.getWorkSchedule()));
         }
 
-        if (vacancyRepository.findByTitleAndDescriptionAndCity(
+        if (vacancyRepository.findFirstByTitleAndDescriptionAndCity(
                 entity.getTitle(), entity.getDescription(), entity.getCity()
         ) != null) {
             throw new VacancyValidationException("vacancy with that title, description and city exists");
