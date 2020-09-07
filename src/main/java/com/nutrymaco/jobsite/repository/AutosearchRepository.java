@@ -20,16 +20,14 @@ public interface AutosearchRepository extends CrudRepository<Autosearch, Integer
     @Query("select a.id " +
             "from Autosearch a " +
             "where a.text = :text " +
-            "and a.expFrom = :expFrom " +
-            "and a.expTo = :expTo " +
-            "and a.salaryFrom = :salaryFrom " +
-            "and a.salaryTo = :salaryTo " +
+            "and a.experience = :experience " +
+            "and a.salary = :salary " +
             "and a.cities = :cities " +
             "and a.workSchedules = :workSchedules")
     OptionalInt findByTextAndExpFromAndExpToAndSalaryFromAndExpToAndCitiesAndWorkSchedules(
                                 String text,
-                                int expFrom, int expTo,
-                                int salaryFrom, int salaryTo,
+                                int experience,
+                                int salary,
                                 Collection<City> cities,
                                 Collection<WorkSchedule> workSchedules);
 

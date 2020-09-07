@@ -27,17 +27,11 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
     public VacancyFilter fromMultiValueMap(MultiValueMap<String, String> filters) {
         return VacancyFilter.builder()
                 .text(filters.getFirst("text"))
-                .expFrom(Integer.parseInt(
-                        Optional.ofNullable(filters.getFirst("expFrom")).orElse("0")
+                .experience(Integer.parseInt(
+                        Optional.ofNullable(filters.getFirst("experience")).orElse(String.valueOf(Integer.MAX_VALUE))
                 ))
-                .expTo(Integer.parseInt(
-                        Optional.ofNullable(filters.getFirst("expTo")).orElse("2147483647")
-                ))
-                .salaryFrom(Integer.parseInt(
-                        Optional.ofNullable(filters.getFirst("salaryFrom")).orElse("0")
-                ))
-                .salaryTo(Integer.parseInt(
-                        Optional.ofNullable(filters.getFirst("salaryTo")).orElse("2147483647")
+                .salary(Integer.parseInt(
+                        Optional.ofNullable(filters.getFirst("salary")).orElse("0")
                 ))
                 .cities(Optional.ofNullable(filters.get("cityId")).orElse(List.of()).stream()
                         .map(Integer::parseInt)
@@ -64,10 +58,8 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
         MultiValueMap<String, String> filters = new LinkedMultiValueMap<>();
 
         filters.set("text", filter.getText());
-        filters.set("expFrom", String.valueOf(filter.getExpFrom()));
-        filters.set("expTo", String.valueOf(filter.getExpTo()));
-        filters.set("salaryFrom", String.valueOf(filter.getSalaryFrom()));
-        filters.set("salaryTo", String.valueOf(filter.getSalaryTo()));
+        filters.set("experience", String.valueOf(filter.getExperience()));
+        filters.set("salary", String.valueOf(filter.getSalary()));
         filters.put("cityId", Optional.ofNullable(filter.getCities()).orElse(List.of())
                                                 .stream()
                                                 .map(City::getId)

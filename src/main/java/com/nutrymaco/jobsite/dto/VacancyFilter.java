@@ -15,13 +15,9 @@ import java.util.List;
 public class VacancyFilter {
     private final String text;
 
-    private final int expFrom;
+    private final int experience;
 
-    private final int expTo;
-
-    private final Integer salaryFrom;
-
-    private final Integer salaryTo;
+    private final Integer salary;
 
     private final List<City> cities;
 
@@ -31,10 +27,8 @@ public class VacancyFilter {
     public String toString() {
         return "VacancyFilter{" +
                 "text='" + text + '\'' +
-                ", expFrom=" + expFrom +
-                ", expTo=" + expTo +
-                ", salaryFrom=" + salaryFrom +
-                ", salaryTo=" + salaryTo +
+                ", experience = " + experience +
+                ", salary=" + salary +
                 ", cities=" + cities +
                 ", workSchedules=" + workSchedules +
                 '}';

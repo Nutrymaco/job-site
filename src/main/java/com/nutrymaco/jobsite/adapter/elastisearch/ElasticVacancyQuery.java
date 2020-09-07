@@ -23,7 +23,7 @@ public class ElasticVacancyQuery {
     private VacancyFilter vacancyFilter;
     private NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     private BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
-    private int COUNT_OF_FILTERS = 4;
+    private int COUNT_OF_FILTERS = 3;
 
 
     private ElasticVacancyQuery() {}
@@ -66,14 +66,14 @@ public class ElasticVacancyQuery {
     private void addExperienceRange() {
         addRangeQuery(filterBuilder,
                 "experienceFrom", "experienceTo",
-                vacancyFilter.getExpFrom(),
-                vacancyFilter.getExpTo());
+                0,
+                vacancyFilter.getExperience());
     }
 
     private void addSalaryRange() {
         addRangeQuery(filterBuilder,
                 "salaryFrom", "salaryTo",
-                vacancyFilter.getSalaryFrom());
+                vacancyFilter.getSalary());
     }
 
     private void addCityFilter() {

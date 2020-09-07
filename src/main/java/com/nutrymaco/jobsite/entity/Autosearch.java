@@ -32,13 +32,9 @@ public class Autosearch {
 
     private String text;
 
-    private int expFrom;
+    private int experience;
 
-    private int expTo;
-
-    private int salaryFrom;
-
-    private int salaryTo;
+    private int salary;
 
     @OneToMany()
     @JoinColumn(name = "city_id")
@@ -54,10 +50,8 @@ public class Autosearch {
 
     public void setFilter(VacancyFilter filter) {
         text = filter.getText();
-        expFrom = filter.getExpFrom();
-        expTo = filter.getExpTo();
-        salaryFrom = filter.getSalaryFrom();
-        salaryTo = filter.getSalaryTo();
+        experience = filter.getExperience();
+        salary = filter.getSalary();
         cities = filter.getCities();
         workSchedules = filter.getWorkSchedules();
     }
@@ -65,10 +59,8 @@ public class Autosearch {
     public VacancyFilter getFilter() {
         return VacancyFilter.builder()
                 .text(text)
-                .expFrom(expFrom)
-                .expTo(expTo)
-                .salaryFrom(salaryFrom)
-                .salaryTo(salaryTo)
+                .experience(experience)
+                .salary(salary)
                 .cities(cities)
                 .workSchedules(workSchedules)
                 .build();

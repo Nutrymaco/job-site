@@ -63,8 +63,8 @@ public class AutosearchServiceImpl implements AutosearchService {
     public OptionalInt getIdByFilter(VacancyFilter filter) {
         return autosearchRepository.findByTextAndExpFromAndExpToAndSalaryFromAndExpToAndCitiesAndWorkSchedules(
                 filter.getText(),
-                filter.getExpFrom(), filter.getExpTo(),
-                filter.getSalaryFrom(), filter.getSalaryTo(),
+                filter.getExperience(),
+                filter.getSalary(),
                 filter.getCities(), filter.getWorkSchedules()
         );
     }
