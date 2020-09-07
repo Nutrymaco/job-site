@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 @Configuration
 @Slf4j
@@ -41,8 +42,8 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(CityRepository cityRepository,
                                    CountryRepository countryRepository,
                                    WorkScheduleRepository scheduleRepository,
-                                   AppRepository appRepository,
-                                   RestHighLevelClient client) {
+                                   RestHighLevelClient client,
+                                   UserRepository userRepository) {
         return args -> {
             Country russia = new Country();
             russia.setName("russia");
@@ -82,6 +83,11 @@ public class LoadDatabase {
             scheduleRepository.save(workSchedule3);
             scheduleRepository.save(workSchedule4);
 
+            User user = new User();
+            user.setId("108283747568494427027");
+            user.setName("Efim");
+            user.setViewedVacanciesIds(new ArrayList<>());
+            userRepository.save(user);
 
 //            CreateIndexRequest request = new CreateIndexRequest("site");
 //
@@ -94,6 +100,11 @@ public class LoadDatabase {
 //            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
         };
     }
+
+    private void addCities() {
+
+    }
+
     protected String loadFromFile(String fileName) throws IllegalStateException {
         StringBuilder buffer = new StringBuilder(2048);
         try {

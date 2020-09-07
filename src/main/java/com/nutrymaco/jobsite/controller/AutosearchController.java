@@ -69,7 +69,8 @@ public class AutosearchController {
     @PostMapping("/users/{userId}/autosearches")
     ResponseEntity<?> createAutosearch(HttpServletRequest request,
                                        @RequestBody VacancyFilter filter,
-                                       @PathVariable String userId) {
+                                       @PathVariable String userId) throws Exception {
+        Autosearch autosearch;
         try {
             jwtTokenManager.checkToken(request)
                     .findUser()
@@ -78,13 +79,13 @@ public class AutosearchController {
             return ResponseEntity.status(403).build();
         }
         System.out.println(filter);
-        try {
-            autosearchService.addAutosearch(userId, filter);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return ResponseEntity.ok().build();
+//        try {
+            autosearch = autosearchService.addAutosearch(userId, filter);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+        return ResponseEntity.ok(autosearch);
     }
 
 

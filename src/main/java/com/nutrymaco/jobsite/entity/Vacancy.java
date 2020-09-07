@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-@Document(indexName = "site", createIndex = true)
+@Document(indexName = "site", createIndex = false)
 public class Vacancy {
 
     @Id

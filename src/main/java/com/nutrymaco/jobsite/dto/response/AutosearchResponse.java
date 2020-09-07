@@ -49,7 +49,7 @@ public class AutosearchResponse {
         }
 
         public void add() {
-            if (autosearchByUser.getAutosearch() != null || autosearchByUser.getNewVacanciesIdList() != null){
+            if (autosearchByUser.getAutosearch() == null || autosearchByUser.getNewVacanciesIdList() == null){
                 throw new IllegalStateException();
             }
             autosearchByUser.setCount(autosearchByUser.getNewVacanciesIdList().size());

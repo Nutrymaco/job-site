@@ -15,28 +15,27 @@ public class ElasticUtils {
                         .lte(max))
                 .should(QueryBuilders.rangeQuery(fieldTo)
                         .gte(min)
-                        .lte(max))
-                .minimumShouldMatch(1);
+                        .lte(max));
     }
 
     static BoolQueryBuilder addRangeQuery(BoolQueryBuilder filterBuilder,
                                           String fieldFrom, String fieldTo,
                                           int min) {
+
         return filterBuilder
                 .should(QueryBuilders.rangeQuery(fieldFrom)
                         .gte(min))
                 .should(QueryBuilders.rangeQuery(fieldTo)
                         .gte(min))
-                .minimumShouldMatch(1);
+//                        .lte(Integer.MAX_VALUE)) //?
+                        ;
     }
 
     static <V>BoolQueryBuilder addMultiValueMatch(BoolQueryBuilder filterBuilder,
                                                   String field, List<V> values) {
         for (V value : values) {
-            filterBuilder = filterBuilder
-                    .should(QueryBuilders.matchQuery(field, value));
+            filterBuilder.should(QueryBuilders.matchQuery(field, value));
         }
-        return filterBuilder
-                .minimumShouldMatch(1);
+        return filterBuilder;
     }
 }

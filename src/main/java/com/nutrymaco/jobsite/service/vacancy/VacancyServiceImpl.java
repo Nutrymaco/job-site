@@ -19,6 +19,9 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import static com.nutrymaco.jobsite.adapter.elastisearch.UrlParamsToElasticQuery.getQueryFromVacancyParams;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,6 +90,39 @@ public class VacancyServiceImpl implements VacancyService {
                         .setTitleBoost(10)
                         .build()
                         .getElasticQuery();
+        System.out.printf("filtes before : %s\n", filters);
+//        if (filters == null){
+//            List<Vacancy> vacancies = new ArrayList<>((int) vacancyRepository.count());
+//            for (Vacancy v : vacancyRepository.findAll()) {
+//                vacancies.add(v);
+//            }
+//            return vacancies;
+//        }
+
+//        VacancyFilterValidation.validateVacancyFilter(filters);
+
+//        List<String> cities = filters.get("city");
+//        if (cities != null) {
+//            for (String name : cities) {
+//                filters.set("cityId", cityRepository.findByName(name).getId().toString());
+//            }
+//        }
+//
+//        List<String> schedules = filters.get("schedule");
+//        if (schedules != null) {
+//            for (String name : schedules) {
+//                filters.set("scheduleId", scheduleRepository.findByName(name).getId().toString());
+//            }
+//
+//        }
+//
+//        String incDescr = filters.getFirst("includeDescription");
+//        final boolean includeDescription = Boolean.parseBoolean(incDescr);
+//
+//        Query oldQuery = getQueryFromVacancyParams(filters);
+//
+//        System.out.printf("filters aft : %s", filters);
+
 
         return restTemplate.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)

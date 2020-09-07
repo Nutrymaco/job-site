@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,6 +28,7 @@ public class User {
 
     Issuer issuer;
 
+    @Column(columnDefinition = "jsonb")
     @Type(type = "jsonb")
     List<String> viewedVacanciesIds;
 

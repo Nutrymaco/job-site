@@ -11,12 +11,10 @@ import com.nutrymaco.jobsite.service.vacancy.VacancyFilterService;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,7 +49,7 @@ public class AutosearchServiceImpl implements AutosearchService {
     }
 
     public boolean exists(VacancyFilter filter) {
-        return autosearchRepository.findByFilter(filter)
+        return getIdByFilter(filter)
                 .isPresent();
     }
 
@@ -62,23 +60,30 @@ public class AutosearchServiceImpl implements AutosearchService {
 //        }
 //    }
 
+    public OptionalInt getIdByFilter(VacancyFilter filter) {
+        return autosearchRepository.findByTextAndExpFromAndExpToAndSalaryFromAndExpToAndCitiesAndWorkSchedules(
+                filter.getText(),
+                filter.getExpFrom(), filter.getExpTo(),
+                filter.getSalaryFrom(), filter.getSalaryTo(),
+                filter.getCities(), filter.getWorkSchedules()
+        );
+    }
 
     @Override
-    public void addAutosearch(String userId, VacancyFilter filter) throws Exception {
-        Optional<Autosearch> autosearchOptional = autosearchRepository.findByFilter(filter);
+    public Autosearch addAutosearch(String userId, VacancyFilter filter) throws Exception {
+        OptionalInt autosearchOptional = getIdByFilter(filter);
         Autosearch autosearch;
         User user;
         if (autosearchOptional.isEmpty()) {
-            autosearch = Autosearch.builder()
-                                    .filter(filter)
-                                    .build();
+            autosearch = new Autosearch();
+            autosearch.setFilter(filter);
         } else {
-            autosearch = autosearchOptional.get();
+            autosearch = autosearchRepository.findById(autosearchOptional.getAsInt()).get();
         }
         user = userService.getById(userId)
                 .orElseThrow(() -> new Exception(String.format("user with id : %s not found", userId)));
-        autosearch.getUsers().add(user);
-        autosearchRepository.save(autosearch);
+        user.getAutosearches().add(autosearch);
+        return autosearchRepository.save(autosearch);
     }
 
     @Override

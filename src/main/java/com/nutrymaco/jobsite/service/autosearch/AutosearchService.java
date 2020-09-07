@@ -11,7 +11,7 @@ public interface AutosearchService {
     Optional<Autosearch> getAutosearchById(int id);
     List<Autosearch> getAll();
     boolean exists(Autosearch autosearch);
-    void addAutosearch(String userId, VacancyFilter filter) throws Exception;
+    Autosearch addAutosearch(String userId, VacancyFilter filter) throws Exception;
     void updateAutosearchById(int id);
     void updateAllAutosearches();
     List<Autosearch> getAutosearchesByUserId(String userId);

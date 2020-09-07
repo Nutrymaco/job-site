@@ -76,6 +76,7 @@ public class UrlParamsToElasticQuery {
             throw new NumberFormatException("when parsing pageable parameters");
         }
 
+//        System.out.println("old");
 //        System.out.println(queryBuilder.withFilter(filterBuilder).build().getQuery());
 //        System.out.println(queryBuilder.withFilter(filterBuilder).build().getFilter());
         return queryBuilder
@@ -94,8 +95,7 @@ public class UrlParamsToElasticQuery {
                         .lte(max))
                 .should(QueryBuilders.rangeQuery(fieldTo)
                         .gte(min)
-                        .lte(max))
-                .minimumShouldMatch(1);
+                        .lte(max));
     }
 
     static BoolQueryBuilder addRangeQuery(BoolQueryBuilder filterBuilder,
@@ -105,8 +105,7 @@ public class UrlParamsToElasticQuery {
                 .should(QueryBuilders.rangeQuery(fieldFrom)
                         .gte(min))
                 .should(QueryBuilders.rangeQuery(fieldTo)
-                        .gte(min))
-                .minimumShouldMatch(1);
+                        .gte(min));
     }
 
     static <V>BoolQueryBuilder addMultiValueMatch(BoolQueryBuilder filterBuilder,
@@ -115,7 +114,6 @@ public class UrlParamsToElasticQuery {
             filterBuilder = filterBuilder
                     .should(QueryBuilders.matchQuery(field, value));
         }
-        return filterBuilder
-                .minimumShouldMatch(1);
+        return filterBuilder;
     }
 }
