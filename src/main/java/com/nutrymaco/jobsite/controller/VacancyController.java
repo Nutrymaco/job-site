@@ -75,11 +75,11 @@ public class VacancyController {
     @DeleteMapping("/vacancies")
     public ResponseEntity<?> deleteAllVacancies(HttpServletRequest request) {
         log.info("request to delete all vacancies");
-        try {
-            jwtTokenManager.checkToken(request).findUser().checkId("108283747568494427027");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            jwtTokenManager.checkToken(request).findUser().checkId("108283747568494427027");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         vacancyService.removeAll();
         return ResponseEntity.ok().build();
     }
