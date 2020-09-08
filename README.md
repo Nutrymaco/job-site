@@ -4,6 +4,6 @@ API DOCUMENTATION
 
 Vacancies API
 
-''sh
+'''sh
 curl
-''
+'''
