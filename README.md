@@ -17,6 +17,8 @@ $ curl http://89.223.94.132/api/v1/vacancies\?text=senior%20developer\&salary=10
 
 parameters description
 
-| parameter name |    example      | description |
-|----------------|-----------------|-------------|
-|text            |senior developer | text search |
+| parameter name |    example      |       description        |
+|----------------|-----------------|-------------             |
+|text            |senior developer | text for search by title |
+|                |                 | and description          |
+| salary         | 10000           | min salary in vacancies  |      
