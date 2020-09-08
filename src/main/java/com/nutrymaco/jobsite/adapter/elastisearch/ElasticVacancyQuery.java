@@ -23,7 +23,7 @@ public class ElasticVacancyQuery {
     private VacancyFilter vacancyFilter;
     private NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     private BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
-    private int COUNT_OF_FILTERS = 3;
+    private int COUNT_OF_FILTERS = 4;
 
 
     private ElasticVacancyQuery() {}
@@ -38,9 +38,9 @@ public class ElasticVacancyQuery {
         addWorkScheduleFilter();
         addExperienceRange();
         addSalaryRange();
-
-
         filterBuilder.minimumShouldMatch(COUNT_OF_FILTERS);
+
+
         return queryBuilder
                 .withFilter(filterBuilder)
                 .withPageable(Pageable.unpaged())

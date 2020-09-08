@@ -81,7 +81,7 @@ public class VacancyServiceImpl implements VacancyService {
         return vacancyRepository.findById(id);
     }
 
-    //todo add validation
+    //todo add validation and pagination
     @Override
     public List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException {
         Query query = ElasticVacancyQuery.builder()
@@ -90,7 +90,6 @@ public class VacancyServiceImpl implements VacancyService {
                         .setTitleBoost(10)
                         .build()
                         .getElasticQuery();
-        System.out.printf("filtes before : %s\n", filters);
 //        if (filters == null){
 //            List<Vacancy> vacancies = new ArrayList<>((int) vacancyRepository.count());
 //            for (Vacancy v : vacancyRepository.findAll()) {
