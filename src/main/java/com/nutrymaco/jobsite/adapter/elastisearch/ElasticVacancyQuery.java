@@ -3,6 +3,7 @@ package com.nutrymaco.jobsite.adapter.elastisearch;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.*;
 
+@Slf4j
 public class ElasticVacancyQuery {
     private int TITLE_BOOST = 10;
     private int PREFIX_LENGTH = 2;
@@ -40,6 +42,8 @@ public class ElasticVacancyQuery {
         addSalaryRange();
         filterBuilder.minimumShouldMatch(COUNT_OF_FILTERS);
 
+        log.info(String.valueOf(queryBuilder.withFilter(filterBuilder).build().getQuery()));
+        log.info(String.valueOf(queryBuilder.withFilter(filterBuilder).build().getFilter()));
 
         return queryBuilder
                 .withFilter(filterBuilder)

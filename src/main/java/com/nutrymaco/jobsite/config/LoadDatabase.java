@@ -45,43 +45,43 @@ public class LoadDatabase {
                                    RestHighLevelClient client,
                                    UserRepository userRepository) {
         return args -> {
-//            Country russia = new Country();
-//            russia.setName("russia");
+            Country russia = new Country();
+            russia.setName("russia");
+
+            russia = countryRepository.save(russia);
+
+            City moscow = new City();
+            moscow.setCountry(russia);
+            moscow.setName("Москва");
+
+            City tyumen = new City();
+            tyumen.setCountry(russia);
+            tyumen.setName("Тюмень");
+
+            cityRepository.save(tyumen);
+            cityRepository.save(moscow);
+
+            System.out.println("cities added to postgres (:");
+            WorkSchedule workSchedule = new WorkSchedule();
+            workSchedule.setName("FULL");
+
+            WorkSchedule workSchedule1 = new WorkSchedule();
+            workSchedule1.setName("PART");
+
+            WorkSchedule workSchedule2 = new WorkSchedule();
+            workSchedule2.setName("FLEX");
+
+            WorkSchedule workSchedule3 = new WorkSchedule();
+            workSchedule3.setName("REMOTE");
+
+            WorkSchedule workSchedule4 = new WorkSchedule();
+            workSchedule4.setName("OTHER");
 //
-//            russia = countryRepository.save(russia);
-//
-//            City moscow = new City();
-//            moscow.setCountry(russia);
-//            moscow.setName("Москва");
-//
-//            City tyumen = new City();
-//            tyumen.setCountry(russia);
-//            tyumen.setName("Тюмень");
-//
-//            cityRepository.save(tyumen);
-//            cityRepository.save(moscow);
-//
-//            System.out.println("cities added to postgres (:");
-//            WorkSchedule workSchedule = new WorkSchedule();
-//            workSchedule.setName("FULL");
-//
-//            WorkSchedule workSchedule1 = new WorkSchedule();
-//            workSchedule1.setName("PART");
-//
-//            WorkSchedule workSchedule2 = new WorkSchedule();
-//            workSchedule2.setName("FLEX");
-//
-//            WorkSchedule workSchedule3 = new WorkSchedule();
-//            workSchedule3.setName("REMOTE");
-//
-//            WorkSchedule workSchedule4 = new WorkSchedule();
-//            workSchedule4.setName("OTHER");
-////
-//            scheduleRepository.save(workSchedule);
-//            scheduleRepository.save(workSchedule1);
-//            scheduleRepository.save(workSchedule2);
-//            scheduleRepository.save(workSchedule3);
-//            scheduleRepository.save(workSchedule4);
+            scheduleRepository.save(workSchedule);
+            scheduleRepository.save(workSchedule1);
+            scheduleRepository.save(workSchedule2);
+            scheduleRepository.save(workSchedule3);
+            scheduleRepository.save(workSchedule4);
 //
 //            User user = new User();
 //            user.setId("108283747568494427027");
