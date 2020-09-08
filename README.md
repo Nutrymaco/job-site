@@ -36,6 +36,18 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 ```
 
 ### parameters of response description
+
+|   parameter name   | optional | example |     type      |                                     description                                  |
+|--------------------|----------|---------|---------------|----------------------------------------------------------------------------------|
+| name               | false    | salary  |    string     | text for search by title and description                                         |
+| type               | false    | RANGE   | RANGE/SELECT  | min salary in vacancy (salaryFrom in vacancy cant be lower than this value)      |      
+| !rangeBoundType     | true     | SINGLE  | SINGLE/DOUBLE |
+| !from               | true     | 0.0     | double        |
+| !to                 | true     | 0.0     | double        |
+
+
+### example of response
+
 ```json
 {
     "filters": [
