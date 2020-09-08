@@ -48,6 +48,7 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 | (2) multiple        | true          | bool                | user can or not choose multiple options                                          |
 
 (1) - if type of filter equals 'RANGE'
+<br>
 (2) - if type of filter equals 'SELECT'
 
 ### example of response
