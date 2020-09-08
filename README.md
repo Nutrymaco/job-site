@@ -37,13 +37,15 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 
 ### parameters of response description
 
-|   parameter name   | optional | example |     type      |                                     description                                  |
-|--------------------|----------|---------|---------------|----------------------------------------------------------------------------------|
-| name               | false    | salary  |    string     | text for search by title and description                                         |
-| type               | false    | RANGE   | RANGE/SELECT  | min salary in vacancy (salaryFrom in vacancy cant be lower than this value)      |      
-| ```diff !rangeBoundType ```     | true     | SINGLE  | SINGLE/DOUBLE |
-| from               | true     | 0.0     | double        |
-| to                 | true     | 0.0     | double        |
+|   parameter name   |    example    |         type        |                                     description                                  |
+|--------------------|---------------|---------------------|----------------------------------------------------------------------------------|
+| name               | salary        | string              | name of filter                                                                   |
+| type               | RANGE         | RANGE/SELECT        | type of filter                                                                   |      
+| (1)rangeBoundType  | SINGLE        | SINGLE/DOUBLE       | range has single or double constraint                                            |
+| (1)from            | 0.0           | double              | min value in range                                                               |
+| (1)to              | 0.0           | double              | max value in range                                                               |
+| (2)options         | {'1' : 'one'} | Map<String, String> | options to choose where first value is id to sent in request and second is value |
+| (2)multiple        | true          | bool                | user can or not choose multiple options                                          |
 
 
 ### example of response
