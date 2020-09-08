@@ -36,6 +36,7 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 ```
 
 ### parameters of response description
+```diff
 
 |   parameter name   | optional | example |     type      |                                     description                                  |
 |--------------------|----------|---------|---------------|----------------------------------------------------------------------------------|
@@ -44,7 +45,7 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 | !rangeBoundType     | true     | SINGLE  | SINGLE/DOUBLE |
 | !from               | true     | 0.0     | double        |
 | !to                 | true     | 0.0     | double        |
-
+```
 
 ### example of response
 
