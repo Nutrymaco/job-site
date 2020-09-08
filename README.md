@@ -36,7 +36,7 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 ```
 
 ### parameters of response description
-
+```json
 {
     "filters": [
         {
@@ -76,5 +76,5 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
         }
     ]
 }
-
+```
 
