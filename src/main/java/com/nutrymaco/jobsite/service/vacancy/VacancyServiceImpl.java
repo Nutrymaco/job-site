@@ -2,6 +2,7 @@ package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.adapter.AutocompleteDBAdapter;
 import com.nutrymaco.jobsite.adapter.elastisearch.ElasticVacancyQuery;
+import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
@@ -13,6 +14,8 @@ import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import com.nutrymaco.jobsite.validation.vacancy.VacancyValidation;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.Query;
@@ -88,40 +91,9 @@ public class VacancyServiceImpl implements VacancyService {
                         .setFilter(filterService.fromMultiValueMap(filters))
                         .setPrefixLength(2)
                         .setTitleBoost(10)
+                        .setPaginationData(PaginationData.extractFrom(filters))
                         .build()
                         .getElasticQuery();
-//        if (filters == null){
-//            List<Vacancy> vacancies = new ArrayList<>((int) vacancyRepository.count());
-//            for (Vacancy v : vacancyRepository.findAll()) {
-//                vacancies.add(v);
-//            }
-//            return vacancies;
-//        }
-
-//        VacancyFilterValidation.validateVacancyFilter(filters);
-
-//        List<String> cities = filters.get("city");
-//        if (cities != null) {
-//            for (String name : cities) {
-//                filters.set("cityId", cityRepository.findByName(name).getId().toString());
-//            }
-//        }
-//
-//        List<String> schedules = filters.get("schedule");
-//        if (schedules != null) {
-//            for (String name : schedules) {
-//                filters.set("scheduleId", scheduleRepository.findByName(name).getId().toString());
-//            }
-//
-//        }
-//
-//        String incDescr = filters.getFirst("includeDescription");
-//        final boolean includeDescription = Boolean.parseBoolean(incDescr);
-//
-//        Query oldQuery = getQueryFromVacancyParams(filters);
-//
-//        System.out.printf("filters aft : %s", filters);
-
 
         return restTemplate.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)

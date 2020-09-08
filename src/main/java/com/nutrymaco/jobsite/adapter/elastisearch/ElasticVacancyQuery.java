@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.adapter.elastisearch;
 
+import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
@@ -26,7 +27,7 @@ public class ElasticVacancyQuery {
     private NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     private BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
     private int COUNT_OF_FILTERS = 4;
-
+    private PaginationData paginationData;
 
     private ElasticVacancyQuery() {}
 
@@ -47,7 +48,7 @@ public class ElasticVacancyQuery {
 
         return queryBuilder
                 .withFilter(filterBuilder)
-                .withPageable(Pageable.unpaged())
+                .withPageable(paginationData.getPageable())
                 .build();
     }
 
@@ -116,9 +117,14 @@ public class ElasticVacancyQuery {
             return this;
         }
 
+        public ElasticVacancyQueryBuilder setPaginationData(PaginationData paginationData) {
+            query.paginationData = paginationData;
+            return this;
+        }
+
         public ElasticVacancyQuery build() {
             if (query.vacancyFilter == null){
-                throw new IllegalStateException("filter does not set");
+                throw new IllegalStateException("filter does not set or equals null");
             }
             return query;
         }
