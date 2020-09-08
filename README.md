@@ -37,16 +37,18 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 
 ### parameters of response description
 
-|   parameter name   |    example    |         type        |                                     description                                  |
-|--------------------|---------------|---------------------|----------------------------------------------------------------------------------|
-| name               | salary        | string              | name of filter                                                                   |
-| type               | RANGE         | RANGE/SELECT        | type of filter                                                                   |      
-| (1)rangeBoundType  | SINGLE        | SINGLE/DOUBLE       | range has single or double constraint                                            |
-| (1)from            | 0.0           | double              | min value in range                                                               |
-| (1)to              | 0.0           | double              | max value in range                                                               |
-| (2)options         | {'1' : 'one'} | Map<String, String> | options to choose where first value is id to sent in request and second is value |
-| (2)multiple        | true          | bool                | user can or not choose multiple options                                          |
+|    parameter name   |    example    |         type        |                                     description                                  |
+|---------------------|---------------|---------------------|----------------------------------------------------------------------------------|
+| name                | salary        | string              | name of filter                                                                   |
+| type                | RANGE         | RANGE/SELECT        | type of filter                                                                   |      
+| (1) rangeBoundType  | SINGLE        | SINGLE/DOUBLE       | range has single or double constraint                                            |
+| (1) from            | 0.0           | double              | min value in range                                                               |
+| (1) to              | 0.0           | double              | max value in range                                                               |
+| (2) options         | {'1' : 'one'} | Map<String, String> | options to choose where first value is id to sent in request and second is value |
+| (2) multiple        | true          | bool                | user can or not choose multiple options                                          |
 
+(1) - if type of filter equals 'RANGE'
+(2) - if type of filter equals 'SELECT'
 
 ### example of response
 
