@@ -24,7 +24,9 @@ $ curl http://89.223.94.132/api/v1/vacancies\?text=senior%20developer\&salary=10
 | experience         | 3                  | int    | max experience required in vacancy (experienceTo cant be higher than this value) |
 | cityId             | 2                  | int[]  | city in vacancy must match with one city by cityId in cityId list                |
 | workScheduleId     | 4                  | int[]  | same as in the city's description                                                |
-| includeDescription | false (by default) | bool   | include or not description in response
+| includeDescription | false (by default) | bool   | include or not description in response                                           |
+| page               | 1                  | int    | page number. starts from 1
+| size               | 10                 | int    | amount of objects in response. starts from 1
 
 ## Filters API
 
