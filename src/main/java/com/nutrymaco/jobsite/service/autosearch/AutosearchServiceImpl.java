@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,12 +44,11 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     @Override
     public boolean exists(Autosearch autosearch) {
-        return exists(autosearch.getFilter());
+        return exists(autosearch.extractFilter());
     }
 
     public boolean exists(VacancyFilter filter) {
-        return getIdByFilter(filter)
-                .isPresent();
+        return !getAllByFilter(filter).isEmpty();
     }
 
 //    @Override
@@ -60,25 +58,33 @@ public class AutosearchServiceImpl implements AutosearchService {
 //        }
 //    }
 
-    public OptionalInt getIdByFilter(VacancyFilter filter) {
-        return autosearchRepository.findByTextAndExpFromAndExpToAndSalaryFromAndExpToAndCitiesAndWorkSchedules(
+    //todo mb need to opt equals city and ws
+    public List<Autosearch> getAllByFilter(VacancyFilter filter) {
+        return autosearchRepository.findByTextAndExperienceAndSalary(
                 filter.getText(),
                 filter.getExperience(),
-                filter.getSalary(),
-                filter.getCities(), filter.getWorkSchedules()
-        );
+                filter.getSalary()).stream()
+                    .filter(a -> a.getCities().equals(filter.getCities()))
+                    .filter(a -> a.getWorkSchedules().equals(filter.getWorkSchedules()))
+                    .collect(Collectors.toList());
+    }
+
+    public Optional<Autosearch> getFirstByFilter(VacancyFilter filter) {
+        List<Autosearch> autosearches = getAllByFilter(filter);
+        return autosearches.size() > 0 ?
+                Optional.of(autosearches.get(0)) : Optional.empty();
     }
 
     @Override
     public Autosearch addAutosearch(String userId, VacancyFilter filter) throws Exception {
-        OptionalInt autosearchOptional = getIdByFilter(filter);
+        Optional<Autosearch> autosearchOptional = getFirstByFilter(filter);
         Autosearch autosearch;
         User user;
         if (autosearchOptional.isEmpty()) {
             autosearch = new Autosearch();
             autosearch.setFilter(filter);
         } else {
-            autosearch = autosearchRepository.findById(autosearchOptional.getAsInt()).get();
+            autosearch = autosearchRepository.findById(autosearchOptional.get().getId()).get();
         }
         user = userService.getById(userId)
                 .orElseThrow(() -> new Exception(String.format("user with id : %s not found", userId)));
@@ -136,7 +142,7 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     private List<String> getVacanciesIdByAutosearch(Autosearch autosearch) {
         try {
-            return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.getFilter())).stream()
+            return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.extractFilter())).stream()
                     .map(Vacancy::getId)
                     .collect(Collectors.toList());
         } catch (FilterValidationException e) {

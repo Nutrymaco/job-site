@@ -83,11 +83,11 @@ public class LoadDatabase {
             scheduleRepository.save(workSchedule3);
             scheduleRepository.save(workSchedule4);
 //
-//            User user = new User();
-//            user.setId("108283747568494427027");
-//            user.setName("Efim");
-//            user.setViewedVacanciesIds(new ArrayList<>());
-//            userRepository.save(user);
+            User user = new User();
+            user.setId("1");
+            user.setName("Efim");
+            user.setViewedVacanciesIds(new ArrayList<>());
+            userRepository.save(user);
 
 //            CreateIndexRequest request = new CreateIndexRequest("site");
 //

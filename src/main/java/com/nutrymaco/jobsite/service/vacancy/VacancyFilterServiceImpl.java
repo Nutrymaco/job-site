@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.dto.VacancyFilter;
+import com.nutrymaco.jobsite.dto.request.VacancyFilterRequest;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
 import com.nutrymaco.jobsite.repository.CityRepository;
@@ -39,15 +40,13 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
                         .filter(Optional::isPresent)
                         .map(Optional::get)
                         .collect(Collectors.toList()))
-                .workSchedules(
-                                Optional.ofNullable(filters.get("workScheduleId"))
-                                        .orElse(List.of()).stream()
-                                        .map(Integer::parseInt)
-                                        .map((id) -> scheduleRepository.findById(id))
-                                        .filter(Optional::isPresent)
-                                        .map(Optional::get)
-                                        .collect(Collectors.toList())
-                                )
+                .workSchedules(Optional.ofNullable(filters.get("workScheduleId"))
+                                .orElse(List.of()).stream()
+                                .map(Integer::parseInt)
+                                .map((id) -> scheduleRepository.findById(id))
+                                .filter(Optional::isPresent)
+                                .map(Optional::get)
+                                .collect(Collectors.toList()))
                 .build();
 
 
@@ -72,5 +71,24 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
                                                 .collect(Collectors.toList()));
 
         return filters;
+    }
+
+    @Override
+    public VacancyFilter fromVacancyFilterRequest(VacancyFilterRequest filterRequest) {
+        return VacancyFilter.builder()
+                .text(filterRequest.getText())
+                .experience(filterRequest.getExperience())
+                .salary(filterRequest.getSalary())
+                .cities(filterRequest.getCities().stream()
+                                .map(id -> cityRepository.findById(id))
+                                .filter(Optional::isPresent)
+                                .map(Optional::get)
+                                .collect(Collectors.toList()))
+                .workSchedules(filterRequest.getWorkSchedules().stream()
+                                .map(id -> scheduleRepository.findById(id))
+                                .filter(Optional::isPresent)
+                                .map(Optional::get)
+                                .collect(Collectors.toList()))
+                .build();
     }
 }

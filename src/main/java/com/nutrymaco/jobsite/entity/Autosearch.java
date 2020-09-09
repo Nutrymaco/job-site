@@ -36,11 +36,11 @@ public class Autosearch {
 
     private int salary;
 
-    @OneToMany()
+    @ManyToMany()
     @JoinColumn(name = "city_id")
     private List<City> cities;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "work_schedule_id")
     private List<WorkSchedule> workSchedules;
 
@@ -56,7 +56,7 @@ public class Autosearch {
         workSchedules = filter.getWorkSchedules();
     }
 
-    public VacancyFilter getFilter() {
+    public VacancyFilter extractFilter() {
         return VacancyFilter.builder()
                 .text(text)
                 .experience(experience)

@@ -17,18 +17,10 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public interface AutosearchRepository extends CrudRepository<Autosearch, Integer> {
-    @Query("select a.id " +
-            "from Autosearch a " +
-            "where a.text = :text " +
-            "and a.experience = :experience " +
-            "and a.salary = :salary " +
-            "and a.cities = :cities " +
-            "and a.workSchedules = :workSchedules")
-    OptionalInt findByTextAndExpFromAndExpToAndSalaryFromAndExpToAndCitiesAndWorkSchedules(
+
+    List<Autosearch> findByTextAndExperienceAndSalary(
                                 String text,
                                 int experience,
-                                int salary,
-                                Collection<City> cities,
-                                Collection<WorkSchedule> workSchedules);
+                                int salary);
 
 }

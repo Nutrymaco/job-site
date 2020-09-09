@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.VacancyFilter;
+import com.nutrymaco.jobsite.dto.request.VacancyFilterRequest;
 import com.nutrymaco.jobsite.dto.response.AutosearchResponse;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
@@ -42,13 +43,13 @@ public class AutosearchController {
     @GetMapping("/users/{userId}/autosearches")
     ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
         log.info(String.format("request to get autosearches by userid=%s", userId));
-        try {
-            jwtTokenManager.checkToken(request)
-                            .findUser()
-                            .checkId(userId);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+//        try {
+//            jwtTokenManager.checkToken(request)
+//                            .findUser()
+//                            .checkId(userId);
+//        } catch (Exception e) {
+//            return ResponseEntity.notFound().build();
+//        }
 
         Function<Integer, List<String>> getVacanciesByAutosearchId =
                 (autosearchId) ->  autosearchService.getNewVacanciesIdListForAutosearchAndForUser(autosearchId, userId);
@@ -68,19 +69,19 @@ public class AutosearchController {
 
     @PostMapping("/users/{userId}/autosearches")
     ResponseEntity<?> createAutosearch(HttpServletRequest request,
-                                       @RequestBody VacancyFilter filter,
+                                       @RequestBody VacancyFilterRequest filter,
                                        @PathVariable String userId) throws Exception {
         Autosearch autosearch;
-        try {
-            jwtTokenManager.checkToken(request)
-                    .findUser()
-                    .checkId(userId);
-        } catch (Exception e) {
-            return ResponseEntity.status(403).build();
-        }
+//        try {
+//            jwtTokenManager.checkToken(request)
+//                    .findUser()
+//                    .checkId(userId);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(403).build();
+//        }
         System.out.println(filter);
 //        try {
-            autosearch = autosearchService.addAutosearch(userId, filter);
+            autosearch = autosearchService.addAutosearch(userId, filterService.fromVacancyFilterRequest(filter));
 //        } catch (Exception e) {
 //            System.out.println(e.getMessage());
 //            return ResponseEntity.badRequest().body(e.getMessage());

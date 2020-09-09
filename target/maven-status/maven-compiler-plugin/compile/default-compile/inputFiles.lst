@@ -2,6 +2,7 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/SelectFilter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/adapter/elastisearch/ElasticVacancyQuery.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/entity/User.java
+/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/request/VacancyFilterRequest.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/config/AutosearchUpdate.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/service/vacancy/VacancyServiceImpl.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/repository/AppRepository.java

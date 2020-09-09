@@ -53,7 +53,7 @@ public class ElasticVacancyQuery {
     }
 
     private void addTextFilter() {
-        if (vacancyFilter.getText() != null) {
+        if (vacancyFilter.getText() != null && !vacancyFilter.getText().equals("")) {
             queryBuilder.withQuery(multiMatchQuery(vacancyFilter.getText())
                     .field("title").boost(TITLE_BOOST)
                     .field("description.search")
