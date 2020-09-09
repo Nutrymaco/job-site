@@ -41,7 +41,7 @@ public class VacancyAdvancedFiltersServiceImpl implements VacancyAdvancedFilters
 
         Filters filters = new Filters();
         filters.addFilter(new RangeFilter( "salary", RangeBoundType.SINGLE, 0, 1_000_000));
-        filters.addFilter(new RangeFilter("experience", RangeBoundType.DOUBLE, 0, 10));
+        filters.addFilter(new RangeFilter("experience", RangeBoundType.SINGLE, 0, 10));
         filters.addFilter(new SelectFilter("city", cities, true));
         filters.addFilter(new SelectFilter("work schedule", schedules, true));
         return filters;
