@@ -30,6 +30,7 @@ public class ElasticConfig {
     RestHighLevelClient client() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo("localhost:9200")
+                .withBasicAuth("elastic", "Hrt23hgerheh")
                 .build();
 
         return RestClients.create(clientConfiguration).rest();

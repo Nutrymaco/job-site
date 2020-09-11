@@ -13,6 +13,7 @@ import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.repository.UserRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.client.ElasticsearchClient;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -50,8 +51,12 @@ public class LoadDatabase {
                                    UserRepository userRepository,
                                    AutosearchService autosearchService) {
         return args -> {
+            try {
+                client.indices().delete(new DeleteIndexRequest().indices("site"), RequestOptions.DEFAULT);
+            } catch (Exception e) {
+                System.out.println("cant delete");
+            }
             CreateIndexRequest request = new CreateIndexRequest("site");
-
             Settings.Builder settingsBuilder =
                     Settings.builder()
                             .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
