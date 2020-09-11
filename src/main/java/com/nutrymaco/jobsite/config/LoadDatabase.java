@@ -50,6 +50,16 @@ public class LoadDatabase {
                                    UserRepository userRepository,
                                    AutosearchService autosearchService) {
         return args -> {
+            CreateIndexRequest request = new CreateIndexRequest("site");
+
+            Settings.Builder settingsBuilder =
+                    Settings.builder()
+                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
+
+            request.settings(settingsBuilder);
+            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
+            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
+
             Country russia = new Country();
             russia.setName("russia");
 
@@ -103,15 +113,7 @@ public class LoadDatabase {
                     .build();
             autosearchService.addAutosearch("1", vacancyFilter);
             
-//            CreateIndexRequest request = new CreateIndexRequest("site");
-//
-//            Settings.Builder settingsBuilder =
-//                    Settings.builder()
-//                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
-//
-//            request.settings(settingsBuilder);
-//            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
-//            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
+
         };
     }
 
