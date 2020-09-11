@@ -97,3 +97,21 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 }
 ```
 
+## Users API
+
+### API Methods
+
+#### register user
+```shell script
+$ curl --location --request POST '89.223.94.132/api/v1/users'
+```
+Authorization: Bearer token (Google JWT)
+
+## Autosearches API
+
+### API methods
+
+#### add autosearch
+```shell script
+$ curl --location --request GET '89.223.94.132/api/v1/users/1/autosearches/9/vacancies'
+``` 
