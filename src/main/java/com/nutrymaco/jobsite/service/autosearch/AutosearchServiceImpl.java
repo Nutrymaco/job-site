@@ -83,13 +83,16 @@ public class AutosearchServiceImpl implements AutosearchService {
         if (autosearchOptional.isEmpty()) {
             autosearch = new Autosearch();
             autosearch.setFilter(filter);
+            updateAutosearch(autosearch);
         } else {
             autosearch = autosearchRepository.findById(autosearchOptional.get().getId()).get();
         }
         user = userService.getById(userId)
                 .orElseThrow(() -> new Exception(String.format("user with id : %s not found", userId)));
+        autosearch = autosearchRepository.save(autosearch);
         user.getAutosearches().add(autosearch);
-        return autosearchRepository.save(autosearch);
+        userService.save(user);
+        return autosearch;
     }
 
     @Override
@@ -119,7 +122,7 @@ public class AutosearchServiceImpl implements AutosearchService {
     }
 
     @Override
-    public List<String> getNewVacanciesIdListForAutosearchAndForUser(int autosearchId, String userId) {
+    public List<Vacancy> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) {
         Optional<Autosearch> autosearch = getAutosearchById(autosearchId);
         if (autosearch.isEmpty()) {
             return List.of();
@@ -128,16 +131,25 @@ public class AutosearchServiceImpl implements AutosearchService {
         if (user.isEmpty()) {
             return List.of();
         }
-        List<String> vacanciesIdByAutosearch = getVacanciesIdByAutosearch(autosearch.get());
+        List<Vacancy> vacanciesByAutosearch = getVacanciesByAutosearch(autosearch.get());
         List<String> vacanciesIdHistory = user.get().getViewedVacanciesIds();
-        vacanciesIdByAutosearch.removeAll(vacanciesIdHistory);
-        return vacanciesIdByAutosearch;
+        vacanciesByAutosearch.removeIf(vacancy -> vacanciesIdHistory.contains(vacancy.getId()));
+        return vacanciesByAutosearch;
     }
 
     private void updateAutosearch(Autosearch autosearch) {
         List<String> curVacanciesIdByThisAutosearch = getVacanciesIdByAutosearch(autosearch);
         autosearch.setLastDaySelectedBySearch(curVacanciesIdByThisAutosearch);
         autosearchRepository.save(autosearch);
+    }
+
+    private List<Vacancy> getVacanciesByAutosearch(Autosearch autosearch) {
+        try {
+            return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.extractFilter()));
+        } catch (FilterValidationException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     private List<String> getVacanciesIdByAutosearch(Autosearch autosearch) {

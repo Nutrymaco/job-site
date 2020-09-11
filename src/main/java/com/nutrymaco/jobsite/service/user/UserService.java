@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface UserService {
     User registry(User user);
     Optional<User> getById(String id);
+    User save(User user);
 }

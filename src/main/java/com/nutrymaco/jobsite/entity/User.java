@@ -7,6 +7,7 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,6 +33,6 @@ public class User {
     @Type(type = "jsonb")
     List<String> viewedVacanciesIds;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     List<Autosearch> autosearches;
 }

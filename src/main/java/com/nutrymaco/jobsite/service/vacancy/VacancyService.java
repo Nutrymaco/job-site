@@ -16,6 +16,7 @@ public interface VacancyService {
     void removeAll();
     Optional<Vacancy> load(String id);
     List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException;
+    List<Vacancy> getVacanciesByIdList(List<String> idList);
     VacancyDTO toDTO(Vacancy entity);
     Vacancy fromDTO(VacancyDTO dto);
     List<String> autocomplete(String text, int count);

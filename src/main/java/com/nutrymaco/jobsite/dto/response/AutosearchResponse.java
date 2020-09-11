@@ -25,9 +25,7 @@ public class AutosearchResponse {
     public class AutosearchByUser {
         private Autosearch autosearch;
 
-        private List<String> newVacanciesIdList;
-
-        private int count;
+        private int countOfNewVacancies;
     }
 
     public class AutosearchByUserAdder {
@@ -38,21 +36,15 @@ public class AutosearchResponse {
             return this;
         }
 
-        public AutosearchByUserAdder setNewVacanciesIdList(List<String> newVacanciesIdList) {
-            autosearchByUser.setNewVacanciesIdList(newVacanciesIdList);
-            return this;
-        }
-
-        public AutosearchByUserAdder addNewVacancyId(String vacancyId) {
-            autosearchByUser.getNewVacanciesIdList().add(vacancyId);
+        public AutosearchByUserAdder setcountOfNewVacancies(int countOfNewVacancies) {
+            autosearchByUser.setCountOfNewVacancies(countOfNewVacancies);
             return this;
         }
 
         public void add() {
-            if (autosearchByUser.getAutosearch() == null || autosearchByUser.getNewVacanciesIdList() == null){
+            if (autosearchByUser.getAutosearch() == null){
                 throw new IllegalStateException();
             }
-            autosearchByUser.setCount(autosearchByUser.getNewVacanciesIdList().size());
             autosearchesByUser.add(autosearchByUser);
         }
     }

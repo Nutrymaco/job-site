@@ -16,4 +16,5 @@ import java.util.List;
 @Repository
 public interface VacancyRepository extends ElasticsearchRepository<Vacancy, String> {
     Vacancy findFirstByTitleAndDescriptionAndCity(String title, String description, String city);
+    List<Vacancy> findByIdIn(List<String> idList);
 }

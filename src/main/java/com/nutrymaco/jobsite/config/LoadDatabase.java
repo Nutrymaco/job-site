@@ -1,6 +1,8 @@
 package com.nutrymaco.jobsite.config;
 
+import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.App;
+import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.Country;
 import com.nutrymaco.jobsite.entity.User;
@@ -10,6 +12,7 @@ import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.repository.UserRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
+import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
 import org.elasticsearch.client.ElasticsearchClient;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -33,6 +36,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @Slf4j
@@ -43,7 +47,8 @@ public class LoadDatabase {
                                    CountryRepository countryRepository,
                                    WorkScheduleRepository scheduleRepository,
                                    RestHighLevelClient client,
-                                   UserRepository userRepository) {
+                                   UserRepository userRepository,
+                                   AutosearchService autosearchService) {
         return args -> {
             Country russia = new Country();
             russia.setName("russia");
@@ -89,6 +94,15 @@ public class LoadDatabase {
             user.setViewedVacanciesIds(new ArrayList<>());
             userRepository.save(user);
 
+            VacancyFilter vacancyFilter = VacancyFilter.builder()
+                    .text("java senior")
+                    .experience(6)
+                    .salary(100_000)
+                    .cities(List.of(cityRepository.findByName("Москва")))
+                    .workSchedules(List.of(scheduleRepository.findByName("FULL")))
+                    .build();
+            autosearchService.addAutosearch("1", vacancyFilter);
+            
 //            CreateIndexRequest request = new CreateIndexRequest("site");
 //
 //            Settings.Builder settingsBuilder =

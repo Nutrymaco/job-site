@@ -4,6 +4,7 @@ import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.dto.request.VacancyFilterRequest;
 import com.nutrymaco.jobsite.dto.response.AutosearchResponse;
 import com.nutrymaco.jobsite.entity.Autosearch;
+import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
 import com.nutrymaco.jobsite.service.user.UserService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @RestController
@@ -40,6 +42,7 @@ public class AutosearchController {
     @Autowired
     VacancyFilterService filterService;
 
+
     @GetMapping("/users/{userId}/autosearches")
     ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
         log.info(String.format("request to get autosearches by userid=%s", userId));
@@ -51,8 +54,8 @@ public class AutosearchController {
 //            return ResponseEntity.notFound().build();
 //        }
 
-        Function<Integer, List<String>> getVacanciesByAutosearchId =
-                (autosearchId) ->  autosearchService.getNewVacanciesIdListForAutosearchAndForUser(autosearchId, userId);
+        Function<Integer, List<Vacancy>> getVacanciesByAutosearchId =
+                (autosearchId) ->  autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
 
         AutosearchResponse autosearchResponse = new AutosearchResponse();
         List<Autosearch> autosearchList = autosearchService.getAutosearchesByUserId(userId);
@@ -60,7 +63,7 @@ public class AutosearchController {
         for (Autosearch a : autosearchList) {
             autosearchResponse.autosearchByUserAdder()
                     .setAutosearch(a)
-                    .setNewVacanciesIdList(getVacanciesByAutosearchId.apply(a.getId()))
+                    .setcountOfNewVacancies(getVacanciesByAutosearchId.apply(a.getId()).size())
                     .add();
         }
 
@@ -89,6 +92,24 @@ public class AutosearchController {
         return ResponseEntity.ok(autosearch);
     }
 
+    @GetMapping("/autosearches/{autosearchId}")
+    ResponseEntity<?> getAutosearch(@PathVariable  int autosearchId) {
+        Optional<Autosearch> autosearch = autosearchService.getAutosearchById(autosearchId);
+        return ResponseEntity.of(autosearch);
+    }
+
+    @GetMapping("/users/{userId}/autosearches/{autosearchId}/vacancies")
+    ResponseEntity<?> getVacanciesByAutosearch(@PathVariable String userId,
+                                                @PathVariable int autosearchId) {
+        List<Vacancy> vacancies = autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
+        return ResponseEntity.ok(vacancies);
+    }
+
+    @GetMapping("/autosearches/update")
+    ResponseEntity<?> updateAllAutosearches() {
+        autosearchService.updateAllAutosearches();
+        return ResponseEntity.ok().build();
+    }
 
 
 }

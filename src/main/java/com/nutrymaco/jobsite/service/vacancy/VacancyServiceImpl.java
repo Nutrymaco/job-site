@@ -109,6 +109,11 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public List<Vacancy> getVacanciesByIdList(List<String> idList) {
+        return vacancyRepository.findByIdIn(idList);
+    }
+
+    @Override
     public VacancyDTO toDTO(Vacancy entity) {
         return VacancyDTO.builder()
                 .title(entity.getTitle())
