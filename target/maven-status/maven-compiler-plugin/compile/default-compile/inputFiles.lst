@@ -44,6 +44,7 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/adapter/elastisearch/ElasticUtils.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/controller/VacancyController.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/exception/validation/VacancyValidationException.java
+/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/response/VacanciesResponse.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/VacancyDTO.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/entity/Country.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/controller/AutosearchController.java

@@ -3,6 +3,7 @@ package com.nutrymaco.jobsite.controller;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.dto.request.VacancyFilterRequest;
 import com.nutrymaco.jobsite.dto.response.AutosearchResponse;
+import com.nutrymaco.jobsite.dto.response.VacanciesResponse;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
@@ -102,7 +103,7 @@ public class AutosearchController {
     ResponseEntity<?> getVacanciesByAutosearch(@PathVariable String userId,
                                                 @PathVariable int autosearchId) {
         List<Vacancy> vacancies = autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
-        return ResponseEntity.ok(vacancies);
+        return ResponseEntity.ok(VacanciesResponse.of(vacancies));
     }
 
     @GetMapping("/autosearches/update")

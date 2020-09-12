@@ -37,11 +37,11 @@ public class Autosearch {
 
     private int salary;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private List<City> cities;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_schedule_id")
     private List<WorkSchedule> workSchedules;
 
