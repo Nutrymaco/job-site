@@ -51,19 +51,19 @@ public class LoadDatabase {
                                    UserRepository userRepository,
                                    AutosearchService autosearchService) {
         return args -> {
-            try {
-                client.indices().delete(new DeleteIndexRequest().indices("site"), RequestOptions.DEFAULT);
-            } catch (Exception e) {
-                System.out.println("cant delete");
-            }
-            CreateIndexRequest request = new CreateIndexRequest("site");
-            Settings.Builder settingsBuilder =
-                    Settings.builder()
-                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
-
-            request.settings(settingsBuilder);
-            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
-            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
+//            try {
+//                client.indices().delete(new DeleteIndexRequest().indices("site"), RequestOptions.DEFAULT);
+//            } catch (Exception e) {
+//                System.out.println("cant delete");
+//            }
+//            CreateIndexRequest request = new CreateIndexRequest("site");
+//            Settings.Builder settingsBuilder =
+//                    Settings.builder()
+//                            .loadFromSource(loadFromFile("/settings/settings.json"), XContentType.JSON);
+//
+//            request.settings(settingsBuilder);
+//            request.mapping(loadFromFile("/settings/mappings.json"), XContentType.JSON);
+//            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
 
             Country russia = new Country();
             russia.setName("russia");

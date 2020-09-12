@@ -111,7 +111,49 @@ Authorization: Bearer token (Google JWT)
 
 ### API methods
 
-#### add autosearch
-```shell script
+#### get user's autosearches
+
+```
+GET /api/v1/users/{userId}/autosearches/
+
+$ curl --location --request GET '89.223.94.132/api/v1/users/1/autosearches/'
+``` 
+
+#### add autosearch for user
+
+```
+POST /api/v1/users/1/autosearches
+```
+example of request body
+```json5
+{
+    "text" : "java",
+    "experience" : 0,
+    "salary" : 20000,
+    "cities" : [2, 3], //cities' id list from advanced filters response
+    "workSchedules" : [4, 5, 6, 7] //work schedules' id list from advanced filter response
+}
+```
+
+```
+curl --location --request POST '89.223.94.132/api/v1/users/1/autosearches' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "text" : "java",
+    "experience" : 0,
+    "salary" : 20000,
+    "cities" : [2, 3],
+    "workSchedules" : [4, 5, 6, 7]
+}'
+```
+
+#### get autosearch's vacancies
+
+##### DESCRIPTION : 
+return list of vacancies based on autosearch's filter and user's history it mean that vacancy's which presented in this history won't appear in this list  
+
+```
+GET /api/v1/users/{userId}/autosearches/{autosearchId}/vacancies
+
 $ curl --location --request GET '89.223.94.132/api/v1/users/1/autosearches/9/vacancies'
 ``` 
