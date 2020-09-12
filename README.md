@@ -119,6 +119,46 @@ GET /api/v1/users/{userId}/autosearches/
 $ curl --location --request GET '89.223.94.132/api/v1/users/1/autosearches/'
 ``` 
 
+example of response
+
+```json5
+{
+    "autosearchesByUser": [
+        {
+            "autosearch": {
+                "id": 9,
+                "text": "java senior",
+                "experience": 6,
+                "salary": 100000,
+                "cities": [
+                    {
+                        "id": 3,
+                        "name": "Москва",
+                        "country": {
+                            "id": 1,
+                            "name": "russia"
+                        }
+                    }
+                ],
+                "workSchedules": [
+                    {
+                        "id": 4,
+                        "name": "FULL"
+                    }
+                ],
+                "lastDaySelectedBySearch": [
+                    "yGsSgXQBfy6s0hUbh7-L",
+                    "umsSgXQBfy6s0hUb7MLB",
+                    "gGsSgXQBfy6s0hUb5sK-",
+                    "lGsSgXQBfy6s0hUb6MKC"
+                ]
+            },
+            "countOfNewVacancies": 4
+        }
+    ]
+}
+```
+
 #### add autosearch for user
 
 ```
@@ -150,10 +190,89 @@ curl --location --request POST '89.223.94.132/api/v1/users/1/autosearches' \
 #### get autosearch's vacancies
 
 ##### DESCRIPTION : 
-return list of vacancies based on autosearch's filter and user's history it mean that vacancy's which presented in this history won't appear in this list  
+return list of vacancies based on autosearch's filter and user's history it means that vacancy's which presented in this history won't appear in this list  
 
 ```
 GET /api/v1/users/{userId}/autosearches/{autosearchId}/vacancies
 
 $ curl --location --request GET '89.223.94.132/api/v1/users/1/autosearches/9/vacancies'
 ``` 
+
+```json5
+{
+  "vacancies" : [
+                    {
+                        "id": "yGsSgXQBfy6s0hUbh7-L",
+                        "title": "Java - разработчик (Middle, Senior)",
+                        "company": "Коннектив Геймс",
+                        "shortDescription": null,
+                        "description": null,
+                        "experienceFrom": 3,
+                        "experienceTo": 6,
+                        "salaryFrom": 100000,
+                        "salaryTo": 300000,
+                        "currency": "BTC",
+                        "city": "Москва",
+                        "cityId": 3,
+                        "workSchedule": "FULL",
+                        "workScheduleId": 4,
+                        "url": null,
+                        "date": null
+                    },
+                    {
+                        "id": "umsSgXQBfy6s0hUb7MLB",
+                        "title": "Senior Perl разработчик",
+                        "company": "Ассоциация IPChain",
+                        "shortDescription": null,
+                        "description": null,
+                        "experienceFrom": 1,
+                        "experienceTo": 3,
+                        "salaryFrom": 170000,
+                        "salaryTo": 300000,
+                        "currency": "BTC",
+                        "city": "Москва",
+                        "cityId": 3,
+                        "workSchedule": "FULL",
+                        "workScheduleId": 4,
+                        "url": null,
+                        "date": null
+                    },
+                    {
+                        "id": "gGsSgXQBfy6s0hUb5sK-",
+                        "title": "FullStack Java Developer (Middle)",
+                        "company": "Геоскан",
+                        "shortDescription": null,
+                        "description": null,
+                        "experienceFrom": 1,
+                        "experienceTo": 3,
+                        "salaryFrom": 110000,
+                        "salaryTo": 150000,
+                        "currency": "BTC",
+                        "city": "Москва",
+                        "cityId": 3,
+                        "workSchedule": "FULL",
+                        "workScheduleId": 4,
+                        "url": null,
+                        "date": null
+                    },
+                    {
+                        "id": "lGsSgXQBfy6s0hUb6MKC",
+                        "title": "Vue.JS разработчик (Middle+/Senior)",
+                        "company": "Ассоциация IPChain",
+                        "shortDescription": null,
+                        "description": null,
+                        "experienceFrom": 3,
+                        "experienceTo": 6,
+                        "salaryFrom": 170000,
+                        "salaryTo": 300000,
+                        "currency": "BTC",
+                        "city": "Москва",
+                        "cityId": 3,
+                        "workSchedule": "FULL",
+                        "workScheduleId": 4,
+                        "url": null,
+                        "date": null
+                    }
+                ]
+}
+```

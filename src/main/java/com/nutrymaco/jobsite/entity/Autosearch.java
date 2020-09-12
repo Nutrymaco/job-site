@@ -11,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -36,11 +37,11 @@ public class Autosearch {
 
     private int salary;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
     private List<City> cities;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "work_schedule_id")
     private List<WorkSchedule> workSchedules;
 
