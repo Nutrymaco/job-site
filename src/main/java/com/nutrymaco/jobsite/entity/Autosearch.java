@@ -5,6 +5,8 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.util.MultiValueMap;
@@ -37,11 +39,13 @@ public class Autosearch {
 
     private int salary;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "city_id")
     private List<City> cities;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "work_schedule_id")
     private List<WorkSchedule> workSchedules;
 

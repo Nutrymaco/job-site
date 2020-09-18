@@ -14,7 +14,7 @@ public class AutosearchUpdate {
     @Autowired
     AutosearchService autosearchService;
 
-    @Scheduled(cron = "0 12,16 * * * *")
+    @Scheduled(cron = " 0 0 12,16 * * *")
     public void updateAutosearches() {
         log.info("updating autosearches");
         autosearchService.updateAllAutosearches();

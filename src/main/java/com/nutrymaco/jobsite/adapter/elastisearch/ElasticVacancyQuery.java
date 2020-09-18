@@ -26,7 +26,7 @@ public class ElasticVacancyQuery {
     private VacancyFilter vacancyFilter;
     private NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     private BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
-    private int COUNT_OF_FILTERS = 4;
+    private int COUNT_OF_FILTERS = 3;
     private PaginationData paginationData;
 
     private ElasticVacancyQuery() {}
@@ -70,8 +70,7 @@ public class ElasticVacancyQuery {
     }
 
     private void addSalaryRange() {
-        addRangeQuery(filterBuilder,
-                "salaryFrom", "salaryTo",
+        addRangeQuery(filterBuilder, "salaryTo",
                 vacancyFilter.getSalary());
     }
 

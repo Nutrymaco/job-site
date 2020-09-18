@@ -17,7 +17,7 @@ public class VacancyFilter {
 
     private final int experience;
 
-    private final Integer salary;
+    private final int salary;
 
     private final List<City> cities;
 
