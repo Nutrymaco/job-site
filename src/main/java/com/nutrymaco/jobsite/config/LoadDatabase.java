@@ -1,13 +1,11 @@
 package com.nutrymaco.jobsite.config;
 
 import com.nutrymaco.jobsite.dto.VacancyFilter;
-import com.nutrymaco.jobsite.entity.App;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.Country;
 import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
-import com.nutrymaco.jobsite.repository.AppRepository;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.repository.UserRepository;
@@ -118,6 +116,14 @@ public class LoadDatabase {
                     .build();
             autosearchService.addAutosearch("1", vacancyFilter);
             
+            VacancyFilter vacancyFilter2 = VacancyFilter.builder()
+                    .text("java junior")
+                    .experience(0)
+                    .salary(0)
+                    .cities(List.of(cityRepository.findByName("Москва"), cityRepository.findByName("Тюмень")))
+                    .workSchedules(List.of(scheduleRepository.findByName("FLEX")))
+                    .build();
+            autosearchService.addAutosearch("1", vacancyFilter2);
 
         };
     }
