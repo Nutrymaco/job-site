@@ -5,7 +5,6 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/request/VacancyFilterRequest.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/config/AutosearchUpdate.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/service/vacancy/VacancyServiceImpl.java
-/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/repository/AppRepository.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/assembler/VacancyAssembler.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/repository/CountryRepository.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/BoolFilter.java
@@ -38,7 +37,6 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/validation/vacancy/VacancyFilterValidation.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/response/AuthenticationResponse.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/repository/UserRepository.java
-/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/entity/App.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/RangeBoundType.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/entity/WorkSchedule.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/adapter/elastisearch/ElasticUtils.java
