@@ -15,6 +15,6 @@ import java.util.Map;
 public class SelectFilter extends Filter {
     final FilterType type = FilterType.SELECT;
     String name;
-    Map<Integer, String> options;
+    List<Option> options;
     boolean multiple;
 }
