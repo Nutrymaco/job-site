@@ -7,6 +7,7 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/service/vacancy/VacancyServiceImpl.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/assembler/VacancyAssembler.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/repository/CountryRepository.java
+/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/Option.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/BoolFilter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/PaginationData.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/exception/validation/ValidationException.java
@@ -63,3 +64,4 @@
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/adapter/AutocompleteDBAdapter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/dto/filter/Filter.java
 /Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/config/ElasticConfig.java
+/Users/smykovefim/Documents/MyProjects/Java/jobsite/src/main/java/com/nutrymaco/jobsite/validation/RestResponseEntityExceptionHandler.java
