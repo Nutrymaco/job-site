@@ -1,6 +1,5 @@
 package com.nutrymaco.jobsite.controller;
 
-import com.nutrymaco.jobsite.assembler.VacancyAssembler;
 import com.nutrymaco.jobsite.dto.Autocomplete;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.filter.Filters;
@@ -38,38 +37,29 @@ public class VacancyController {
     JWTTokenManager jwtTokenManager = new JWTTokenManager();
 
     @Autowired
-    VacancyAssembler vacancyAssembler;
-
-    @Autowired
     VacancyService vacancyService;
 
-
     @GetMapping("/vacancies")
-    public CollectionModel<EntityModel<Vacancy>> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
+    public ResponseEntity<List<Vacancy>> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
         log.info(String.format("request to get vacancies by filters : %s", filters));
         List<Vacancy> vacancies = vacancyService.getVacanciesByFilters(filters);
-        return CollectionModel.of(vacancies.stream()
-                                            .map(vacancyAssembler::toModel)
-                                            .collect(Collectors.toList()));
+        return ResponseEntity.ok(vacancies);
     }
 
     @GetMapping("/vacancies/{vacancyId}")
-    public EntityModel<Vacancy> oneVacancy(@PathVariable String vacancyId) {
+    public ResponseEntity<Vacancy> oneVacancy(@PathVariable String vacancyId) {
         log.info(String.format("request get vacancies by vacancy_id : %s", vacancyId));
         Vacancy vacancy = vacancyService.load(vacancyId)
                 .orElseThrow(() -> new RuntimeException("cant find vacancy"));
 
-        return vacancyAssembler.toModel(vacancy);
+        return ResponseEntity.ok(vacancy);
     }
 
     @PostMapping("/vacancies")
-    public ResponseEntity<EntityModel<Vacancy>> createVacancy(@RequestBody VacancyDTO vacancy) throws ValidationException {
+    public ResponseEntity<Vacancy> createVacancy(@RequestBody VacancyDTO vacancy) throws ValidationException {
         log.info(String.format("request to add vacancy : %s", vacancy));
-        EntityModel<Vacancy> entity = vacancyAssembler.toModel(vacancyService.save(vacancy));
-
-        return ResponseEntity
-                .created(entity.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entity);
+        Vacancy created = vacancyService.save(vacancy);
+        return ResponseEntity.ok(created);
     }
 
     @DeleteMapping("/vacancies")
