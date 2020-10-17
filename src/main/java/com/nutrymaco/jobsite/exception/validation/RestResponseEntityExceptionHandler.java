@@ -1,4 +1,4 @@
-package com.nutrymaco.jobsite.validation;
+package com.nutrymaco.jobsite.exception.validation;
 
 import com.nutrymaco.jobsite.exception.validation.VacancyValidationException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
