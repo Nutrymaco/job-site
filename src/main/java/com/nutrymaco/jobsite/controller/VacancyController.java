@@ -52,7 +52,6 @@ public class VacancyController {
         log.info(String.format("request get vacancies by vacancy_id : %s", vacancyId));
         Vacancy vacancy = vacancyService.load(vacancyId)
                 .orElseThrow(() -> new RuntimeException("cant find vacancy"));
-
         return ResponseEntity.ok(vacancy);
     }
 
@@ -60,7 +59,7 @@ public class VacancyController {
     public ResponseEntity<Vacancy> createVacancy(@RequestBody VacancyDTO vacancy) throws ValidationException {
         log.info(String.format("request to add vacancy : %s", vacancy));
         Vacancy created = vacancyService.save(vacancy);
-        return ResponseEntity.ok(created);
+        return ResponseEntity.status(201).body(created);
     }
 
     @DeleteMapping("/vacancies")
