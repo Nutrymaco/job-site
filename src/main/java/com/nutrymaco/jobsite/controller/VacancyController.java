@@ -3,6 +3,7 @@ package com.nutrymaco.jobsite.controller;
 import com.nutrymaco.jobsite.dto.Autocomplete;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.filter.Filters;
+import com.nutrymaco.jobsite.dto.response.VacanciesResponse;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
@@ -40,10 +41,10 @@ public class VacancyController {
     VacancyService vacancyService;
 
     @GetMapping("/vacancies")
-    public ResponseEntity<List<Vacancy>> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
+    public ResponseEntity<VacanciesResponse> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
         log.info(String.format("request to get vacancies by filters : %s", filters));
         List<Vacancy> vacancies = vacancyService.getVacanciesByFilters(filters);
-        return ResponseEntity.ok(vacancies);
+        return ResponseEntity.ok(VacanciesResponse.of(vacancies));
     }
 
     @GetMapping("/vacancies/{vacancyId}")
