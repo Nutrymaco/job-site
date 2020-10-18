@@ -78,9 +78,9 @@ public class ElasticVacancyQuery {
         if (!vacancyFilter.getCities().isEmpty()){
             COUNT_OF_FILTERS++;
             addMultiValueMatch(filterBuilder,
-                    "city", vacancyFilter.getCities()
+                    "cityId", vacancyFilter.getCities()
                             .stream()
-                            .map(City::getName)
+                            .map(City::getId)
                             .collect(Collectors.toList()));
         }
 
@@ -90,9 +90,9 @@ public class ElasticVacancyQuery {
         if (!vacancyFilter.getWorkSchedules().isEmpty()) {
             COUNT_OF_FILTERS++;
             addMultiValueMatch(filterBuilder,
-                    "workSchedule", vacancyFilter.getWorkSchedules()
+                    "workScheduleId", vacancyFilter.getWorkSchedules()
                             .stream()
-                            .map(WorkSchedule::getName)
+                            .map(WorkSchedule::getId)
                             .collect(Collectors.toList()));
         }
 
