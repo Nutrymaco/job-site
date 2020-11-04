@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.repository;
 
+import com.nutrymaco.jobsite.adapter.elastisearch.ElasticVacancyQuery;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -15,6 +16,8 @@ import java.util.List;
 
 @Repository
 public interface VacancyRepository extends ElasticsearchRepository<Vacancy, String> {
+
     Vacancy findFirstByTitleAndDescriptionAndCity(String title, String description, String city);
+
     List<Vacancy> findByIdIn(List<String> idList);
 }

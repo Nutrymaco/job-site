@@ -16,16 +16,11 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "site_user")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class User {
+public class User extends SiteUser {
     @Id
     String id;
-
-    String name;
-
-    String surname;
 
     Issuer issuer;
 

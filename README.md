@@ -1,14 +1,35 @@
 # job-site
 
 #TABLE OF CONTENTS
-1. [VacancyAPI](#vacancy_api)
+1. [Vacancy API](#vacancy-api)
+    
+    1.1 [get vacancies](#vacancy-get)
+    
+    1.2 [create new vacancy]
+
+2. [Filters API](#filters-api)
+
+    2.1 [get filters](#filters-get)
+
+3. [Users API](#users-api)
+    
+    3.1 [register user](#user-post)
+    
+4. [Autosearches API](#autosearches-api)
+    
+    4.1 [get autosearches by user](#user-autosearches-get)
+    
+    4.2 [create autosearches by user](#user-autosearches-post)
+    
+    4.3 [get vacancies by autosearch and user](#autosearches-vacancies-get)
 
 # API DOCUMENTATION
 
-## Vacancies API
-<a name="vacancy_api"></a>
+## Vacancies API<a name="vacancy-api"></a>
 
 ### examples of requests
+
+<a name="vacancy-get">GET /api/v1/vacancies<a>
 
 request with curl without parameters
 ```sh
@@ -105,7 +126,8 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 
 ### API Methods
 
-#### register user
+#### register user <a name="user-post"></a>
+
 ```shell script
 $ curl --location --request POST '89.223.94.132/api/v1/users'
 ```
@@ -115,7 +137,7 @@ Authorization: Bearer token (Google JWT)
 
 ### API methods
 
-#### get user's autosearches
+#### get user's autosearches <a name="user-autosearches-get"></a>
 
 ```
 GET /api/v1/users/{userId}/autosearches/
@@ -163,7 +185,7 @@ example of response
 }
 ```
 
-#### add autosearch for user
+#### add autosearch for user <a name="user-autosearches-post"></a>
 
 ```
 POST /api/v1/users/1/autosearches
@@ -191,7 +213,7 @@ curl --location --request POST '89.223.94.132/api/v1/users/1/autosearches' \
 }'
 ```
 
-#### get autosearch's vacancies
+#### get autosearch's vacancies <a name="autosearches-vacancies-get"></a>
 
 ##### DESCRIPTION : 
 return list of vacancies based on autosearch's filter and user's history it means that vacancy's which presented in this history won't appear in this list  

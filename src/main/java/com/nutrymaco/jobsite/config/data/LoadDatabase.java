@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.config;
 
 import com.nutrymaco.jobsite.dto.VacancyFilter;
-import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.Country;
 import com.nutrymaco.jobsite.entity.User;
@@ -11,29 +10,15 @@ import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.repository.UserRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.client.ElasticsearchClient;
-import org.elasticsearch.client.RequestOptions;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.CreateIndexRequest;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.common.xcontent.XContentParserUtils;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.index.MappingBuilder;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +110,7 @@ public class LoadDatabase {
                     .build();
             autosearchService.addAutosearch("1", vacancyFilter2);
 
+            
         };
     }
 
