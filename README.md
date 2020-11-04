@@ -57,6 +57,8 @@ $ curl http://89.223.94.132/api/v1/vacancies\?text=senior%20developer\&salary=10
 
 ### examples of requests
 
+GET /api/v1/filters <a name="filters-get"></a>
+
 request with curl
 ```sh
 $ curl http://89.223.94.132/api/v1/advanced_filters
@@ -125,8 +127,8 @@ $ curl http://89.223.94.132/api/v1/advanced_filters
 ## Users API
 
 ### API Methods
-
-#### register user <a name="user-post"></a>
+ <a name="user-post"></a>
+#### register user
 
 ```shell script
 $ curl --location --request POST '89.223.94.132/api/v1/users'
@@ -136,8 +138,8 @@ Authorization: Bearer token (Google JWT)
 ## Autosearches API
 
 ### API methods
-
-#### get user's autosearches <a name="user-autosearches-get"></a>
+<a name="user-autosearches-get"></a>
+#### get user's autosearches 
 
 ```
 GET /api/v1/users/{userId}/autosearches/
@@ -184,8 +186,8 @@ example of response
     ]
 }
 ```
-
-#### add autosearch for user <a name="user-autosearches-post"></a>
+ <a name="user-autosearches-post"></a>
+#### add autosearch for user
 
 ```
 POST /api/v1/users/1/autosearches
@@ -212,8 +214,8 @@ curl --location --request POST '89.223.94.132/api/v1/users/1/autosearches' \
     "workSchedules" : [4, 5, 6, 7]
 }'
 ```
-
-#### get autosearch's vacancies <a name="autosearches-vacancies-get"></a>
+ <a name="autosearches-vacancies-get"></a>
+#### get autosearch's vacancies
 
 ##### DESCRIPTION : 
 return list of vacancies based on autosearch's filter and user's history it means that vacancy's which presented in this history won't appear in this list  
