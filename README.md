@@ -1,6 +1,6 @@
 # job-site
 
-#TABLE OF CONTENTS
+# TABLE OF CONTENTS
 1. [Vacancy API](#vacancy-api)
     
     1.1 [get vacancies](#vacancy-get)
