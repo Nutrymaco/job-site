@@ -1,8 +1,12 @@
 # job-site
 
+#TABLE OF CONTENTS
+1. [VacancyAPI](#vacancy_api)
+
 # API DOCUMENTATION
 
 ## Vacancies API
+<a name="vacancy_api"></a>
 
 ### examples of requests
 
