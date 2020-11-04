@@ -4,8 +4,6 @@
 1. [Vacancy API](#vacancy-api)
     
     1.1 [get vacancies](#vacancy-get)
-    
-    1.2 [create new vacancy]
 
 2. [Filters API](#filters-api)
 
