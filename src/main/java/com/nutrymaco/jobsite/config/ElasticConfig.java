@@ -66,6 +66,11 @@ public class ElasticConfig {
     }
 
     @Bean
+    ElasticsearchOperations elasticsearchTemplate() {
+        return new ElasticsearchRestTemplate(client());
+    }
+
+    @Bean
     ElasticVacancyQuery.ElasticVacancyQueryBuilder vacancyQueryBuilder() {
         return ElasticVacancyQuery.builder()
                     .setTitleBoost(titleBoost)
