@@ -61,8 +61,7 @@ public class ElasticConfig {
     }
 
     @Bean
-    @Qualifier("elasticsearchTemplate")
-    ElasticsearchOperations elasticsearchTemplate() {
+    ElasticsearchOperations elasticsearchOperations() {
         return new ElasticsearchRestTemplate(client());
     }
 
