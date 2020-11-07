@@ -1,8 +1,0 @@
-стажер, intern
-младший, джуниор, junior
-миддл, middle
-старший, сениор, senior
-джава, java
-питон, python
-js, javascript
-хтмл, html
