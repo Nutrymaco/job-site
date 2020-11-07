@@ -12,6 +12,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -55,11 +56,12 @@ public class ElasticConfig {
                 .connectedTo(String.format("%s:%d", host, port))
                 .withBasicAuth("elastic", "Hrt23hgerheh")
                 .build();
-
+        System.out.println("RHC created");
         return RestClients.create(clientConfiguration).rest();
     }
 
     @Bean
+    @Qualifier("elasticsearchTemplate")
     ElasticsearchOperations elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
     }
