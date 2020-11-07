@@ -43,10 +43,16 @@ public class ElasticConfig {
     @Value("${elastic.create-index}")
     private boolean createIndex;
 
+    @Value("${elastic.host}")
+    private String host;
+
+    @Value("${elastic.port")
+    private int port;
+
     @Bean
     RestHighLevelClient client() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("localhost:9200")
+                .connectedTo(String.format("%s:%d", host, port))
                 .withBasicAuth("elastic", "Hrt23hgerheh")
                 .build();
 
