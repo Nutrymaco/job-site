@@ -66,7 +66,7 @@ public class ElasticConfig {
     }
 
     @Bean
-    ElasticsearchOperations elasticsearchTemplate() {
+    ElasticsearchRestTemplate elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
     }
 
