@@ -1,32 +1,28 @@
 package com.nutrymaco.jobsite.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 
-
+@Getter
+@Setter
 @Entity
-public class HREmployee extends SiteUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+public class HREmployee extends BaseUser {
 
     @ManyToOne
     private Company company;
 
-    @ElementCollection(targetClass = HRRight.class)
-    @CollectionTable(
-            name = "HRRight",
-            joinColumns = @JoinColumn(name = "id")
-    )
-    @Column(name = "hrright_id")
+    @OneToMany
     private List<HRRight> rights;
 }
 

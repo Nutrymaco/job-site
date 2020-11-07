@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
+import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.dto.request.VacancyFilterRequest;
 import com.nutrymaco.jobsite.entity.City;
@@ -47,6 +48,8 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
                                 .collect(Collectors.toList()))
+                .paginationData(PaginationData.extractFrom(filters))
+                .includeDescription(Boolean.parseBoolean(filters.getFirst("includeDescription")))
                 .build();
 
 

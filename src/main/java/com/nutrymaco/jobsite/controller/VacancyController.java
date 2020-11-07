@@ -1,19 +1,14 @@
 package com.nutrymaco.jobsite.controller;
 
-import com.nutrymaco.jobsite.dto.Autocomplete;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
-import com.nutrymaco.jobsite.dto.filter.Filters;
 import com.nutrymaco.jobsite.dto.response.VacanciesResponse;
 import com.nutrymaco.jobsite.entity.Vacancy;
+import com.nutrymaco.jobsite.exception.found.VacancyNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
-import com.nutrymaco.jobsite.service.vacancy.VacancyAdvancedFiltersServiceImpl;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -43,15 +36,14 @@ public class VacancyController {
     @GetMapping("/vacancies")
     public ResponseEntity<VacanciesResponse> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
         log.info(String.format("request to get vacancies by filters : %s", filters));
-        List<Vacancy> vacancies = vacancyService.getVacanciesByFilters(filters);
+        List<VacancyDTO> vacancies = vacancyService.getVacanciesByFilters(filters);
         return ResponseEntity.ok(VacanciesResponse.of(vacancies));
     }
 
     @GetMapping("/vacancies/{vacancyId}")
-    public ResponseEntity<Vacancy> oneVacancy(@PathVariable String vacancyId) {
+    public ResponseEntity<VacancyDTO> oneVacancy(@PathVariable String vacancyId) throws VacancyNotFoundException {
         log.info(String.format("request get vacancies by vacancy_id : %s", vacancyId));
-        Vacancy vacancy = vacancyService.load(vacancyId)
-                .orElseThrow(() -> new RuntimeException("cant find vacancy"));
+        VacancyDTO vacancy = vacancyService.getById(vacancyId);
         return ResponseEntity.ok(vacancy);
     }
 

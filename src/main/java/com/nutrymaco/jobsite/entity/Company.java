@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -16,10 +15,15 @@ import java.util.List;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Integer id;
 
     private String name;
 
+    private Boolean approved;
+
     @OneToMany
     private List<HREmployee> employees;
+
+    @OneToMany
+    private List<CompanyDocument> documents;
 }

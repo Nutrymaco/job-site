@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-public class SiteUser {
+public class BaseUser {
 
     @Id
     private String id;

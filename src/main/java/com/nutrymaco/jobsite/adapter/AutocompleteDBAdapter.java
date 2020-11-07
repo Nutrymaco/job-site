@@ -2,32 +2,37 @@ package com.nutrymaco.jobsite.adapter;
 
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AutocompleteDBAdapter {
-    public static List<String> getWordsByQuery(String query) {
+
+    private final String url;
+
+    private static final String WORDS_PATH = "/words?query=%s";
+
+    public AutocompleteDBAdapter(String url, int port) {
+        this.url = url + (port == 80 ? "" : Integer.toString(port));
+    }
+
+    public List<String> getWordsByQuery(String query) {
         if ("".equals(query)) {
             return List.of();
         }
         URL url = null;
         List<String> words = new ArrayList<>(10);
         try {
-            url = new URL(String.format("http://localhost:7299/words?query=%s",
+            url = new URL(String.format(url + WORDS_PATH,
                     URLEncoder.encode(query, StandardCharsets.UTF_8)));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

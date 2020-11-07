@@ -1,11 +1,19 @@
 package com.nutrymaco.jobsite.config;
 
+import com.nutrymaco.jobsite.adapter.elastisearch.ElasticVacancyQuery;
+import com.nutrymaco.jobsite.util.File;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +34,15 @@ import java.nio.file.Path;
 @ComponentScan
 public class ElasticConfig {
 
+    @Value("${search.title-boost}")
+    private int titleBoost;
+
+    @Value("${search.prefix-length}")
+    private int prefixLength;
+
+    @Value("${elastic.create-index}")
+    private boolean createIndex;
+
     @Bean
     RestHighLevelClient client() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
@@ -37,7 +54,36 @@ public class ElasticConfig {
     }
 
     @Bean
-    public ElasticsearchOperations elasticsearchTemplate() {
+    ElasticsearchOperations elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
+    }
+
+    @Bean
+    ElasticVacancyQuery.ElasticVacancyQueryBuilder vacancyQueryBuilder() {
+        return ElasticVacancyQuery.builder()
+                    .setTitleBoost(titleBoost)
+                    .setPrefixLength(prefixLength);
+    }
+
+    @Bean
+    ApplicationRunner createIndex() {
+        if (!createIndex)
+            return args -> {};
+        return args -> {
+            RestHighLevelClient client = client();
+            try {
+                client.indices().delete(new DeleteIndexRequest().indices("site"), RequestOptions.DEFAULT);
+            } catch (Exception e) {
+                return;
+            }
+            CreateIndexRequest request = new CreateIndexRequest("site");
+            Settings.Builder settingsBuilder =
+                    Settings.builder()
+                            .loadFromSource(File.loadFromFile("/settings/settings.json"), XContentType.JSON);
+
+            request.settings(settingsBuilder);
+            request.mapping(File.loadFromFile("/settings/mappings.json"), XContentType.JSON);
+            System.out.println(client.indices().create(request, RequestOptions.DEFAULT).index());
+        };
     }
 }

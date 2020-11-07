@@ -15,29 +15,32 @@ import java.util.Date;
 @Getter
 @Setter
 public class VacancyDTO {
+
+    String id;
+
     String title;
 
     String description;
 
     String company;
 
-    int experienceFrom;
+    Integer experienceFrom;
 
-    int experienceTo;
+    Integer experienceTo;
 
-    int salaryFrom;
+    Integer salaryFrom;
 
-    int salaryTo;
+    Integer salaryTo;
 
     Currency currency;
 
     String city;
 
-    int cityId;
+    Integer cityId;
 
     String workSchedule;
 
-    int workScheduleId;
+    Integer workScheduleId;
 
     String url;
 

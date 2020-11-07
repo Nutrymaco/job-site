@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Table(name = "work_schedule")
 public class WorkSchedule {
     @Id
-    @GeneratedValue
     Integer id;
 
     String name;

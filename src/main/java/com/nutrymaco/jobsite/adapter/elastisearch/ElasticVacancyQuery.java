@@ -19,10 +19,9 @@ import java.util.stream.Collectors;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.*;
 
-@Slf4j
 public class ElasticVacancyQuery {
-    private int TITLE_BOOST = 10;
-    private int PREFIX_LENGTH = 2;
+    private int TITLE_BOOST;
+    private int PREFIX_LENGTH;
     private VacancyFilter vacancyFilter;
     private NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     private BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
@@ -42,9 +41,6 @@ public class ElasticVacancyQuery {
         addExperienceRange();
         addSalaryRange();
         filterBuilder.minimumShouldMatch(COUNT_OF_FILTERS);
-
-        log.info(String.valueOf(queryBuilder.withFilter(filterBuilder).build().getQuery()));
-        log.info(String.valueOf(queryBuilder.withFilter(filterBuilder).build().getFilter()));
 
         return queryBuilder
                 .withFilter(filterBuilder)

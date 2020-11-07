@@ -1,4 +1,4 @@
-package com.nutrymaco.jobsite.exception;
+package com.nutrymaco.jobsite.exception.found;
 
 public class CompanyNotFoundException extends Exception {
 }

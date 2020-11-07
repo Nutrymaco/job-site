@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class ValidationControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {VacancyValidationException.class})
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {

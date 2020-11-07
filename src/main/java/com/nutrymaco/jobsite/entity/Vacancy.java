@@ -29,23 +29,19 @@ public class Vacancy {
 
     String description;
 
-    int experienceFrom;
+    Integer experienceFrom;
 
-    int experienceTo;
+    Integer experienceTo;
 
-    int salaryFrom;
+    Integer salaryFrom;
 
-    int salaryTo;
+    Integer salaryTo;
 
     Currency currency;
 
-    String city;
+    Integer cityId;
 
-    int cityId;
-
-    String workSchedule;
-
-    int workScheduleId;
+    Integer workScheduleId;
 
     String url;
 

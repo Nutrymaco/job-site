@@ -1,9 +1,11 @@
 package com.nutrymaco.jobsite.service.autosearch;
 
+import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.entity.Vacancy;
+import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.repository.AutosearchRepository;
 import com.nutrymaco.jobsite.service.user.UserService;
@@ -33,8 +35,10 @@ public class AutosearchServiceImpl implements AutosearchService {
 
 
     @Override
-    public Optional<Autosearch> getAutosearchById(int id) {
-        return autosearchRepository.findById(id);
+    public Autosearch getAutosearchById(int id) throws AutosearchNotFoundException {
+        return autosearchRepository
+                .findById(id)
+                .orElseThrow(AutosearchNotFoundException::new);
     }
 
     @Override
@@ -122,16 +126,13 @@ public class AutosearchServiceImpl implements AutosearchService {
     }
 
     @Override
-    public List<Vacancy> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) {
-        Optional<Autosearch> autosearch = getAutosearchById(autosearchId);
-        if (autosearch.isEmpty()) {
-            return List.of();
-        }
+    public List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException {
+        Autosearch autosearch = getAutosearchById(autosearchId);
         Optional<User> user = userService.getById(userId);
         if (user.isEmpty()) {
             return List.of();
         }
-        List<Vacancy> vacanciesByAutosearch = getVacanciesByAutosearch(autosearch.get());
+        List<VacancyDTO> vacanciesByAutosearch = getVacanciesByAutosearch(autosearch);
         List<String> vacanciesIdHistory = user.get().getViewedVacanciesIds();
         vacanciesByAutosearch.removeIf(vacancy -> vacanciesIdHistory.contains(vacancy.getId()));
         return vacanciesByAutosearch;
@@ -143,7 +144,7 @@ public class AutosearchServiceImpl implements AutosearchService {
         autosearchRepository.save(autosearch);
     }
 
-    private List<Vacancy> getVacanciesByAutosearch(Autosearch autosearch) {
+    private List<VacancyDTO> getVacanciesByAutosearch(Autosearch autosearch) {
         try {
             return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.extractFilter()));
         } catch (FilterValidationException e) {
@@ -155,7 +156,7 @@ public class AutosearchServiceImpl implements AutosearchService {
     private List<String> getVacanciesIdByAutosearch(Autosearch autosearch) {
         try {
             return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.extractFilter())).stream()
-                    .map(Vacancy::getId)
+                    .map(VacancyDTO::getId)
                     .collect(Collectors.toList());
         } catch (FilterValidationException e) {
             e.printStackTrace();

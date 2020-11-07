@@ -23,6 +23,10 @@ public class VacancyFilter {
 
     private final List<WorkSchedule> workSchedules;
 
+    private final boolean includeDescription;
+
+    private final PaginationData paginationData;
+
     @Override
     public String toString() {
         return "VacancyFilter{" +

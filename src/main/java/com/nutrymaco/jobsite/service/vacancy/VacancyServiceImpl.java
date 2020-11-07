@@ -1,35 +1,31 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.adapter.AutocompleteDBAdapter;
-import com.nutrymaco.jobsite.adapter.elastisearch.ElasticVacancyQuery;
-import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
+import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.Vacancy;
+import com.nutrymaco.jobsite.entity.WorkSchedule;
+import com.nutrymaco.jobsite.exception.found.VacancyNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
-import com.nutrymaco.jobsite.repository.VacancyRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
+import com.nutrymaco.jobsite.repository.vacancy.VacancyRepository;
+import com.nutrymaco.jobsite.repository.vacancy.VacancyRepositoryCustom;
 import com.nutrymaco.jobsite.validation.vacancy.VacancyValidation;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-import static com.nutrymaco.jobsite.adapter.elastisearch.UrlParamsToElasticQuery.getQueryFromVacancyParams;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class VacancyServiceImpl implements VacancyService {
 
     @Autowired
@@ -56,16 +52,15 @@ public class VacancyServiceImpl implements VacancyService {
     @Autowired
     VacancyFilterService filterService;
 
+    @Autowired
+    VacancyRepositoryCustom customVacancyRepository;
+
+    @Autowired
+    AutocompleteDBAdapter autocompleteAdapter;
+
     @Override
     public Vacancy save(VacancyDTO vacancyDTO) throws ValidationException {
         vacancyValidation.validate(vacancyDTO);
-        if (vacancyDTO.getCity() != null) {
-            vacancyDTO.setCityId(cityRepository.findByName(vacancyDTO.getCity()).getId());
-        }
-        if (vacancyDTO.getWorkSchedule() != null) {
-            vacancyDTO.setWorkScheduleId(scheduleRepository.findByName(vacancyDTO.getWorkSchedule()).getId());
-        }
-
         return vacancyRepository.save(fromDTO(vacancyDTO));
     }
 
@@ -80,48 +75,46 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public Optional<Vacancy> load(String id) {
-        return vacancyRepository.findById(id);
+    public VacancyDTO getById(String id) throws VacancyNotFoundException {
+        return vacancyRepository
+                .findById(id)
+                .map(this::toDTO)
+                .orElseThrow(VacancyNotFoundException::new);
     }
 
-    //todo add validation and pagination
+    //todo add validation
     @Override
-    public List<Vacancy> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException {
-        Query query = ElasticVacancyQuery.builder()
-                        .setFilter(filterService.fromMultiValueMap(filters))
-                        .setPrefixLength(2)
-                        .setTitleBoost(10)
-                        .setPaginationData(PaginationData.extractFrom(filters))
-                        .build()
-                        .getElasticQuery();
-
-        return restTemplate.search(query, Vacancy.class).stream()
-                .map(SearchHit::getContent)
-                .peek(v -> {
-                    if (!Boolean.parseBoolean(
-                            Optional.ofNullable(filters.getFirst("includeDescription"))
-                                    .orElse("false"))
-                    ) {
-                        v.setDescription(null);
-                    }
-                })
+    public List<VacancyDTO> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException {
+        return customVacancyRepository
+                .findByFilter(filterService.fromMultiValueMap(filters))
+                .stream()
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Vacancy> getVacanciesByIdList(List<String> idList) {
-        return vacancyRepository.findByIdIn(idList);
+    public List<VacancyDTO> getVacanciesByIdList(List<String> idList) {
+        return vacancyRepository.findByIdIn(idList).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public VacancyDTO toDTO(Vacancy entity) {
         return VacancyDTO.builder()
+                .id(entity.getId())
                 .title(entity.getTitle())
                 .company(entity.getCompany())
                 .description(entity.getDescription())
-                .city(entity.getCity())
+                .city(cityRepository.findById(entity.getCityId()).orElseGet(() -> {
+                    log.warn(String.format("city with id %d not found", entity.getCityId()));
+                    return new City();
+                }).getName())
                 .cityId(entity.getCityId())
-                .workSchedule(entity.getWorkSchedule())
+                .workSchedule(scheduleRepository.findById(entity.getWorkScheduleId()).orElseGet(() -> {
+                    log.warn(String.format("schedule with id %d not found", entity.getWorkScheduleId()));
+                    return new WorkSchedule();
+                }).getName())
                 .workScheduleId(entity.getWorkScheduleId())
                 .experienceFrom(entity.getExperienceFrom())
                 .experienceTo(entity.getExperienceTo())
@@ -139,11 +132,9 @@ public class VacancyServiceImpl implements VacancyService {
                 .title(vacancyDTO.getTitle())
                 .company(vacancyDTO.getCompany())
                 .description(vacancyDTO.getDescription())
-                .city(vacancyDTO.getCity())
                 .cityId(vacancyDTO.getCityId())
                 .experienceFrom(vacancyDTO.getExperienceFrom())
                 .experienceTo(vacancyDTO.getExperienceTo())
-                .workSchedule(vacancyDTO.getWorkSchedule())
                 .workScheduleId(vacancyDTO.getWorkScheduleId())
                 .salaryFrom(vacancyDTO.getSalaryFrom())
                 .salaryTo(vacancyDTO.getSalaryTo())
@@ -155,7 +146,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<String> autocomplete(String text, int count) {
-        return AutocompleteDBAdapter.getWordsByQuery(text);
+        return autocompleteAdapter.getWordsByQuery(text);
     }
 
 

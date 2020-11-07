@@ -23,7 +23,6 @@ import javax.persistence.UniqueConstraint;
 public class City {
 
     @Id
-    @GeneratedValue
     Integer id;
 
     String name;

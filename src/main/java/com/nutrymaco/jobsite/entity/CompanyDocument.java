@@ -1,5 +1,10 @@
 package com.nutrymaco.jobsite.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
-public class Document {
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class CompanyDocument {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
