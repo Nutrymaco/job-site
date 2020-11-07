@@ -46,7 +46,7 @@ public class ElasticConfig {
     @Value("${elastic.host}")
     private String host;
 
-    @Value("${elastic.port")
+    @Value("${elastic.port}")
     private int port;
 
     @Bean
