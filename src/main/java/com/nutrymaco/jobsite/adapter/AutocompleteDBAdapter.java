@@ -32,7 +32,7 @@ public class AutocompleteDBAdapter {
         URL url = null;
         List<String> words = new ArrayList<>(10);
         try {
-            url = new URL(String.format(url + WORDS_PATH,
+            url = new URL(String.format(this.url + WORDS_PATH,
                     URLEncoder.encode(query, StandardCharsets.UTF_8)));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
