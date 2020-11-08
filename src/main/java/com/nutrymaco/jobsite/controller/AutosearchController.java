@@ -34,20 +34,20 @@ import java.util.function.Function;
 public class AutosearchController {
 
     @Autowired
-    JWTTokenManager jwtTokenManager;
+    private JWTTokenManager jwtTokenManager;
 
     @Autowired
-    AutosearchService autosearchService;
+    private AutosearchService autosearchService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    VacancyFilterService filterService;
+    private VacancyFilterService filterService;
 
 
     @GetMapping("/users/{userId}/autosearches")
-    ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
+    public ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
         log.info(String.format("request to get autosearches by userid=%s", userId));
 //        try {
 //            jwtTokenManager.checkToken(request)
@@ -81,7 +81,7 @@ public class AutosearchController {
     }
 
     @PostMapping("/users/{userId}/autosearches")
-    ResponseEntity<?> createAutosearch(HttpServletRequest request,
+    public ResponseEntity<?> createAutosearch(HttpServletRequest request,
                                        @RequestBody VacancyFilterRequest filter,
                                        @PathVariable String userId) throws Exception {
         Autosearch autosearch;
@@ -103,20 +103,20 @@ public class AutosearchController {
     }
 
     @GetMapping("/autosearches/{autosearchId}")
-    ResponseEntity<?> getAutosearch(@PathVariable  int autosearchId) throws AutosearchNotFoundException {
+    public ResponseEntity<?> getAutosearch(@PathVariable  int autosearchId) throws AutosearchNotFoundException {
         Autosearch autosearch = autosearchService.getAutosearchById(autosearchId);
         return ResponseEntity.ok(autosearch);
     }
 
     @GetMapping("/users/{userId}/autosearches/{autosearchId}/vacancies")
-    ResponseEntity<?> getVacanciesByAutosearch(@PathVariable String userId,
+    public ResponseEntity<?> getVacanciesByAutosearch(@PathVariable String userId,
                                                 @PathVariable int autosearchId) throws AutosearchNotFoundException {
         List<VacancyDTO> vacancies = autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
         return ResponseEntity.ok(VacanciesResponse.of(vacancies));
     }
 
     @GetMapping("/autosearches/update")
-    ResponseEntity<?> updateAllAutosearches() {
+    public ResponseEntity<?> updateAllAutosearches() {
         autosearchService.updateAllAutosearches();
         return ResponseEntity.ok().build();
     }

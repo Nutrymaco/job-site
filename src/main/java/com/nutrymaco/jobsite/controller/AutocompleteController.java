@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class AutocompleteController {
     @Autowired
-    VacancyService vacancyService;
+    private VacancyService vacancyService;
 
     @GetMapping("/autocomplete")
     public EntityModel<Autocomplete> getAutocomplete(@RequestParam String text,

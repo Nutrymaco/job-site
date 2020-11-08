@@ -22,4 +22,4 @@ autocomplete:
 elastic:
   host: "89.223.94.132"
   port: 9200
-  create-index: true
+  create-index: false

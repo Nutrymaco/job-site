@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompanyDocumentController {
 
     @Autowired
-    CompanyDocumentService documentService;
+    private CompanyDocumentService documentService;
 
     @GetMapping("/{documentId}")
     public ResponseEntity<?> getDocument(@PathVariable Integer companyId,

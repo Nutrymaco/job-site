@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class FilterController {
     @Autowired
-    VacancyAdvancedFiltersService filtersService;
+    private VacancyAdvancedFiltersService filtersService;
 
     @GetMapping("/advanced_filters")
     public EntityModel<Filters> getAdvancedFilters() {

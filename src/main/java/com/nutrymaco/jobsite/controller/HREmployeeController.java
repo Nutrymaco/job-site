@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 public class HREmployeeController {
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
-    HREmployeeService employeeService;
+    private HREmployeeService employeeService;
 
     @GetMapping("/{employeeId}")
-    ResponseEntity<?> getEmployee(@PathVariable int companyId,
+    public ResponseEntity<?> getEmployee(@PathVariable int companyId,
                                   @PathVariable String employeeId,
                                   HttpServletRequest request) throws EmployeeNotFoundException {
         /*
@@ -46,7 +46,7 @@ public class HREmployeeController {
     }
 
     @PostMapping("")
-    ResponseEntity<?> addEmployee(@PathVariable int companyId, HREmployee employee) {
+    public ResponseEntity<?> addEmployee(@PathVariable int companyId, HREmployee employee) {
         HREmployee addedEmployee = employeeService.save(employee);
         return ResponseEntity
                 .status(201)
@@ -54,7 +54,7 @@ public class HREmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    ResponseEntity<?> updateEmployee(@PathVariable int companyId,
+    public ResponseEntity<?> updateEmployee(@PathVariable int companyId,
                                      @PathVariable String employeeId,
                                      HREmployee employee) {
         /*
@@ -66,7 +66,7 @@ public class HREmployeeController {
     }
 
     @PatchMapping("/{employeeId}")
-    ResponseEntity<?> patchEmployee(@PathVariable int companyId,
+    public ResponseEntity<?> patchEmployee(@PathVariable int companyId,
                                     @PathVariable String employeeId,
                                     HREmployee employee) throws EmployeeNotFoundException {
         /*

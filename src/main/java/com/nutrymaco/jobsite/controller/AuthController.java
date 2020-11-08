@@ -20,23 +20,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    CodeService codeService;
+    private CodeService codeService;
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
-    HREmployeeService employeeService;
+    private HREmployeeService employeeService;
 
     @PostMapping("/generateCode")
-    ResponseEntity<?> generateCode(EmailRequest request) throws EmployeeNotFoundException {
+    public ResponseEntity<?> generateCode(EmailRequest request) throws EmployeeNotFoundException {
         BaseUser user = employeeService.getByEmail(request.getEmail());
         codeService.sendCodeForUser(user);
         return ResponseEntity.status(201).build();
     }
 
     @PostMapping("/getToken")
-    ResponseEntity<?> getToken(CodeRequest request) throws UserNotFoundException {
+    public ResponseEntity<?> getToken(CodeRequest request) throws UserNotFoundException {
         String id = codeService.getUserIdByCode(request.getCode());
         String token = tokenService.createTokenForId(id);
         return ResponseEntity

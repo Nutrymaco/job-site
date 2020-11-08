@@ -1,17 +1,8 @@
 {
-  "site": {
-    "aliases": {},
-    "mappings": {
+  "aliases": {},
+  "mappings": {
+    "site": {
       "properties": {
-        "_class": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
         "cityId": {
           "type": "long"
         },
@@ -67,32 +58,30 @@
           "type": "long"
         }
       }
-    },
-    "settings": {
-      "index": {
-        "number_of_shards": "1",
-        "provided_name": "site",
-        "creation_date": "1596034351083",
-        "analysis": {
-          "filter": {
-            "autocomplete_filter": {
-              "type": "edge_ngram",
-              "min_gram": "1",
-              "max_gram": "10"
-            }
+    }
+  },
+  "settings": {
+    "index": {
+      "number_of_shards": "1",
+      "analysis": {
+        "filter": {
+          "autocomplete_filter": {
+            "type": "edge_ngram",
+            "min_gram": "1",
+            "max_gram": "10"
+          }
+        },
+        "analyzer": {
+          "autocomplete": {
+            "filter": "lowercase",
+            "type": "custom",
+            "tokenizer": "standard"
           },
-          "analyzer": {
-            "autocomplete": {
-              "filter": "lowercase",
-              "type": "custom",
-              "tokenizer": "standard"
-            },
-            "description-analyzer": {
-              "char_filter": [
-                "html_strip"
-              ],
-              "tokenizer": "keyword"
-            }
+          "description-analyzer": {
+            "char_filter": [
+              "html_strip"
+            ],
+            "tokenizer": "keyword"
           }
         }
       }

@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompanyController {
 
     @Autowired
-    CompanyService companyService;
+    private CompanyService companyService;
 
     @PostMapping("")
-    ResponseEntity<?> addCompany(Company company) {
+    public ResponseEntity<?> addCompany(Company company) {
         Company savedCompany = companyService.save(company);
         return ResponseEntity
                 .status(201)
@@ -28,7 +28,7 @@ public class CompanyController {
     }
 
     @PatchMapping("/{id}")
-    ResponseEntity<?> patchCompany(@PathVariable int id, Company company) throws CompanyNotFoundException {
+    public ResponseEntity<?> patchCompany(@PathVariable int id, Company company) throws CompanyNotFoundException {
         /*
             here will be logic of auth
          */
@@ -37,7 +37,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateCompany(@PathVariable int id, Company company) {
+    public ResponseEntity<?> updateCompany(@PathVariable int id, Company company) {
         Company updatedCompany = companyService.save(company);
         return ResponseEntity.ok(updatedCompany);
     }

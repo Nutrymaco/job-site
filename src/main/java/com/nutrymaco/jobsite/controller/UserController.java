@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class UserController {
     @Autowired
-    JWTTokenManager jwtTokenManager;
+    private JWTTokenManager jwtTokenManager;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping()
     public ResponseEntity<?> registryUser(HttpServletRequest request) {

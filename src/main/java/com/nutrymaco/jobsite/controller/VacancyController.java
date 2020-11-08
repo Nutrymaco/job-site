@@ -28,10 +28,10 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @Slf4j
 public class VacancyController {
-    JWTTokenManager jwtTokenManager = new JWTTokenManager();
+    private final JWTTokenManager jwtTokenManager = new JWTTokenManager();
 
     @Autowired
-    VacancyService vacancyService;
+    public VacancyService vacancyService;
 
     @GetMapping("/vacancies")
     public ResponseEntity<VacanciesResponse> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
