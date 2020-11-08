@@ -87,13 +87,13 @@ public class AutosearchServiceImpl implements AutosearchService {
         if (autosearchOptional.isEmpty()) {
             autosearch = new Autosearch();
             autosearch.setFilter(filter);
+            autosearch = autosearchRepository.save(autosearch);
             updateAutosearch(autosearch);
         } else {
-            autosearch = autosearchRepository.findById(autosearchOptional.get().getId()).get();
+            autosearch = autosearchOptional.get();
         }
         user = userService.getById(userId)
                 .orElseThrow(() -> new Exception(String.format("user with id : %s not found", userId)));
-        autosearch = autosearchRepository.save(autosearch);
         user.getAutosearches().add(autosearch);
         userService.save(user);
         return autosearch;
