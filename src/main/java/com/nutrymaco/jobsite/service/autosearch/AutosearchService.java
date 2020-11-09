@@ -5,6 +5,7 @@ import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
+import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
@@ -14,9 +15,9 @@ public interface AutosearchService {
     Autosearch getAutosearchById(int id) throws AutosearchNotFoundException;
     List<Autosearch> getAll();
     boolean exists(Autosearch autosearch);
-    Autosearch addAutosearch(String userId, VacancyFilter filter) throws Exception;
+    Autosearch addAutosearch(String userId, VacancyFilter filter) throws UserNotFoundException;
     void updateAutosearchById(int id);
     void updateAllAutosearches();
-    List<Autosearch> getAutosearchesByUserId(String userId);
-    List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException;
+    List<Autosearch> getAutosearchesByUserId(String userId) throws UserNotFoundException;
+    List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException, UserNotFoundException;
 }

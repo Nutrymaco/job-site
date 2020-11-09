@@ -36,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("/getToken")
-    public ResponseEntity<?> getToken(CodeRequest request) throws UserNotFoundException {
+    public ResponseEntity<TokenResponse> getToken(CodeRequest request) throws UserNotFoundException {
         String id = codeService.getUserIdByCode(request.getCode());
         String token = tokenService.createTokenForId(id);
         return ResponseEntity

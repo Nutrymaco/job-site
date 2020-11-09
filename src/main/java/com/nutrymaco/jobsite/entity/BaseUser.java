@@ -1,6 +1,9 @@
 package com.nutrymaco.jobsite.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
@@ -10,8 +13,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
 
 
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 public class BaseUser {
 

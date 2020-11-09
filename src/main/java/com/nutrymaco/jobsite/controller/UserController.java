@@ -1,6 +1,8 @@
 package com.nutrymaco.jobsite.controller;
 
+import com.nutrymaco.jobsite.dto.UserDTO;
 import com.nutrymaco.jobsite.entity.User;
+import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +27,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping()
-    public ResponseEntity<?> registryUser(HttpServletRequest request) {
-        log.info(String.format("request to registry user"));
-        User user = jwtTokenManager.checkToken(request).generateUser();
-        User registeredUser = userService.registry(user);
+    public ResponseEntity<UserDTO> registryUser(HttpServletRequest request) throws UserNotFoundException {
+        log.info("request to registry user");
+        UserDTO user = jwtTokenManager.checkToken(request).generateUser();
+        UserDTO registeredUser = userService.save(user);
         return ResponseEntity.ok(registeredUser);
     }
 

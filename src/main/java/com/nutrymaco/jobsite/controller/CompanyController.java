@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.controller;
 
+import com.nutrymaco.jobsite.dto.CompanyDTO;
 import com.nutrymaco.jobsite.entity.Company;
 import com.nutrymaco.jobsite.exception.found.CompanyNotFoundException;
 import com.nutrymaco.jobsite.service.company.CompanyService;
@@ -20,7 +21,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     @PostMapping("")
-    public ResponseEntity<?> addCompany(Company company) {
+    public ResponseEntity<Company> addCompany(Company company) {
         Company savedCompany = companyService.save(company);
         return ResponseEntity
                 .status(201)
@@ -28,16 +29,16 @@ public class CompanyController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> patchCompany(@PathVariable int id, Company company) throws CompanyNotFoundException {
+    public ResponseEntity<CompanyDTO> patchCompany(@PathVariable int id, CompanyDTO company) throws CompanyNotFoundException {
         /*
             here will be logic of auth
          */
-        Company patchedCompany = companyService.patchById(id, company);
+        CompanyDTO patchedCompany = companyService.patchById(id, company);
         return ResponseEntity.ok(patchedCompany);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCompany(@PathVariable int id, Company company) {
+    public ResponseEntity<Company> updateCompany(@PathVariable int id, Company company) {
         Company updatedCompany = companyService.save(company);
         return ResponseEntity.ok(updatedCompany);
     }

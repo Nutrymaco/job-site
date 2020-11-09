@@ -1,7 +1,10 @@
 package com.nutrymaco.jobsite.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -15,16 +18,17 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "site_user")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User extends BaseUser {
 
+    public User() {
+
+    }
+
     Issuer issuer;
-
-    String name;
-
-    String surname;
 
     @Column(columnDefinition = "jsonb")
     @Type(type = "jsonb")

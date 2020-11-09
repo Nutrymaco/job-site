@@ -27,7 +27,7 @@ public class HREmployeeController {
     private HREmployeeService employeeService;
 
     @GetMapping("/{employeeId}")
-    public ResponseEntity<?> getEmployee(@PathVariable int companyId,
+    public ResponseEntity<HREmployee> getEmployee(@PathVariable int companyId,
                                   @PathVariable String employeeId,
                                   HttpServletRequest request) throws EmployeeNotFoundException {
         /*
@@ -46,7 +46,7 @@ public class HREmployeeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> addEmployee(@PathVariable int companyId, HREmployee employee) {
+    public ResponseEntity<HREmployee> addEmployee(@PathVariable int companyId, HREmployee employee) {
         HREmployee addedEmployee = employeeService.save(employee);
         return ResponseEntity
                 .status(201)
@@ -54,7 +54,7 @@ public class HREmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<?> updateEmployee(@PathVariable int companyId,
+    public ResponseEntity<HREmployee> updateEmployee(@PathVariable int companyId,
                                      @PathVariable String employeeId,
                                      HREmployee employee) {
         /*
@@ -66,7 +66,7 @@ public class HREmployeeController {
     }
 
     @PatchMapping("/{employeeId}")
-    public ResponseEntity<?> patchEmployee(@PathVariable int companyId,
+    public ResponseEntity<HREmployee> patchEmployee(@PathVariable int companyId,
                                     @PathVariable String employeeId,
                                     HREmployee employee) throws EmployeeNotFoundException {
         /*

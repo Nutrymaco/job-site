@@ -20,7 +20,7 @@ public class CompanyDocumentController {
     private CompanyDocumentService documentService;
 
     @GetMapping("/{documentId}")
-    public ResponseEntity<?> getDocument(@PathVariable Integer companyId,
+    public ResponseEntity<CompanyDocumentDTO> getDocument(@PathVariable Integer companyId,
                                          @PathVariable Integer documentId) throws CompanyDocumentNotFoundException {
         /*
             auth to company's employee or admin
@@ -30,7 +30,7 @@ public class CompanyDocumentController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createDocument(@PathVariable Integer companyId,
+    public ResponseEntity<CompanyDocumentDTO> createDocument(@PathVariable Integer companyId,
                                             @RequestBody CompanyDocumentDTO document) {
         /*
             auth to company's employee or admin

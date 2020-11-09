@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.security;
 
+import com.nutrymaco.jobsite.dto.UserDTO;
 import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.service.user.UserService;
 import com.nutrymaco.jobsite.util.jwt.GoogleJWTUtil;
@@ -18,7 +19,7 @@ public class JWTTokenManager {
 
     String token;
     GoogleJWTUtil googleJWTUtil;
-    User user;
+    UserDTO user;
     String id;
     String name;
     String surname;
@@ -32,10 +33,9 @@ public class JWTTokenManager {
     }
 
     private void createUser() {
-        user = new User();
+        user = new UserDTO();
         user.setId(googleJWTUtil.getSub());
-        user.setName(googleJWTUtil.getName());
-        user.setSurname(googleJWTUtil.getSurname());
+        user.setFirstName(googleJWTUtil.getName());
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
@@ -65,18 +65,17 @@ public class JWTTokenManager {
             return this;
         }
 
-        public User getUser() {
+        public UserDTO getUser() {
             return user;
         }
     }
     public class UserManager {
         public IdChecker findUser() throws Exception {
-            user = userService.getById(id)
-                    .orElseThrow(() -> new Exception(String.format("user with id = %s not found", id)));
+            user = userService.getById(id);
             return new IdChecker();
         }
 
-        public User generateUser() {
+        public UserDTO generateUser() {
             createUser();
             return user;
         }

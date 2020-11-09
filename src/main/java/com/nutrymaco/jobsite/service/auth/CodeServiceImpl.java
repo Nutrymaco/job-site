@@ -5,6 +5,8 @@ import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.util.Random;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import java.security.SecureRandom;
+
 
 @Service
 public class CodeServiceImpl implements CodeService {

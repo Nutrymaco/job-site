@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 
 public class AutocompleteDBAdapter {
 
-    private final String url;
+    private final String base;
 
     private static final String WORDS_PATH = "/words?query=%s";
 
     public AutocompleteDBAdapter(String url, int port) {
-        this.url = url + (port == 80 ? "" : Integer.toString(port));
+        this.base = url + (port == 80 ? "" : Integer.toString(port));
     }
 
     public List<String> getWordsByQuery(String query) {
@@ -32,7 +32,7 @@ public class AutocompleteDBAdapter {
         URL url = null;
         List<String> words = new ArrayList<>(10);
         try {
-            url = new URL(String.format(this.url + WORDS_PATH,
+            url = new URL(String.format(base + WORDS_PATH,
                     URLEncoder.encode(query, StandardCharsets.UTF_8)));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

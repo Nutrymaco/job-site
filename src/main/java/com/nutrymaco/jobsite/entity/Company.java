@@ -1,6 +1,8 @@
 package com.nutrymaco.jobsite.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,8 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 
+@Builder
+@NoArgsConstructor
 @Data
 @Entity
 public class Company {

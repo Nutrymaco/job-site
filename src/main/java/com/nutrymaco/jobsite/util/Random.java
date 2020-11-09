@@ -1,17 +1,15 @@
 package com.nutrymaco.jobsite.util;
 
+import java.security.SecureRandom;
+
 public class Random {
 
+    private final static SecureRandom random = new SecureRandom();
+
     public static String getString(int length) {
-        String chars = "qwertyuiopasdfghjklzxcvbnm" +
-                "QWERTYUIOPASDFGHJKLZXCVBNM" +
-                "1234567890";
-        StringBuilder string = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int n = (int) Math.round(Math.random() * length) % chars.length();
-            string.append(chars.charAt(n));
-        }
-        return string.toString();
+        byte[] bytes = new byte[length];
+        random.nextBytes(bytes);
+        return String.valueOf(bytes);
     }
 
 }

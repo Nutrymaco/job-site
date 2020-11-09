@@ -103,13 +103,13 @@ public class AutosearchController {
     }
 
     @GetMapping("/autosearches/{autosearchId}")
-    public ResponseEntity<?> getAutosearch(@PathVariable  int autosearchId) throws AutosearchNotFoundException {
+    public ResponseEntity<Autosearch> getAutosearch(@PathVariable  int autosearchId) throws AutosearchNotFoundException {
         Autosearch autosearch = autosearchService.getAutosearchById(autosearchId);
         return ResponseEntity.ok(autosearch);
     }
 
     @GetMapping("/users/{userId}/autosearches/{autosearchId}/vacancies")
-    public ResponseEntity<?> getVacanciesByAutosearch(@PathVariable String userId,
+    public ResponseEntity<VacanciesResponse> getVacanciesByAutosearch(@PathVariable String userId,
                                                 @PathVariable int autosearchId) throws AutosearchNotFoundException {
         List<VacancyDTO> vacancies = autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
         return ResponseEntity.ok(VacanciesResponse.of(vacancies));

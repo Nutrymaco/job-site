@@ -6,6 +6,7 @@ import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
+import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.repository.AutosearchRepository;
 import com.nutrymaco.jobsite.service.user.UserService;
@@ -80,7 +81,7 @@ public class AutosearchServiceImpl implements AutosearchService {
     }
 
     @Override
-    public Autosearch addAutosearch(String userId, VacancyFilter filter) throws Exception {
+    public Autosearch addAutosearch(String userId, VacancyFilter filter) throws UserNotFoundException {
         Optional<Autosearch> autosearchOptional = getFirstByFilter(filter);
         Autosearch autosearch;
         User user;
@@ -92,8 +93,7 @@ public class AutosearchServiceImpl implements AutosearchService {
         } else {
             autosearch = autosearchOptional.get();
         }
-        user = userService.getById(userId)
-                .orElseThrow(() -> new Exception(String.format("user with id : %s not found", userId)));
+        user = userService.getById(userId);
         user.getAutosearches().add(autosearch);
         userService.save(user);
         return autosearch;
@@ -117,23 +117,17 @@ public class AutosearchServiceImpl implements AutosearchService {
     }
 
     @Override
-    public List<Autosearch> getAutosearchesByUserId(String userId) {
-        Optional<User> user = userService.getById(userId);
-        if (user.isEmpty()) {
-            return List.of();
-        }
-        return user.get().getAutosearches();
+    public List<Autosearch> getAutosearchesByUserId(String userId) throws UserNotFoundException {
+        User user = userService.getById(userId);
+        return user.getAutosearches();
     }
 
     @Override
-    public List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException {
+    public List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException, UserNotFoundException {
         Autosearch autosearch = getAutosearchById(autosearchId);
-        Optional<User> user = userService.getById(userId);
-        if (user.isEmpty()) {
-            return List.of();
-        }
+        User user = userService.getById(userId);
         List<VacancyDTO> vacanciesByAutosearch = getVacanciesByAutosearch(autosearch);
-        List<String> vacanciesIdHistory = user.get().getViewedVacanciesIds();
+        List<String> vacanciesIdHistory = user.getViewedVacanciesIds();
         vacanciesByAutosearch.removeIf(vacancy -> vacanciesIdHistory.contains(vacancy.getId()));
         return vacanciesByAutosearch;
     }
