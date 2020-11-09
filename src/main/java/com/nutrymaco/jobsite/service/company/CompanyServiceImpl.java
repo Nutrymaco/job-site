@@ -18,9 +18,9 @@ public class CompanyServiceImpl implements CompanyService {
     CompanyRepository companyRepository;
 
     @Override
-    public Company save(Company company) {
+    public CompanyDTO save(CompanyDTO company) {
         company.setApproved(false);
-        return companyRepository.save(company);
+        return toDTO(companyRepository.save(fromDTO(company)));
     }
 
     @Override

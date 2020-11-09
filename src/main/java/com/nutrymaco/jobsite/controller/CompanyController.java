@@ -21,8 +21,8 @@ public class CompanyController {
     private CompanyService companyService;
 
     @PostMapping("")
-    public ResponseEntity<Company> addCompany(Company company) {
-        Company savedCompany = companyService.save(company);
+    public ResponseEntity<CompanyDTO> addCompany(CompanyDTO company) {
+        CompanyDTO savedCompany = companyService.save(company);
         return ResponseEntity
                 .status(201)
                 .body(savedCompany);
@@ -38,8 +38,8 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Company> updateCompany(@PathVariable int id, Company company) {
-        Company updatedCompany = companyService.save(company);
+    public ResponseEntity<CompanyDTO> updateCompany(@PathVariable int id, CompanyDTO company) {
+        CompanyDTO updatedCompany = companyService.save(company);
         return ResponseEntity.ok(updatedCompany);
     }
 

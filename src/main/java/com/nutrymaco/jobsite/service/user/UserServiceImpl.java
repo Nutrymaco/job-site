@@ -2,12 +2,14 @@ package com.nutrymaco.jobsite.service.user;
 
 
 import com.nutrymaco.jobsite.dto.UserDTO;
+import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,6 +30,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO save(UserDTO dto) throws UserNotFoundException {
         return toDTO(userRepository.save(fromDTO(dto)));
+    }
+
+    @Override
+    public void addAutosearch(String userId, Autosearch autosearch) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.getAutosearches().add(autosearch);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<Autosearch> getAutosearchesByUserId(String userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return user.getAutosearches();
+    }
+
+    @Override
+    public List<String> getViewedVacanciesIds(String userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return user.getViewedVacanciesIds();
     }
 
     @Override

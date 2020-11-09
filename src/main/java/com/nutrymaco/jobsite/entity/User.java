@@ -18,7 +18,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "site_user")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)

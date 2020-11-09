@@ -1,0 +1,51 @@
+{
+  "properties": {
+    "cityId": {
+      "type": "long"
+    },
+    "company": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text",
+      "analyzer": "low-text",
+      "fields": {
+        "search": {
+          "type": "text",
+          "analyzer" : "description-analyzer"
+        }
+      }
+    },
+    "experienceFrom": {
+      "type": "long"
+    },
+    "experienceTo": {
+      "type": "long"
+    },
+    "salaryFrom": {
+      "type": "long"
+    },
+    "salaryTo": {
+      "type": "long"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "low-text"
+    },
+    "url": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "workScheduleId": {
+      "type": "long"
+    },
+    "date": {
+      "type": "date"
+    }
+  }
+}

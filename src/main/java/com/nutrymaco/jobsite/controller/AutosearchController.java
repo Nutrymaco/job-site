@@ -8,6 +8,7 @@ import com.nutrymaco.jobsite.dto.response.VacanciesResponse;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
+import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.autosearch.AutosearchService;
 import com.nutrymaco.jobsite.service.user.UserService;
@@ -47,7 +48,7 @@ public class AutosearchController {
 
 
     @GetMapping("/users/{userId}/autosearches")
-    public ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) {
+    public ResponseEntity<?> all(HttpServletRequest request, @PathVariable String userId) throws UserNotFoundException {
         log.info(String.format("request to get autosearches by userid=%s", userId));
 //        try {
 //            jwtTokenManager.checkToken(request)
@@ -61,14 +62,14 @@ public class AutosearchController {
                 (autosearchId) -> {
                     try {
                         return autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
-                    } catch (AutosearchNotFoundException e) {
+                    } catch (AutosearchNotFoundException | UserNotFoundException e) {
                         e.printStackTrace();
                     }
                     return null;
                 };
 
         AutosearchResponse autosearchResponse = new AutosearchResponse();
-        List<Autosearch> autosearchList = autosearchService.getAutosearchesByUserId(userId);
+        List<Autosearch> autosearchList = userService.getAutosearchesByUserId(userId);
 
         for (Autosearch a : autosearchList) {
             autosearchResponse.autosearchByUserAdder()
@@ -110,7 +111,7 @@ public class AutosearchController {
 
     @GetMapping("/users/{userId}/autosearches/{autosearchId}/vacancies")
     public ResponseEntity<VacanciesResponse> getVacanciesByAutosearch(@PathVariable String userId,
-                                                @PathVariable int autosearchId) throws AutosearchNotFoundException {
+                                                @PathVariable int autosearchId) throws AutosearchNotFoundException, UserNotFoundException {
         List<VacancyDTO> vacancies = autosearchService.getNewVacanciesForAutosearchAndUser(autosearchId, userId);
         return ResponseEntity.ok(VacanciesResponse.of(vacancies));
     }

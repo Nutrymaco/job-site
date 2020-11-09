@@ -14,4 +14,7 @@ public interface UserService {
     UserDTO save(UserDTO user) throws UserNotFoundException;
     User fromDTO(UserDTO dto) throws UserNotFoundException;
     UserDTO toDTO(User user);
+    void addAutosearch(String userId, Autosearch autosearch) throws UserNotFoundException;
+    List<Autosearch> getAutosearchesByUserId(String userId) throws UserNotFoundException;
+    List<String> getViewedVacanciesIds(String userId) throws UserNotFoundException;
 }

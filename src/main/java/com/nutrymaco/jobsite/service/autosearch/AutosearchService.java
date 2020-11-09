@@ -18,6 +18,5 @@ public interface AutosearchService {
     Autosearch addAutosearch(String userId, VacancyFilter filter) throws UserNotFoundException;
     void updateAutosearchById(int id);
     void updateAllAutosearches();
-    List<Autosearch> getAutosearchesByUserId(String userId) throws UserNotFoundException;
     List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException, UserNotFoundException;
 }

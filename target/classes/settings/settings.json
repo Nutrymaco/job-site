@@ -1,0 +1,36 @@
+{
+  "analysis": {
+    "filter": {
+    },
+    "analyzer": {
+      "low-text": {
+        "analyzer": "russian",
+        "tokenizer": "standard",
+        "filter": [
+          "lowercase",
+          "decimal_digit"],
+        "char_filter": ["html_strip"]
+      },
+      "autocomplete": {
+        "filter": "lowercase",
+        "type": "custom",
+        "tokenizer": "standard"
+      },
+      "description-analyzer": {
+        "char_filter": [
+                      "html_strip"
+                    ],
+        "tokenizer": "standard"
+      }
+    },
+    "tokenizer": {
+      "by_one_char_tokenizer": {
+        "type": "char_group",
+        "tokenize_on_chars": [
+          "whitespace", "letter", "digit", "punctuation"
+        ]
+      }
+    }
+  }
+}
+

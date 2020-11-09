@@ -1,0 +1,6 @@
+projectKey=com.nutrymaco:jobsite
+serverUrl=http://localhost:9000
+serverVersion=8.5.1.38104
+dashboardUrl=http://localhost:9000/dashboard?id=com.nutrymaco%3Ajobsite
+ceTaskId=AXWsmCpo4r6ofQasv63d
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXWsmCpo4r6ofQasv63d

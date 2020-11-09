@@ -1,0 +1,56 @@
+{
+  "mappings": {
+    "properties": {
+      "_class": {
+        "type":"tefwefwefxt",
+        "fields": {
+          "keyword": {
+            "type":"keyword","ignore_above":256
+          }
+        }
+      },
+      "city": {
+        "type":"text",
+        "fields": {
+          "keyword": {
+            "type":"keyword",
+            "ignore_above":256
+          }
+        }
+      },
+      "cityId": {
+        "type":"long"
+      },
+      "description": {
+        "type":"text",
+        "fields": {
+          "keyword": {
+            "type":"keyword",
+            "ignore_above":256
+          }
+        }
+      },
+      "experienceFrom": {
+        "type":"long"
+      },
+      "experienceTo": {
+        "type":"long"},"salaryFrom":{"type":"long"},"salaryTo":{"type":"long"},
+
+      "title": {
+        "type":"text",
+        "fields": {
+          "keyword": {
+            "type":"keyword",
+            "ignore_above":256
+          },
+          "suggest": {
+            "type": "completion"
+          }
+        }
+      },
+      "workScheduleId": {
+        "type":"long"
+      }
+    }
+  }
+}

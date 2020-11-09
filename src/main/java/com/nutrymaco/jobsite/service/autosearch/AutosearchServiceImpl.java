@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.service.autosearch;
 
+import com.nutrymaco.jobsite.dto.UserDTO;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Autosearch;
@@ -84,7 +85,6 @@ public class AutosearchServiceImpl implements AutosearchService {
     public Autosearch addAutosearch(String userId, VacancyFilter filter) throws UserNotFoundException {
         Optional<Autosearch> autosearchOptional = getFirstByFilter(filter);
         Autosearch autosearch;
-        User user;
         if (autosearchOptional.isEmpty()) {
             autosearch = new Autosearch();
             autosearch.setFilter(filter);
@@ -93,9 +93,7 @@ public class AutosearchServiceImpl implements AutosearchService {
         } else {
             autosearch = autosearchOptional.get();
         }
-        user = userService.getById(userId);
-        user.getAutosearches().add(autosearch);
-        userService.save(user);
+        userService.addAutosearch(userId, autosearch);
         return autosearch;
     }
 
@@ -117,17 +115,10 @@ public class AutosearchServiceImpl implements AutosearchService {
     }
 
     @Override
-    public List<Autosearch> getAutosearchesByUserId(String userId) throws UserNotFoundException {
-        User user = userService.getById(userId);
-        return user.getAutosearches();
-    }
-
-    @Override
     public List<VacancyDTO> getNewVacanciesForAutosearchAndUser(int autosearchId, String userId) throws AutosearchNotFoundException, UserNotFoundException {
         Autosearch autosearch = getAutosearchById(autosearchId);
-        User user = userService.getById(userId);
         List<VacancyDTO> vacanciesByAutosearch = getVacanciesByAutosearch(autosearch);
-        List<String> vacanciesIdHistory = user.getViewedVacanciesIds();
+        List<String> vacanciesIdHistory = userService.getViewedVacanciesIds(userId);
         vacanciesByAutosearch.removeIf(vacancy -> vacanciesIdHistory.contains(vacancy.getId()));
         return vacanciesByAutosearch;
     }
