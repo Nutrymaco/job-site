@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.controller;
 
+import com.nutrymaco.jobsite.dto.HREmployeeDTO;
 import com.nutrymaco.jobsite.dto.request.CodeRequest;
 import com.nutrymaco.jobsite.dto.request.EmailRequest;
 import com.nutrymaco.jobsite.dto.response.TokenResponse;
@@ -29,8 +30,8 @@ public class AuthController {
     private HREmployeeService employeeService;
 
     @PostMapping("/generateCode")
-    public ResponseEntity<?> generateCode(EmailRequest request) throws EmployeeNotFoundException {
-        BaseUser user = employeeService.getByEmail(request.getEmail());
+    public ResponseEntity<HREmployeeDTO> generateCode(EmailRequest request) throws EmployeeNotFoundException {
+        HREmployeeDTO user = employeeService.getByEmail(request.getEmail());
         codeService.sendCodeForUser(user);
         return ResponseEntity.status(201).build();
     }

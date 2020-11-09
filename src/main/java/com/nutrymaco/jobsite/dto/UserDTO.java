@@ -11,17 +11,7 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
-
-    private String id;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
+public class UserDTO extends BaseUserDTO {
 
 }

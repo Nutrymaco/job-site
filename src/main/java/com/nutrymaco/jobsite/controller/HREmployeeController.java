@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.controller;
 
+import com.nutrymaco.jobsite.dto.HREmployeeDTO;
 import com.nutrymaco.jobsite.entity.HREmployee;
 import com.nutrymaco.jobsite.exception.found.EmployeeNotFoundException;
 import com.nutrymaco.jobsite.service.auth.TokenService;
@@ -27,7 +28,7 @@ public class HREmployeeController {
     private HREmployeeService employeeService;
 
     @GetMapping("/{employeeId}")
-    public ResponseEntity<HREmployee> getEmployee(@PathVariable int companyId,
+    public ResponseEntity<HREmployeeDTO> getEmployee(@PathVariable int companyId,
                                   @PathVariable String employeeId,
                                   HttpServletRequest request) throws EmployeeNotFoundException {
         /*
@@ -41,38 +42,38 @@ public class HREmployeeController {
 
         /*
          */
-        HREmployee employee = employeeService.getById(employeeId);
+        HREmployeeDTO employee = employeeService.getById(employeeId);
         return ResponseEntity.ok(employee);
     }
 
     @PostMapping("")
-    public ResponseEntity<HREmployee> addEmployee(@PathVariable int companyId, HREmployee employee) {
-        HREmployee addedEmployee = employeeService.save(employee);
+    public ResponseEntity<HREmployeeDTO> addEmployee(@PathVariable int companyId, HREmployeeDTO employee) {
+        HREmployeeDTO addedEmployee = employeeService.save(employee);
         return ResponseEntity
                 .status(201)
                 .body(addedEmployee);
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<HREmployee> updateEmployee(@PathVariable int companyId,
+    public ResponseEntity<HREmployeeDTO> updateEmployee(@PathVariable int companyId,
                                      @PathVariable String employeeId,
-                                     HREmployee employee) {
+                                                     HREmployeeDTO employee) {
         /*
             auth
          */
 
-        HREmployee updatedEmployee = employeeService.updateById(employeeId, employee);
+        HREmployeeDTO updatedEmployee = employeeService.updateById(employeeId, employee);
         return ResponseEntity.ok(updatedEmployee);
     }
 
     @PatchMapping("/{employeeId}")
-    public ResponseEntity<HREmployee> patchEmployee(@PathVariable int companyId,
+    public ResponseEntity<HREmployeeDTO> patchEmployee(@PathVariable int companyId,
                                     @PathVariable String employeeId,
-                                    HREmployee employee) throws EmployeeNotFoundException {
+                                                    HREmployeeDTO employee) throws EmployeeNotFoundException {
         /*
             auth
          */
-        HREmployee patchedEmployee = employeeService.patchById(employeeId, employee);
+        HREmployeeDTO patchedEmployee = employeeService.patchById(employeeId, employee);
         return ResponseEntity.ok(patchedEmployee);
     }
 }

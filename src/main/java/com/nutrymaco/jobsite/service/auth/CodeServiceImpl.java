@@ -1,5 +1,6 @@
 package com.nutrymaco.jobsite.service.auth;
 
+import com.nutrymaco.jobsite.dto.BaseUserDTO;
 import com.nutrymaco.jobsite.entity.BaseUser;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.util.Random;
@@ -17,14 +18,14 @@ public class CodeServiceImpl implements CodeService {
 
 
 
-    public String createCodeForUser(BaseUser user) {
+    public String createCodeForUser(BaseUserDTO user) {
         String code = Random.getString(CODE_SIZE);
         valueOperations.set("code:" + code, user.getId());
         return code;
     }
 
     @Override
-    public void sendCodeForUser(BaseUser user) {
+    public void sendCodeForUser(BaseUserDTO user) {
         String code = createCodeForUser(user);
         /*
             here will be logic to send code via email or other way
