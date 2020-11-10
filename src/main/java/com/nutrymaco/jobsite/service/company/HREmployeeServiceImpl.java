@@ -2,6 +2,7 @@ package com.nutrymaco.jobsite.service.company;
 
 import com.nutrymaco.jobsite.dto.HREmployeeDTO;
 import com.nutrymaco.jobsite.entity.HREmployee;
+import com.nutrymaco.jobsite.exception.found.CompanyNotFoundException;
 import com.nutrymaco.jobsite.exception.found.EmployeeNotFoundException;
 import com.nutrymaco.jobsite.repository.HREmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class HREmployeeServiceImpl implements HREmployeeService {
@@ -31,16 +33,13 @@ public class HREmployeeServiceImpl implements HREmployeeService {
     }
 
     @Override
-    public HREmployeeDTO patchById(String id, HREmployeeDTO patch) throws EmployeeNotFoundException {
+    public HREmployeeDTO patchById(String id, HREmployeeDTO patch) throws EmployeeNotFoundException, CompanyNotFoundException {
         HREmployee employee = employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
         if (patch.getFirstName() != null) {
             employee.setFirstName(patch.getFirstName());
         }
         if (patch.getLastName() != null) {
             employee.setLastName(patch.getLastName());
-        }
-        if (patch.getCompany() != null) {
-            employee.setCompany(companyService.fromDTO(patch.getCompany()));
         }
         if (patch.getEmail() != null) {
             employee.setEmail(patch.getEmail());
@@ -72,16 +71,14 @@ public class HREmployeeServiceImpl implements HREmployeeService {
                         e.setLastName(dto.getLastName());
                     if (dto.getEmail() != null)
                         e.setLastName(dto.getEmail());
-                    if (dto.getCompany() != null)
-                        e.setCompany(companyService.fromDTO(dto.getCompany()));
                     return e;
                 })
                 .orElseGet(() -> {
                     HREmployee employee = new HREmployee();
+                    employee.setId(dto.getId());
                     employee.setFirstName(dto.getFirstName());
                     employee.setLastName(dto.getLastName());
-                    employee.setLastName(dto.getEmail());
-                    employee.setCompany(companyService.fromDTO(dto.getCompany()));
+                    employee.setEmail(dto.getEmail());
                     employee.setRights(new ArrayList<>());
                     return employee;
                 });
@@ -94,7 +91,6 @@ public class HREmployeeServiceImpl implements HREmployeeService {
         dto.setFirstName(employee.getFirstName());
         dto.setLastName(employee.getLastName());
         dto.setEmail(employee.getEmail());
-        dto.setCompany(companyService.toDTO(employee.getCompany()));
         return dto;
     }
 }

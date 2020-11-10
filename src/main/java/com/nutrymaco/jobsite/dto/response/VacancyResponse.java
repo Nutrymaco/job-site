@@ -1,21 +1,17 @@
-package com.nutrymaco.jobsite.dto;
+package com.nutrymaco.jobsite.dto.response;
 
-
+import com.nutrymaco.jobsite.dto.Currency;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+
 @Getter
 @Setter
-public class VacancyDTO {
-
+@AllArgsConstructor
+public class VacancyResponse {
     String id;
 
     String title;
@@ -34,9 +30,9 @@ public class VacancyDTO {
 
     Currency currency;
 
-    Integer cityId;
+    String city;
 
-    Integer workScheduleId;
+    String workSchedule;
 
     String url;
 

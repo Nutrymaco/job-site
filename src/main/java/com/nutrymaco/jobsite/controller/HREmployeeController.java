@@ -2,6 +2,7 @@ package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.HREmployeeDTO;
 import com.nutrymaco.jobsite.entity.HREmployee;
+import com.nutrymaco.jobsite.exception.found.CompanyNotFoundException;
 import com.nutrymaco.jobsite.exception.found.EmployeeNotFoundException;
 import com.nutrymaco.jobsite.service.auth.TokenService;
 import com.nutrymaco.jobsite.service.company.HREmployeeService;
@@ -69,7 +70,7 @@ public class HREmployeeController {
     @PatchMapping("/{employeeId}")
     public ResponseEntity<HREmployeeDTO> patchEmployee(@PathVariable int companyId,
                                     @PathVariable String employeeId,
-                                                    HREmployeeDTO employee) throws EmployeeNotFoundException {
+                                                    HREmployeeDTO employee) throws EmployeeNotFoundException, CompanyNotFoundException {
         /*
             auth
          */

@@ -11,4 +11,6 @@ public interface CompanyService {
     CompanyDTO updateById(int id, CompanyDTO update);
     CompanyDTO toDTO(Company company);
     Company fromDTO(CompanyDTO dto);
+    CompanyDTO getById(Integer id) throws CompanyNotFoundException;
+    CompanyDTO getFirstByName(String name) throws CompanyNotFoundException;
 }

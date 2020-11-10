@@ -72,6 +72,20 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CompanyDTO getById(Integer id) throws CompanyNotFoundException {
+        return companyRepository.findById(id)
+                .map(this::toDTO)
+                .orElseThrow(CompanyNotFoundException::new);
+    }
+
+    @Override
+    public CompanyDTO getFirstByName(String name) throws CompanyNotFoundException {
+        return companyRepository.findFirstByName(name)
+                .map(this::toDTO)
+                .orElseThrow(CompanyNotFoundException::new);
+    }
+
+    @Override
     public CompanyDTO updateById(int id, CompanyDTO update) {
         update.setId(id);
         return toDTO(companyRepository.save(fromDTO(update)));

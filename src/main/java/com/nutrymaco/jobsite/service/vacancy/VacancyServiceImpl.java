@@ -106,15 +106,7 @@ public class VacancyServiceImpl implements VacancyService {
                 .title(entity.getTitle())
                 .company(entity.getCompany())
                 .description(entity.getDescription())
-                .city(cityRepository.findById(entity.getCityId()).orElseGet(() -> {
-                    log.warn(String.format("city with id %d not found", entity.getCityId()));
-                    return new City();
-                }).getName())
                 .cityId(entity.getCityId())
-                .workSchedule(scheduleRepository.findById(entity.getWorkScheduleId()).orElseGet(() -> {
-                    log.warn(String.format("schedule with id %d not found", entity.getWorkScheduleId()));
-                    return new WorkSchedule();
-                }).getName())
                 .workScheduleId(entity.getWorkScheduleId())
                 .experienceFrom(entity.getExperienceFrom())
                 .experienceTo(entity.getExperienceTo())
