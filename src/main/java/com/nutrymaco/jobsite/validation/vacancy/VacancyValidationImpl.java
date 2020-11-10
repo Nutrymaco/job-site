@@ -8,6 +8,8 @@ import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class VacancyValidationImpl implements VacancyValidation {
     @Autowired
@@ -21,12 +23,6 @@ public class VacancyValidationImpl implements VacancyValidation {
 
     @Override
     public void validate(VacancyDTO dto) throws VacancyValidationException {
-        if (dto.getCity() != null && cityRepository.findByName(dto.getCity()) == null) {
-            throw new VacancyValidationException(String.format("city %s not found", dto.getCity()));
-        }
-        if (dto.getWorkSchedule() != null && scheduleRepository.findByName(dto.getWorkSchedule()) == null) {
-            throw new VacancyValidationException(String.format("schedule %s not found", dto.getWorkSchedule()));
-        }
 
         if (vacancyRepository.findFirstByTitleAndDescriptionAndCityId(
                 dto.getTitle(), dto.getDescription(), dto.getCityId()
