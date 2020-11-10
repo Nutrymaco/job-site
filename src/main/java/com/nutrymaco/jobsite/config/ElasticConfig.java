@@ -61,14 +61,7 @@ public class ElasticConfig {
                 .build();
         System.out.println("RHC created");
 
-        RestClients.ElasticsearchRestClient restClients = RestClients.create(clientConfiguration);
-        RestHighLevelClient restHighLevelClient = restClients.rest();
-        try {
-            restClients.close();
-        } catch (IOException e) {
-            log.warn(e.getMessage());
-        }
-        return restHighLevelClient;
+        return RestClients.create(clientConfiguration).rest();
     }
 
     @Bean
