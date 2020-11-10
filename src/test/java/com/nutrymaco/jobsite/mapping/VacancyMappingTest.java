@@ -4,6 +4,7 @@ package com.nutrymaco.jobsite.mapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutrymaco.jobsite.dto.Currency;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,5 +51,10 @@ public class VacancyMappingTest {
     String url = "hhr.u/vacancies/qregeqrge";
 
     Date date = Date.from(Instant.now());
+
+    @Test
+    public void test() {
+
+    }
 
 }
