@@ -2,13 +2,11 @@ package com.nutrymaco.jobsite.adapter.elastisearch;
 
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
-import org.springframework.data.neo4j.repository.query.filter.FilterBuilder;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
