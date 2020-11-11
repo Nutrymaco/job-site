@@ -73,4 +73,25 @@ public class VacancyDTO {
     public int hashCode() {
         return Objects.hash(title, description, company, experienceFrom, experienceTo, salaryFrom, salaryTo, currency, city, cityId, workSchedule, workScheduleId, url, date);
     }
+
+    @Override
+    public String toString() {
+        return "VacancyDTO{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", company='" + company + '\'' +
+                ", experienceFrom=" + experienceFrom +
+                ", experienceTo=" + experienceTo +
+                ", salaryFrom=" + salaryFrom +
+                ", salaryTo=" + salaryTo +
+                ", currency=" + currency +
+                ", city='" + city + '\'' +
+                ", cityId=" + cityId +
+                ", workSchedule='" + workSchedule + '\'' +
+                ", workScheduleId=" + workScheduleId +
+                ", url='" + url + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
