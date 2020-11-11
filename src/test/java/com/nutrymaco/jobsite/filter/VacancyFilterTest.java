@@ -12,6 +12,7 @@ import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.CountryRepository;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,7 +223,10 @@ public class VacancyFilterTest {
                         .filter(v -> v.getCityId() == 1)
                         .collect(Collectors.toList());
 
-        assertEquals(expectedVacancies, vacancies);
+
+
+        assertTrue(expectedVacancies.containsAll(vacancies));
+        assertEquals(expectedVacancies.size(), vacancies.size());
     }
 
     @Test

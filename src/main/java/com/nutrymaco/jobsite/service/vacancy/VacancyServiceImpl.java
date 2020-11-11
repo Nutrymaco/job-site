@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.adapter.AutocompleteDBAdapter;
+import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Vacancy;
@@ -18,14 +19,17 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
 public class VacancyServiceImpl implements VacancyService {
+
+    @Autowired
+    VacancyRepositoryCustom customRepository;
 
     @Autowired
     VacancyRepository vacancyRepository;
@@ -84,6 +88,21 @@ public class VacancyServiceImpl implements VacancyService {
     //todo add validation
     @Override
     public List<VacancyDTO> getVacanciesByFilters(VacancyFilter filter) throws FilterValidationException {
+        if (filter == null) {
+            return StreamSupport.stream(
+                    vacancyRepository.findAll().spliterator(), false)
+                    .map(this::toDTO)
+                    .collect(Collectors.toList());
+        }
+        if (filter.isNull()) {
+            return vacancyRepository
+                    .findAll(PaginationData
+                            .extractFrom(filter)
+                            .getPageable())
+                    .get()
+                    .map(this::toDTO)
+                    .collect(Collectors.toList());
+        }
         return customVacancyRepository
                 .findByFilter(filter)
                 .stream()

@@ -19,6 +19,7 @@ public class VacancyRepositoryCustomImpl implements VacancyRepositoryCustom {
     @Autowired
     ElasticsearchOperations elasticOperations;
 
+
     @Autowired
     ElasticVacancyQuery.ElasticVacancyQueryBuilder queryBuilder;
 

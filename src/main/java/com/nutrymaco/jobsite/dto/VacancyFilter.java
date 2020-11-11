@@ -34,6 +34,12 @@ public class VacancyFilter {
                 .build();
     }
 
+    public boolean isNull() {
+        return text == null && experience == null
+                && salary == null && cityIdList == null
+                && workScheduleIdList == null;
+    }
+
     @Override
     public String toString() {
         return "VacancyFilter{" +

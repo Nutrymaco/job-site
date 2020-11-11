@@ -25,6 +25,9 @@ public class PaginationData {
     }
 
     public static PaginationData extractFrom(VacancyFilter filter) {
+        if (filter == null) {
+            return new PaginationData(Pageable.unpaged());
+        }
         Integer page = filter.getPage();
         Integer size = filter.getSize();
         if (page == null || size == null) {
