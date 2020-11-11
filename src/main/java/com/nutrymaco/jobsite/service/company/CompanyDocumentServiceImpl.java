@@ -7,8 +7,6 @@ import com.nutrymaco.jobsite.repository.CompanyDocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 @Service
 public class CompanyDocumentServiceImpl implements CompanyDocumentService {
 

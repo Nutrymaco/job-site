@@ -10,14 +10,10 @@ import com.nutrymaco.jobsite.entity.WorkSchedule;
 import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class VacancyAdvancedFiltersServiceImpl implements VacancyAdvancedFiltersService {

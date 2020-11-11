@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.VacancyDTO;
+import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.dto.response.VacanciesResponse;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.VacancyNotFoundException;
@@ -34,9 +35,9 @@ public class VacancyController {
     public VacancyService vacancyService;
 
     @GetMapping("/vacancies")
-    public ResponseEntity<VacanciesResponse> allVacancies(@RequestParam(required = false) MultiValueMap<String, String> filters) throws ValidationException {
-        log.info(String.format("request to get vacancies by filters : %s", filters));
-        List<VacancyDTO> vacancies = vacancyService.getVacanciesByFilters(filters);
+    public ResponseEntity<VacanciesResponse> getVacancies(@RequestParam(required = false) VacancyFilter filter) throws ValidationException {
+        log.info(String.format("request to get vacancies by filters : %s", filter));
+        List<VacancyDTO> vacancies = vacancyService.getVacanciesByFilters(filter);
         return ResponseEntity.ok(VacanciesResponse.of(vacancies));
     }
 

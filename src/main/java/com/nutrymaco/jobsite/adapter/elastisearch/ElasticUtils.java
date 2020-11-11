@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.adapter.elastisearch;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import java.util.List;

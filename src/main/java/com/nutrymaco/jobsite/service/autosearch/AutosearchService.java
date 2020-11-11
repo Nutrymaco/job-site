@@ -3,13 +3,10 @@ package com.nutrymaco.jobsite.service.autosearch;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Autosearch;
-import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
-import org.springframework.util.MultiValueMap;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AutosearchService {
     Autosearch getAutosearchById(int id) throws AutosearchNotFoundException;

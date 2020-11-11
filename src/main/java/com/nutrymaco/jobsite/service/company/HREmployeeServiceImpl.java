@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 public class HREmployeeServiceImpl implements HREmployeeService {

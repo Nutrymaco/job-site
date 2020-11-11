@@ -7,13 +7,11 @@ import com.nutrymaco.jobsite.entity.Vacancy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -30,14 +28,14 @@ public class VacancyRepositoryCustomImpl implements VacancyRepositoryCustom {
     public List<Vacancy> findByFilter(VacancyFilter filter) {
         final Query query = ElasticVacancyQuery.builder()
                 .setFilter(filter)
-                .setPaginationData(filter.getPaginationData())
+                .setPaginationData(PaginationData.extractFrom(filter))
                 .build()
                 .getElasticQuery();
 
         return restTemplate.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)
                 .peek(v -> {
-                    if (!filter.isIncludeDescription()) {
+                    if (filter.getIncludeDescription()!= null && !filter.getIncludeDescription()) {
                         v.setDescription(null);
                     }
                 })

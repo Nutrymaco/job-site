@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.service.company;
 
 import com.nutrymaco.jobsite.dto.CompanyDTO;
-import com.nutrymaco.jobsite.dto.filter.Option;
 import com.nutrymaco.jobsite.entity.Company;
 import com.nutrymaco.jobsite.exception.found.CompanyNotFoundException;
 import com.nutrymaco.jobsite.repository.CompanyRepository;

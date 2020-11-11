@@ -2,27 +2,21 @@ package com.nutrymaco.jobsite.entity;
 
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.springframework.util.MultiValueMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -53,21 +47,13 @@ public class Autosearch {
     @Type(type = "jsonb")
     List<String> lastDaySelectedBySearch;
 
-    public void setFilter(VacancyFilter filter) {
-        text = filter.getText();
-        experience = filter.getExperience();
-        salary = filter.getSalary();
-        cities = filter.getCities();
-        workSchedules = filter.getWorkSchedules();
-    }
-
     public VacancyFilter extractFilter() {
         return VacancyFilter.builder()
                 .text(text)
                 .experience(experience)
                 .salary(salary)
-                .cities(cities)
-                .workSchedules(workSchedules)
+                .cityIdList(cities.stream().map(City::getId).collect(Collectors.toList()))
+                .workScheduleIdList(workSchedules.stream().map(WorkSchedule::getId).collect(Collectors.toList()))
                 .build();
     }
 }

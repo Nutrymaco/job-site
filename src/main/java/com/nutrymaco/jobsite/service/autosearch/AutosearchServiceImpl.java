@@ -1,18 +1,18 @@
 package com.nutrymaco.jobsite.service.autosearch;
 
-import com.nutrymaco.jobsite.dto.UserDTO;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Autosearch;
-import com.nutrymaco.jobsite.entity.User;
-import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.repository.AutosearchRepository;
+import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
+import com.nutrymaco.jobsite.service.city.CityService;
 import com.nutrymaco.jobsite.service.user.UserService;
 import com.nutrymaco.jobsite.service.vacancy.VacancyFilterService;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
+import com.nutrymaco.jobsite.service.workschedule.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +34,12 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     @Autowired
     VacancyFilterService filterService;
+
+    @Autowired
+    CityService cityService;
+
+    @Autowired
+    WorkScheduleService scheduleService;
 
 
     @Override
@@ -70,8 +76,8 @@ public class AutosearchServiceImpl implements AutosearchService {
                 filter.getText(),
                 filter.getExperience(),
                 filter.getSalary()).stream()
-                    .filter(a -> a.getCities().equals(filter.getCities()))
-                    .filter(a -> a.getWorkSchedules().equals(filter.getWorkSchedules()))
+                    .filter(a -> a.getCities().equals(cityService.getAllById(filter.getCityIdList())))
+                    .filter(a -> a.getWorkSchedules().equals(scheduleService.getAllById(filter.getWorkScheduleIdList())))
                     .collect(Collectors.toList());
     }
 
@@ -87,7 +93,11 @@ public class AutosearchServiceImpl implements AutosearchService {
         Autosearch autosearch;
         if (autosearchOptional.isEmpty()) {
             autosearch = new Autosearch();
-            autosearch.setFilter(filter);
+            autosearch.setText(filter.getText());
+            autosearch.setExperience(filter.getExperience());
+            autosearch.setSalary(filter.getSalary());
+            autosearch.setCities(cityService.getAllById(filter.getCityIdList()));
+            autosearch.setWorkSchedules(scheduleService.getAllById(filter.getWorkScheduleIdList()));
             autosearch = autosearchRepository.save(autosearch);
             updateAutosearch(autosearch);
         } else {
@@ -131,7 +141,7 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     private List<VacancyDTO> getVacanciesByAutosearch(Autosearch autosearch) {
         try {
-            return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.extractFilter()));
+            return vacancyService.getVacanciesByFilters(autosearch.extractFilter());
         } catch (FilterValidationException e) {
             e.printStackTrace();
             return List.of();
@@ -140,7 +150,7 @@ public class AutosearchServiceImpl implements AutosearchService {
 
     private List<String> getVacanciesIdByAutosearch(Autosearch autosearch) {
         try {
-            return vacancyService.getVacanciesByFilters(filterService.toMultiValueMap(autosearch.extractFilter())).stream()
+            return vacancyService.getVacanciesByFilters(autosearch.extractFilter()).stream()
                     .map(VacancyDTO::getId)
                     .collect(Collectors.toList());
         } catch (FilterValidationException e) {

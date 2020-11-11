@@ -1,6 +1,7 @@
 package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.dto.VacancyDTO;
+import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.VacancyNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
@@ -15,7 +16,7 @@ public interface VacancyService {
     void removeById(String id);
     void removeAll();
     VacancyDTO getById(String id) throws VacancyNotFoundException;
-    List<VacancyDTO> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException;
+    List<VacancyDTO> getVacanciesByFilters(VacancyFilter filter) throws FilterValidationException;
     List<VacancyDTO> getVacanciesByIdList(List<String> idList);
     VacancyDTO toDTO(Vacancy entity);
     Vacancy fromDTO(VacancyDTO dto);

@@ -1,11 +1,11 @@
 package com.nutrymaco.jobsite.dto.response;
 
 import com.nutrymaco.jobsite.dto.VacancyDTO;
-import com.nutrymaco.jobsite.entity.Vacancy;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter

@@ -28,13 +28,13 @@ public class HREmployeeMappingTest {
 
     HREmployeeDTO dto = new HREmployeeDTO();
 
-    private String id = "rgqer";
+    private final String id = "rgqer";
 
-    private String firstName = "Efim";
+    private final String firstName = "Efim";
 
-    private String lastName = "Smykov";
+    private final String lastName = "Smykov";
 
-    private String email = "efim@email.com";
+    private final String email = "efim@email.com";
 
 
     @Before

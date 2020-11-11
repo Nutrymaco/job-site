@@ -1,6 +1,5 @@
 package com.nutrymaco.jobsite.dto.filter;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 

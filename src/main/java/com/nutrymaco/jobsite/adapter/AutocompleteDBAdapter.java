@@ -53,7 +53,7 @@ public class AutocompleteDBAdapter {
                 cutQuery = query.substring(0, wsIndex + 1);
             }
 
-            words = Arrays.stream(content.toString()
+            words = Arrays.stream(content
                     .substring(1, content.length() - 1)
                     .split(","))
                     .filter(l -> l.length() > 0)

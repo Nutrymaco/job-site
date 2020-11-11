@@ -2,8 +2,6 @@ package com.nutrymaco.jobsite.dto.request;
 
 import com.nutrymaco.jobsite.util.PatternChecker;
 
-import java.util.regex.Pattern;
-
 public class EmailRequest {
     private String email;
 

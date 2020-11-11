@@ -1,12 +1,10 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.VacancyDTO;
-import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.dto.request.VacancyFilterRequest;
 import com.nutrymaco.jobsite.dto.response.AutosearchResponse;
 import com.nutrymaco.jobsite.dto.response.VacanciesResponse;
 import com.nutrymaco.jobsite.entity.Autosearch;
-import com.nutrymaco.jobsite.entity.Vacancy;
 import com.nutrymaco.jobsite.exception.found.AutosearchNotFoundException;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
@@ -16,7 +14,6 @@ import com.nutrymaco.jobsite.service.vacancy.VacancyFilterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 @RestController

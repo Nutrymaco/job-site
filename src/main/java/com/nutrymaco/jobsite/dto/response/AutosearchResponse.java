@@ -4,7 +4,6 @@ package com.nutrymaco.jobsite.dto.response;
 import com.nutrymaco.jobsite.entity.Autosearch;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class AutosearchResponse {
     }
 
     public class AutosearchByUserAdder {
-        private AutosearchByUser autosearchByUser = new AutosearchByUser();
+        private final AutosearchByUser autosearchByUser = new AutosearchByUser();
 
         public AutosearchByUserAdder setAutosearch(Autosearch autosearch) {
             autosearchByUser.setAutosearch(autosearch);

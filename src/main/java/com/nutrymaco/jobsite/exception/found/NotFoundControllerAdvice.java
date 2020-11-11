@@ -1,6 +1,5 @@
 package com.nutrymaco.jobsite.exception.found;
 
-import com.nutrymaco.jobsite.exception.validation.VacancyValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

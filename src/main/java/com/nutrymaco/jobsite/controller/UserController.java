@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.UserDTO;
-import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.security.JWTTokenManager;
 import com.nutrymaco.jobsite.service.user.UserService;

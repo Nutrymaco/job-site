@@ -4,7 +4,6 @@ import com.nutrymaco.jobsite.dto.HREmployeeDTO;
 import com.nutrymaco.jobsite.dto.request.CodeRequest;
 import com.nutrymaco.jobsite.dto.request.EmailRequest;
 import com.nutrymaco.jobsite.dto.response.TokenResponse;
-import com.nutrymaco.jobsite.entity.BaseUser;
 import com.nutrymaco.jobsite.exception.found.EmployeeNotFoundException;
 import com.nutrymaco.jobsite.exception.found.UserNotFoundException;
 import com.nutrymaco.jobsite.service.auth.CodeService;

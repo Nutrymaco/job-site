@@ -29,30 +29,24 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
     public VacancyFilter fromMultiValueMap(MultiValueMap<String, String> filters) {
         return VacancyFilter.builder()
                 .text(filters.getFirst("text"))
-                .experience(Integer.parseInt(
-                        Optional.ofNullable(filters.getFirst("experience")).orElse(String.valueOf(Integer.MAX_VALUE))
-                ))
-                .salary(Integer.parseInt(
-                        Optional.ofNullable(filters.getFirst("salary")).orElse("0")
-                ))
-                .cities(Optional.ofNullable(filters.get("cityId")).orElse(List.of()).stream()
-                        .map(Integer::parseInt)
-                        .map(id -> cityRepository.findById(id))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList()))
-                .workSchedules(Optional.ofNullable(filters.get("workScheduleId"))
-                                .orElse(List.of()).stream()
-                                .map(Integer::parseInt)
-                                .map((id) -> scheduleRepository.findById(id))
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .collect(Collectors.toList()))
-                .paginationData(PaginationData.extractFrom(filters))
+                .experience(parseOrGetNull(filters.getFirst("experience")))
+                .salary(parseOrGetNull(filters.getFirst("salary")))
+                .cityIdList(filters.get("cityId").stream().map(Integer::parseInt).collect(Collectors.toList()))
+                .workScheduleIdList(filters.get("workScheduleId").stream().map(Integer::parseInt).collect(Collectors.toList()))
+                .size(parseOrGetNull(filters.getFirst("size")))
+                .page(parseOrGetNull(filters.getFirst("page")))
                 .includeDescription(Boolean.parseBoolean(filters.getFirst("includeDescription")))
                 .build();
 
 
+    }
+
+    private Integer parseOrGetNull(String value) {
+        if (value == null) {
+            return null;
+        } else {
+            return Integer.parseInt(value);
+        }
     }
 
     @Override
@@ -62,17 +56,12 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
         filters.set("text", filter.getText());
         filters.set("experience", String.valueOf(filter.getExperience()));
         filters.set("salary", String.valueOf(filter.getSalary()));
-        filters.put("cityId", Optional.ofNullable(filter.getCities()).orElse(List.of())
-                                                .stream()
-                                                .map(City::getId)
-                                                .map(Objects::toString)
-                                                .collect(Collectors.toList()));
-        filters.put("workScheduleId", Optional.ofNullable(filter.getWorkSchedules()).orElse(List.of())
-                                                .stream()
-                                                .map(WorkSchedule::getId)
-                                                .map(Object::toString)
-                                                .collect(Collectors.toList()));
-
+        filters.put("cityId", filter.getCityIdList().stream()
+                                                    .map(Objects::toString)
+                                                    .collect(Collectors.toList()));
+        filters.put("workScheduleId", filter.getWorkScheduleIdList().stream()
+                                                    .map(Objects::toString)
+                                                    .collect(Collectors.toList()));
         return filters;
     }
 
@@ -82,16 +71,8 @@ public class VacancyFilterServiceImpl implements VacancyFilterService {
                 .text(filterRequest.getText())
                 .experience(filterRequest.getExperience())
                 .salary(filterRequest.getSalary())
-                .cities(filterRequest.getCities().stream()
-                                .map(id -> cityRepository.findById(id))
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .collect(Collectors.toList()))
-                .workSchedules(filterRequest.getWorkSchedules().stream()
-                                .map(id -> scheduleRepository.findById(id))
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .collect(Collectors.toList()))
+                .cityIdList(filterRequest.getCities())
+                .workScheduleIdList(filterRequest.getWorkSchedules())
                 .build();
     }
 }

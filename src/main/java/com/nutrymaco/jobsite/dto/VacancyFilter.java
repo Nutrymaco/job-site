@@ -2,7 +2,6 @@ package com.nutrymaco.jobsite.dto;
 
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,17 +14,25 @@ import java.util.List;
 public class VacancyFilter {
     private final String text;
 
-    private final int experience;
+    private final Integer experience;
 
-    private final int salary;
+    private final Integer salary;
 
-    private final List<City> cities;
+    private final List<Integer> cityIdList;
 
-    private final List<WorkSchedule> workSchedules;
+    private final List<Integer> workScheduleIdList;
 
-    private final boolean includeDescription;
+    private final Boolean includeDescription;
 
-    private final PaginationData paginationData;
+    private final Integer page;
+
+    private final Integer size;
+
+    public static VacancyFilter empty() {
+        return VacancyFilter
+                .builder()
+                .build();
+    }
 
     @Override
     public String toString() {
@@ -33,8 +40,8 @@ public class VacancyFilter {
                 "text='" + text + '\'' +
                 ", experience = " + experience +
                 ", salary=" + salary +
-                ", cities=" + cities +
-                ", workSchedules=" + workSchedules +
+                ", cities=" + cityIdList +
+                ", workSchedules=" + workScheduleIdList +
                 '}';
     }
 }

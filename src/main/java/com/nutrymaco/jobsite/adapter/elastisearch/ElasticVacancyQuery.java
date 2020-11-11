@@ -4,28 +4,26 @@ import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.City;
 import com.nutrymaco.jobsite.entity.WorkSchedule;
-import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.addMultiValueMatch;
+import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.addRangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
-import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.*;
 
 public class ElasticVacancyQuery {
     private int TITLE_BOOST;
     private int PREFIX_LENGTH;
     private VacancyFilter vacancyFilter;
-    private NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-    private BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
-    private int COUNT_OF_FILTERS = 3;
+    private final NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+    private final BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
+    private int COUNT_OF_FILTERS = 0;
     private PaginationData paginationData;
 
     private ElasticVacancyQuery() {}
@@ -55,47 +53,72 @@ public class ElasticVacancyQuery {
                     .field("description.search")
                     .fuzziness(Fuzziness.ONE)
                     .prefixLength(PREFIX_LENGTH));
+            COUNT_OF_FILTERS++;
         }
     }
 
     private void addExperienceRange() {
-        addRangeQuery(filterBuilder,
-                "experienceFrom", "experienceTo",
-                0,
-                vacancyFilter.getExperience());
+        if (vacancyFilter.getExperience() != null) {
+            filterBuilder.should(QueryBuilders.boolQuery()
+                    .should(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.rangeQuery("experienceFrom")
+                                            .lte(vacancyFilter.getExperience()))
+                        .should(QueryBuilders.rangeQuery("experienceTo")
+                                .gte(vacancyFilter.getExperience()))
+                        .minimumShouldMatch(2)
+                    )
+                    .should(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.rangeQuery("experienceFrom")
+                                .lte(vacancyFilter.getExperience()))
+                        .mustNot(QueryBuilders.existsQuery("experienceTo"))
+                        .minimumShouldMatch(1)
+                    )
+                    .should(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.rangeQuery("experienceTo")
+                                            .lte(vacancyFilter.getExperience()))
+                        .mustNot(QueryBuilders.existsQuery("experienceFrom"))
+                        .minimumShouldMatch(1)
+                    ).minimumShouldMatch(1)
+
+            );
+            COUNT_OF_FILTERS++;
+        }
     }
 
     private void addSalaryRange() {
-        addRangeQuery(filterBuilder, "salaryTo",
-                vacancyFilter.getSalary());
+        if (vacancyFilter.getSalary() != null) {
+            COUNT_OF_FILTERS++;
+            filterBuilder.should(QueryBuilders.boolQuery()
+                    .should(QueryBuilders.existsQuery("salaryFrom"))
+                    .should(QueryBuilders.rangeQuery("salaryTo")
+                            .gte(vacancyFilter.getSalary()))
+                    .mustNot(QueryBuilders.rangeQuery("salaryTo")
+                            .lte(vacancyFilter.getSalary()))
+                    .minimumShouldMatch(1)
+            );
+        }
     }
 
     private void addCityFilter() {
-        if (!vacancyFilter.getCities().isEmpty()){
+        if (vacancyFilter.getCityIdList() != null && !vacancyFilter.getCityIdList().isEmpty()){
             COUNT_OF_FILTERS++;
             addMultiValueMatch(filterBuilder,
-                    "cityId", vacancyFilter.getCities()
-                            .stream()
-                            .map(City::getId)
-                            .collect(Collectors.toList()));
+                    "cityId", vacancyFilter.getCityIdList());
         }
 
     }
 
     private void addWorkScheduleFilter() {
-        if (!vacancyFilter.getWorkSchedules().isEmpty()) {
+        if (vacancyFilter.getWorkScheduleIdList() != null && !vacancyFilter.getWorkScheduleIdList().isEmpty()) {
             COUNT_OF_FILTERS++;
             addMultiValueMatch(filterBuilder,
-                    "workScheduleId", vacancyFilter.getWorkSchedules()
-                            .stream()
-                            .map(WorkSchedule::getId)
-                            .collect(Collectors.toList()));
+                    "workScheduleId", vacancyFilter.getWorkScheduleIdList());
         }
 
     }
 
     public static class ElasticVacancyQueryBuilder {
-        private ElasticVacancyQuery query = new ElasticVacancyQuery();
+        private final ElasticVacancyQuery query = new ElasticVacancyQuery();
 
         public ElasticVacancyQueryBuilder setTitleBoost(int titleBoost) {
             query.TITLE_BOOST = titleBoost;

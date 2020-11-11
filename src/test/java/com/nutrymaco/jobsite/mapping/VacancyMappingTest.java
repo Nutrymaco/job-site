@@ -1,9 +1,14 @@
 package com.nutrymaco.jobsite.mapping;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutrymaco.jobsite.dto.Currency;
+import com.nutrymaco.jobsite.dto.VacancyDTO;
+import com.nutrymaco.jobsite.entity.Vacancy;
+import com.nutrymaco.jobsite.repository.CityRepository;
 import com.nutrymaco.jobsite.service.vacancy.VacancyService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
 import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -40,11 +47,7 @@ public class VacancyMappingTest {
 
     Currency currency = Currency.RUB;
 
-    String city = "Москва";
-
     Integer cityId = 1;
-
-    String workSchedule = "FLEX";
 
     Integer workScheduleId = 1;
 
@@ -52,9 +55,37 @@ public class VacancyMappingTest {
 
     Date date = Date.from(Instant.now());
 
-    @Test
-    public void test() {
+    Vacancy vacancy;
 
+
+    @Before
+    public void initVacancy() {
+        vacancy = Vacancy.builder()
+                .id(id)
+                .title(title)
+                .description(description)
+                .company(company)
+                .experienceFrom(experienceFrom)
+                .experienceTo(experienceTo)
+                .salaryFrom(salaryFrom)
+                .salaryTo(salaryTo)
+                .currency(currency)
+                .cityId(cityId)
+                .workScheduleId(workScheduleId)
+                .url(url)
+                .date(date)
+                .build();
+    }
+
+    @Test
+    public void test() throws JsonProcessingException {
+        VacancyDTO toDTO = vacancyService.toDTO(vacancy);
+        Vacancy fromDTO = vacancyService.fromDTO(toDTO);
+
+        String expectedVacancy = mapper.writeValueAsString(vacancy);
+        String actualVacancy = mapper.writeValueAsString(fromDTO);
+
+        assertEquals(expectedVacancy, actualVacancy);
     }
 
 }

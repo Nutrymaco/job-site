@@ -1,11 +1,8 @@
 package com.nutrymaco.jobsite.dto.request;
 
-import com.nutrymaco.jobsite.dto.VacancyFilter;
-import com.nutrymaco.jobsite.entity.Vacancy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;

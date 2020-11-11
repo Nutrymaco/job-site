@@ -4,8 +4,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.util.Utils;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.testing.json.MockJsonFactory;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

@@ -2,9 +2,8 @@ package com.nutrymaco.jobsite.service.vacancy;
 
 import com.nutrymaco.jobsite.adapter.AutocompleteDBAdapter;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
-import com.nutrymaco.jobsite.entity.City;
+import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Vacancy;
-import com.nutrymaco.jobsite.entity.WorkSchedule;
 import com.nutrymaco.jobsite.exception.found.VacancyNotFoundException;
 import com.nutrymaco.jobsite.exception.validation.FilterValidationException;
 import com.nutrymaco.jobsite.exception.validation.ValidationException;
@@ -84,9 +83,9 @@ public class VacancyServiceImpl implements VacancyService {
 
     //todo add validation
     @Override
-    public List<VacancyDTO> getVacanciesByFilters(MultiValueMap<String, String> filters) throws FilterValidationException {
+    public List<VacancyDTO> getVacanciesByFilters(VacancyFilter filter) throws FilterValidationException {
         return customVacancyRepository
-                .findByFilter(filterService.fromMultiValueMap(filters))
+                .findByFilter(filter)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());

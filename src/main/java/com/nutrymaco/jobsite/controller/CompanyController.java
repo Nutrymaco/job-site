@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.CompanyDTO;
-import com.nutrymaco.jobsite.entity.Company;
 import com.nutrymaco.jobsite.exception.found.CompanyNotFoundException;
 import com.nutrymaco.jobsite.service.company.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;

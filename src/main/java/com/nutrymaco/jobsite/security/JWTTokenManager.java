@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.security;
 
 import com.nutrymaco.jobsite.dto.UserDTO;
-import com.nutrymaco.jobsite.entity.User;
 import com.nutrymaco.jobsite.service.user.UserService;
 import com.nutrymaco.jobsite.util.jwt.GoogleJWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;

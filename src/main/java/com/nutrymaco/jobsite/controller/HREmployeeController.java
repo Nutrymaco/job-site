@@ -1,7 +1,6 @@
 package com.nutrymaco.jobsite.controller;
 
 import com.nutrymaco.jobsite.dto.HREmployeeDTO;
-import com.nutrymaco.jobsite.entity.HREmployee;
 import com.nutrymaco.jobsite.exception.found.CompanyNotFoundException;
 import com.nutrymaco.jobsite.exception.found.EmployeeNotFoundException;
 import com.nutrymaco.jobsite.service.auth.TokenService;

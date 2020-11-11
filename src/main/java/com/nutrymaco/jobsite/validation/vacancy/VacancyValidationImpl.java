@@ -3,12 +3,10 @@ package com.nutrymaco.jobsite.validation.vacancy;
 import com.nutrymaco.jobsite.dto.VacancyDTO;
 import com.nutrymaco.jobsite.exception.validation.VacancyValidationException;
 import com.nutrymaco.jobsite.repository.CityRepository;
-import com.nutrymaco.jobsite.repository.vacancy.VacancyRepository;
 import com.nutrymaco.jobsite.repository.WorkScheduleRepository;
+import com.nutrymaco.jobsite.repository.vacancy.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class VacancyValidationImpl implements VacancyValidation {
