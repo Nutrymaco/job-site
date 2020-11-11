@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
 	</properties>
 
