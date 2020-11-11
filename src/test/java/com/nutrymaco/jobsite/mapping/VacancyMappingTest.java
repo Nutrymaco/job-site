@@ -29,8 +29,6 @@ public class VacancyMappingTest {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    String id = "qregeqrge";
-
     String title = "junior java";
 
     String description = "maven spring java maven";
@@ -61,7 +59,6 @@ public class VacancyMappingTest {
     @Before
     public void initVacancy() {
         vacancy = Vacancy.builder()
-                .id(id)
                 .title(title)
                 .description(description)
                 .company(company)
