@@ -5,7 +5,6 @@ import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
 import com.nutrymaco.jobsite.entity.Vacancy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.Query;
@@ -17,9 +16,8 @@ import java.util.stream.Collectors;
 @Repository
 public class VacancyRepositoryCustomImpl implements VacancyRepositoryCustom {
 
-    @Qualifier("elasticsearchOperations")
     @Autowired
-    ElasticsearchOperations restTemplate;
+    ElasticsearchOperations elasticOperations;
 
     @Autowired
     ElasticVacancyQuery.ElasticVacancyQueryBuilder queryBuilder;
@@ -32,7 +30,7 @@ public class VacancyRepositoryCustomImpl implements VacancyRepositoryCustom {
                 .build()
                 .getElasticQuery();
 
-        return restTemplate.search(query, Vacancy.class).stream()
+        return elasticOperations.search(query, Vacancy.class).stream()
                 .map(SearchHit::getContent)
                 .peek(v -> {
                     if (filter.getIncludeDescription()!= null && !filter.getIncludeDescription()) {
