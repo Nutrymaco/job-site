@@ -1,7 +1,5 @@
 # job-site
 
-[![Quality Gate Status](http://localhost:9000/api/project_badges/measure?project=jobsite&metric=alert_status)](http://localhost:9000/dashboard?id=jobsite)
-
 # TABLE OF CONTENTS
 1. [Vacancy API](#vacancy-api)
     
