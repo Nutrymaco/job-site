@@ -2,16 +2,11 @@ package com.nutrymaco.jobsite.adapter.elastisearch;
 
 import com.nutrymaco.jobsite.dto.PaginationData;
 import com.nutrymaco.jobsite.dto.VacancyFilter;
-import com.nutrymaco.jobsite.entity.City;
-import com.nutrymaco.jobsite.entity.WorkSchedule;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
-
-import java.util.stream.Collectors;
 
 import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.addMultiValueMatch;
 import static com.nutrymaco.jobsite.adapter.elastisearch.ElasticUtils.addRangeQuery;
@@ -23,7 +18,7 @@ public class ElasticVacancyQuery {
     private VacancyFilter vacancyFilter;
     private final NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
     private final BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
-    private int COUNT_OF_FILTERS = 0;
+    private int countOfFilters = 0;
     private PaginationData paginationData;
 
     private ElasticVacancyQuery() {}
@@ -38,7 +33,7 @@ public class ElasticVacancyQuery {
         addWorkScheduleFilter();
         addExperienceRange();
         addSalaryRange();
-        filterBuilder.minimumShouldMatch(COUNT_OF_FILTERS);
+        filterBuilder.minimumShouldMatch(countOfFilters);
 
         return queryBuilder
                 .withFilter(filterBuilder)
@@ -53,7 +48,7 @@ public class ElasticVacancyQuery {
                     .field("description.search")
                     .fuzziness(Fuzziness.ONE)
                     .prefixLength(PREFIX_LENGTH));
-            COUNT_OF_FILTERS++;
+            countOfFilters++;
         }
     }
 
@@ -64,12 +59,12 @@ public class ElasticVacancyQuery {
                         .should(QueryBuilders.rangeQuery("experienceFrom")
                                             .lte(vacancyFilter.getExperience()))
                         .should(QueryBuilders.rangeQuery("experienceTo")
-                                .gte(vacancyFilter.getExperience()))
+                                            .gte(vacancyFilter.getExperience()))
                         .minimumShouldMatch(2)
                     )
                     .should(QueryBuilders.boolQuery()
                         .should(QueryBuilders.rangeQuery("experienceFrom")
-                                .lte(vacancyFilter.getExperience()))
+                                            .lte(vacancyFilter.getExperience()))
                         .mustNot(QueryBuilders.existsQuery("experienceTo"))
                         .minimumShouldMatch(1)
                     )
@@ -81,13 +76,13 @@ public class ElasticVacancyQuery {
                     ).minimumShouldMatch(1)
 
             );
-            COUNT_OF_FILTERS++;
+            countOfFilters++;
         }
     }
 
     private void addSalaryRange() {
         if (vacancyFilter.getSalary() != null) {
-            COUNT_OF_FILTERS++;
+            countOfFilters++;
             filterBuilder.should(QueryBuilders.boolQuery()
                     .should(QueryBuilders.existsQuery("salaryFrom"))
                     .should(QueryBuilders.rangeQuery("salaryTo")
@@ -101,7 +96,7 @@ public class ElasticVacancyQuery {
 
     private void addCityFilter() {
         if (vacancyFilter.getCityIdList() != null && !vacancyFilter.getCityIdList().isEmpty()){
-            COUNT_OF_FILTERS++;
+            countOfFilters++;
             addMultiValueMatch(filterBuilder,
                     "cityId", vacancyFilter.getCityIdList());
         }
@@ -110,7 +105,7 @@ public class ElasticVacancyQuery {
 
     private void addWorkScheduleFilter() {
         if (vacancyFilter.getWorkScheduleIdList() != null && !vacancyFilter.getWorkScheduleIdList().isEmpty()) {
-            COUNT_OF_FILTERS++;
+            countOfFilters++;
             addMultiValueMatch(filterBuilder,
                     "workScheduleId", vacancyFilter.getWorkScheduleIdList());
         }
