@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1")
-public class AuthController {
+public class CodeAuthController {
 
     @Autowired
     private CodeService codeService;
